@@ -45,7 +45,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F01
   - Done when: MSW tests assert the `accept-language` header equals the active lang, no `lang` in the URL, an error JSON → `ApiError`, and a lang change → a new request.
 
-- [ ] **F04 · i18n setup** `[P]`
+- [x] **F04 · i18n setup** `[P]`
   - `i18n/index.ts` (i18next, bundled resources), `en.json` / `ru.json` with all UI strings:
     nav, buttons, section headings, stats labels, continents, "Present", durations (plural keys),
     errors, 404, "Show all {{count}} photos", aria-labels.

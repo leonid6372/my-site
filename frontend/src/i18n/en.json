@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "main": "Main",
+    "travel": "Travel",
+    "cv": "CV",
+    "label": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "header": {
+    "skipToContent": "Skip to content",
+    "home": "{{name}}, main page",
+    "language": "Language",
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "footer": {
+    "copyright": "© {{year}} {{name}}",
+    "social": "Contact links"
+  },
+  "links": {
+    "opensInNewTab": "(opens in a new tab)"
+  },
+  "common": {
+    "retry": "Retry",
+    "close": "Close",
+    "loading": "Loading…",
+    "errorTitle": "Something went wrong",
+    "errorText": "The content could not be loaded. Please try again.",
+    "present": "Present",
+    "imageUnavailable": "Image unavailable"
+  },
+  "titles": {
+    "main": "About",
+    "travel": "Travel",
+    "cv": "CV",
+    "notFound": "Page not found"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for doesn't exist or has moved.",
+    "back": "Back to the main page"
+  },
+  "main": {
+    "currently": "Currently",
+    "about": "About me",
+    "interests": "Interests",
+    "contacts": "Contacts",
+    "location": "Location",
+    "ctaTravel": "See where I've travelled",
+    "ctaTravelText": "A map of the countries and cities I've visited, with stories and photos.",
+    "ctaCv": "View my CV",
+    "ctaCvText": "Experience, education and skills."
+  },
+  "cv": {
+    "summary": "Professional summary",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "languages": "Languages",
+    "contacts": "Contacts"
+  },
+  "duration": {
+    "years_one": "{{count}} yr",
+    "years_other": "{{count}} yrs",
+    "months_one": "{{count}} mo",
+    "months_other": "{{count}} mos"
+  },
+  "stats": {
+    "label": "Travel statistics",
+    "countries_one": "country",
+    "countries_other": "countries",
+    "continents_one": "continent",
+    "continents_other": "continents",
+    "places_one": "place",
+    "places_other": "places",
+    "world": "of the world"
+  },
+  "continents": {
+    "africa": "Africa",
+    "antarctica": "Antarctica",
+    "asia": "Asia",
+    "europe": "Europe",
+    "north-america": "North America",
+    "oceania": "Oceania",
+    "south-america": "South America"
+  },
+  "travel": {
+    "mapLabel": "World map of visited countries. Use the list below for keyboard access.",
+    "noTrips": "No trips yet",
+    "listHeading": "Countries and places",
+    "placeCount_one": "{{count}} place",
+    "placeCount_other": "{{count}} places",
+    "visits": "Visits",
+    "visitCount": "×{{count}}",
+    "continent": "Continent",
+    "places": "Places",
+    "photos": "Photos",
+    "photoCount_one": "{{count}} photo",
+    "photoCount_other": "{{count}} photos",
+    "showAll_one": "Show all {{count}} photo",
+    "showAll_other": "Show all {{count}} photos",
+    "openPhoto": "Open photo {{index}} of {{count}}",
+    "closeDetails": "Close details",
+    "lastVisit": "last visit {{year}}"
+  },
+  "lightbox": {
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "close": "Close photo viewer"
+  }
+}

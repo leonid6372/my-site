@@ -1,0 +1,128 @@
+{
+  "nav": {
+    "main": "Главная",
+    "travel": "Путешествия",
+    "cv": "Резюме",
+    "label": "Основная навигация",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню"
+  },
+  "header": {
+    "skipToContent": "Перейти к содержимому",
+    "home": "{{name}}, главная страница",
+    "language": "Язык",
+    "toDark": "Включить тёмную тему",
+    "toLight": "Включить светлую тему"
+  },
+  "footer": {
+    "copyright": "© {{year}} {{name}}",
+    "social": "Контакты"
+  },
+  "links": {
+    "opensInNewTab": "(откроется в новой вкладке)"
+  },
+  "common": {
+    "retry": "Повторить",
+    "close": "Закрыть",
+    "loading": "Загрузка…",
+    "errorTitle": "Что-то пошло не так",
+    "errorText": "Не удалось загрузить содержимое. Попробуйте ещё раз.",
+    "present": "н. в.",
+    "imageUnavailable": "Изображение недоступно"
+  },
+  "titles": {
+    "main": "Обо мне",
+    "travel": "Путешествия",
+    "cv": "Резюме",
+    "notFound": "Страница не найдена"
+  },
+  "notFound": {
+    "title": "Страница не найдена",
+    "text": "Такой страницы нет или она была перемещена.",
+    "back": "Вернуться на главную"
+  },
+  "main": {
+    "currently": "Сейчас",
+    "about": "Обо мне",
+    "interests": "Интересы",
+    "contacts": "Контакты",
+    "location": "Местоположение",
+    "ctaTravel": "Где я побывал",
+    "ctaTravelText": "Карта стран и городов, где я был, с историями и фотографиями.",
+    "ctaCv": "Посмотреть резюме",
+    "ctaCvText": "Опыт работы, образование и навыки."
+  },
+  "cv": {
+    "summary": "Профессиональное резюме",
+    "experience": "Опыт работы",
+    "education": "Образование",
+    "skills": "Навыки",
+    "languages": "Языки",
+    "contacts": "Контакты"
+  },
+  "duration": {
+    "years_one": "{{count}} год",
+    "years_few": "{{count}} года",
+    "years_many": "{{count}} лет",
+    "years_other": "{{count}} года",
+    "months_one": "{{count}} мес.",
+    "months_few": "{{count}} мес.",
+    "months_many": "{{count}} мес.",
+    "months_other": "{{count}} мес."
+  },
+  "stats": {
+    "label": "Статистика путешествий",
+    "countries_one": "страна",
+    "countries_few": "страны",
+    "countries_many": "стран",
+    "countries_other": "страны",
+    "continents_one": "континент",
+    "continents_few": "континента",
+    "continents_many": "континентов",
+    "continents_other": "континента",
+    "places_one": "место",
+    "places_few": "места",
+    "places_many": "мест",
+    "places_other": "места",
+    "world": "мира"
+  },
+  "continents": {
+    "africa": "Африка",
+    "antarctica": "Антарктида",
+    "asia": "Азия",
+    "europe": "Европа",
+    "north-america": "Северная Америка",
+    "oceania": "Океания",
+    "south-america": "Южная Америка"
+  },
+  "travel": {
+    "mapLabel": "Карта мира с посещёнными странами. Для работы с клавиатуры используйте список ниже.",
+    "noTrips": "Путешествий пока нет",
+    "listHeading": "Страны и места",
+    "placeCount_one": "{{count}} место",
+    "placeCount_few": "{{count}} места",
+    "placeCount_many": "{{count}} мест",
+    "placeCount_other": "{{count}} места",
+    "visits": "Поездки",
+    "visitCount": "×{{count}}",
+    "continent": "Континент",
+    "places": "Места",
+    "photos": "Фотографии",
+    "photoCount_one": "{{count}} фото",
+    "photoCount_few": "{{count}} фото",
+    "photoCount_many": "{{count}} фото",
+    "photoCount_other": "{{count}} фото",
+    "showAll_one": "Показать все {{count}} фото",
+    "showAll_few": "Показать все {{count}} фото",
+    "showAll_many": "Показать все {{count}} фото",
+    "showAll_other": "Показать все {{count}} фото",
+    "openPhoto": "Открыть фото {{index}} из {{count}}",
+    "closeDetails": "Закрыть подробности",
+    "lastVisit": "последняя поездка {{year}}"
+  },
+  "lightbox": {
+    "previous": "Предыдущее фото",
+    "next": "Следующее фото",
+    "close": "Закрыть просмотр фото"
+  }
+}
