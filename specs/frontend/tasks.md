@@ -53,7 +53,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F01
   - Done when: the key-parity test passes; the RU plural test gives "1 год / 2 года / 5 лет".
 
-- [ ] **F05 · Language and theme providers**
+- [x] **F05 · Language and theme providers**
   - `lib/storage.ts`; `LanguageProvider` (detect → persist → `<html lang>` → `i18n.changeLanguage`);
     `ThemeProvider` (`data-theme`, persist).
   - Refs: FR-F04, FR-F06, US-02 AC1/AC3/AC4, US-03
