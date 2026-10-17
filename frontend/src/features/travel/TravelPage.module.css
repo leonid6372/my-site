@@ -1,0 +1,39 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.empty {
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+}
+
+.mapArea {
+  position: relative;
+  display: flex;
+  gap: var(--space-4);
+}
+
+.map {
+  flex: 1;
+  min-width: 0;
+  height: min(65vh, 560px);
+  min-height: 320px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}

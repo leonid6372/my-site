@@ -1,0 +1,44 @@
+{
+  "fullName": "Леонид Соловьёв",
+  "headline": "Инженер-программист",
+  "location": "Амстердам, Нидерланды",
+  "currently": "Делаю свой личный сайт",
+  "bio": [
+    "Первый абзац.",
+    "Второй абзац."
+  ],
+  "photo": {
+    "url": "https://images.example.com/me.jpg",
+    "thumbUrl": null,
+    "alt": "Портрет Леонида",
+    "caption": null,
+    "width": 800,
+    "height": 800
+  },
+  "interests": [
+    "Путешествия",
+    "Фотография"
+  ],
+  "links": [
+    {
+      "kind": "email",
+      "label": "Почта",
+      "url": "mailto:me@example.com"
+    },
+    {
+      "kind": "github",
+      "label": "GitHub",
+      "url": "https://github.com/example"
+    },
+    {
+      "kind": "linkedin",
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/example"
+    },
+    {
+      "kind": "telegram",
+      "label": "Telegram",
+      "url": "https://t.me/example"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+.page {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-16) var(--space-4);
+  text-align: center;
+}
+
+.code {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+
+.text {
+  color: var(--muted);
+  margin-block: var(--space-4) var(--space-8);
+}
+
+.back {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition:
+    border-color var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+}
+
+.back:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}

@@ -1,0 +1,354 @@
+{
+  "stats": { "countries": 3, "continents": 2, "places": 4, "worldPercent": 1.5 },
+  "countries": [
+    {
+      "iso2": "JP",
+      "isoNumeric": "392",
+      "name": "Japan",
+      "continent": "asia",
+      "placeIds": ["tokyo"]
+    },
+    {
+      "iso2": "NL",
+      "isoNumeric": "528",
+      "name": "Netherlands",
+      "continent": "europe",
+      "placeIds": ["amsterdam", "rotterdam"]
+    },
+    {
+      "iso2": "ES",
+      "isoNumeric": "724",
+      "name": "Spain",
+      "continent": "europe",
+      "placeIds": ["barcelona"]
+    }
+  ],
+  "places": [
+    {
+      "id": "amsterdam",
+      "name": "Amsterdam",
+      "countryIso2": "NL",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "story": "Placeholder story about canals, bikes and narrow houses.\n\nA second paragraph to show how paragraphs are separated.",
+      "visits": [
+        { "startDate": "2024-08-01", "endDate": "2024-08-04" },
+        { "startDate": "2023-04-10", "endDate": "2023-04-15" }
+      ],
+      "photos": [
+        {
+          "url": "https://picsum.photos/id/10/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/10/400/400",
+          "alt": null,
+          "caption": "Photo 1",
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/11/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/11/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/12/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/12/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/13/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/13/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/14/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/14/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/15/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/15/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/16/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/16/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/17/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/17/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/18/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/18/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/19/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/19/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/20/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/20/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/21/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/21/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/22/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/22/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/23/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/23/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/24/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/24/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/25/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/25/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/26/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/26/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/27/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/27/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/28/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/28/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/29/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/29/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/30/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/30/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/31/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/31/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/32/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/32/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/33/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/33/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/34/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/34/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/35/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/35/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/36/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/36/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/37/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/37/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/38/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/38/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/39/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/39/400/400",
+          "alt": null,
+          "caption": "Photo 30",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "rotterdam",
+      "name": "Rotterdam",
+      "countryIso2": "NL",
+      "lat": 51.9244,
+      "lng": 4.4777,
+      "story": "Placeholder story: a place without photos.",
+      "visits": [{ "startDate": "2022-06-01", "endDate": "2022-06-02" }],
+      "photos": []
+    },
+    {
+      "id": "barcelona",
+      "name": "Barcelona",
+      "countryIso2": "ES",
+      "lat": 41.3874,
+      "lng": 2.1686,
+      "story": "Placeholder story about architecture and the sea.",
+      "visits": [{ "startDate": "2021-09-12", "endDate": "2021-09-19" }],
+      "photos": [
+        {
+          "url": "https://picsum.photos/id/42/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/42/400/400",
+          "alt": null,
+          "caption": "Old town",
+          "width": null,
+          "height": null
+        },
+        {
+          "url": "https://picsum.photos/id/43/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/43/400/400",
+          "alt": null,
+          "caption": null,
+          "width": null,
+          "height": null
+        },
+        {
+          "url": "https://picsum.photos/id/44/1600/1067",
+          "thumbUrl": null,
+          "alt": null,
+          "caption": null,
+          "width": null,
+          "height": null
+        }
+      ]
+    },
+    {
+      "id": "tokyo",
+      "name": "Tokyo",
+      "countryIso2": "JP",
+      "lat": 35.6762,
+      "lng": 139.6503,
+      "story": "Placeholder story about a huge, calm city.",
+      "visits": [{ "startDate": "2019-03-25", "endDate": "2019-04-05" }],
+      "photos": [
+        {
+          "url": "https://picsum.photos/id/48/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/48/400/400",
+          "alt": null,
+          "caption": "Cherry blossoms",
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://picsum.photos/id/49/1600/1067",
+          "thumbUrl": "https://picsum.photos/id/49/400/400",
+          "alt": null,
+          "caption": null,
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    }
+  ]
+}

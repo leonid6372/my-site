@@ -1,0 +1,25 @@
+{
+  "fullName": "Леонид Соловьёв",
+  "headline": "Инженер-программист",
+  "location": "Амстердам, Нидерланды",
+  "currently": "Делаю личный сайт по методу spec-driven development",
+  "bio": [
+    "Временный текст. Напишите здесь один–три коротких абзаца о себе.",
+    "Абзацы разделяются пустой строкой."
+  ],
+  "photo": {
+    "url": "https://picsum.photos/id/64/800/800",
+    "thumbUrl": null,
+    "alt": "Портрет Леонида",
+    "caption": null,
+    "width": 800,
+    "height": 800
+  },
+  "interests": ["Путешествия", "Фотография", "Походы"],
+  "links": [
+    { "kind": "email", "label": "Почта", "url": "mailto:leonid@example.com" },
+    { "kind": "github", "label": "GitHub", "url": "https://github.com/leonid6372" },
+    { "kind": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/example" },
+    { "kind": "telegram", "label": "Telegram", "url": "https://t.me/example" }
+  ]
+}

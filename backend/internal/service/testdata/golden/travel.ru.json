@@ -1,0 +1,97 @@
+{
+  "stats": {
+    "countries": 2,
+    "continents": 2,
+    "places": 3,
+    "worldPercent": 1
+  },
+  "countries": [
+    {
+      "iso2": "NL",
+      "isoNumeric": "528",
+      "name": "Нидерланды",
+      "continent": "europe",
+      "placeIds": [
+        "amsterdam",
+        "rotterdam"
+      ]
+    },
+    {
+      "iso2": "EC",
+      "isoNumeric": "218",
+      "name": "Эквадор",
+      "continent": "south-america",
+      "placeIds": [
+        "quito"
+      ]
+    }
+  ],
+  "places": [
+    {
+      "id": "amsterdam",
+      "name": "Амстердам",
+      "countryIso2": "NL",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "story": "Каналы и велосипеды.\n\nВторой абзац.",
+      "visits": [
+        {
+          "startDate": "2024-08-01",
+          "endDate": "2024-08-03"
+        },
+        {
+          "startDate": "2023-04-10",
+          "endDate": "2023-04-15"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.example.com/amsterdam/01.jpg",
+          "thumbUrl": "https://images.example.com/amsterdam/01_s.jpg",
+          "alt": null,
+          "caption": "Каналы на закате",
+          "width": 1600,
+          "height": 1067
+        },
+        {
+          "url": "https://images.example.com/amsterdam/02.jpg",
+          "thumbUrl": null,
+          "alt": null,
+          "caption": null,
+          "width": null,
+          "height": null
+        }
+      ]
+    },
+    {
+      "id": "rotterdam",
+      "name": "Роттердам",
+      "countryIso2": "NL",
+      "lat": 51.9244,
+      "lng": 4.4777,
+      "story": "Современная архитектура.",
+      "visits": [
+        {
+          "startDate": "2022-06-01",
+          "endDate": "2022-06-02"
+        }
+      ],
+      "photos": []
+    },
+    {
+      "id": "quito",
+      "name": "Кито",
+      "countryIso2": "EC",
+      "lat": -0.1807,
+      "lng": -78.4678,
+      "story": "На экваторе.",
+      "visits": [
+        {
+          "startDate": "2019-11-20",
+          "endDate": "2019-11-27"
+        }
+      ],
+      "photos": []
+    }
+  ]
+}

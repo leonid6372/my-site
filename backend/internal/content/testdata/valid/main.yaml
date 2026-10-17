@@ -1,0 +1,26 @@
+fullName: { en: "Leonid Solovev", ru: "Леонид Соловьёв" }
+headline: { en: "Software Engineer", ru: "Инженер-программист" }
+location: { en: "Amsterdam, Netherlands", ru: "Амстердам, Нидерланды" }
+currently: { en: "Building my personal site", ru: "Делаю свой личный сайт" }
+bio:
+  en: |
+    First paragraph.
+
+    Second paragraph.
+  ru: |
+    Первый абзац.
+
+    Второй абзац.
+photo:
+  url: "https://images.example.com/me.jpg"
+  alt: { en: "Portrait of Leonid", ru: "Портрет Леонида" }
+  width: 800
+  height: 800
+interests:
+  - { en: "Travel", ru: "Путешествия" }
+  - { en: "Photography", ru: "Фотография" }
+links:
+  - { kind: email,    label: { en: "Email",    ru: "Почта" },    url: "mailto:me@example.com" }
+  - { kind: github,   label: { en: "GitHub",   ru: "GitHub" },   url: "https://github.com/example" }
+  - { kind: linkedin, label: { en: "LinkedIn", ru: "LinkedIn" }, url: "https://www.linkedin.com/in/example" }
+  - { kind: telegram, label: { en: "Telegram", ru: "Telegram" }, url: "https://t.me/example" }

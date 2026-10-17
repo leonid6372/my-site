@@ -1,0 +1,76 @@
+.wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: min(65vh, 560px);
+  min-height: 320px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  font-family: var(--font-sans);
+}
+
+/* The global reset (svg { max-width: 100% }) would shrink SVGs in Leaflet's zero-width
+   panes to 0 px: still painted, but not hit-testable. leaflet.css only guards the
+   overlay pane, so guard every pane (the custom "pins" pane included). */
+.map :global(.leaflet-pane) svg {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* Only visited countries and pins are clickable (M-04). */
+.land {
+  cursor: grab;
+}
+
+.visited,
+.pin {
+  cursor: pointer;
+}
+
+.visited {
+  transition: fill-opacity var(--duration-fast) ease;
+}
+
+.tooltip {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.tooltip::before {
+  display: none;
+}
+
+/* Zoom buttons in theme colours. */
+.map :global(.leaflet-bar) {
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.map :global(.leaflet-bar a) {
+  background: var(--bg);
+  color: var(--text);
+  border-bottom-color: var(--border);
+}
+
+.map :global(.leaflet-bar a:hover) {
+  background: var(--surface);
+}
+
+.map:focus-visible,
+.map :global(.leaflet-container:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}

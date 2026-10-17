@@ -1,0 +1,44 @@
+{
+  "fullName": "Leonid Solovev",
+  "headline": "Software Engineer",
+  "location": "Amsterdam, Netherlands",
+  "currently": "Building my personal site",
+  "bio": [
+    "First paragraph.",
+    "Second paragraph."
+  ],
+  "photo": {
+    "url": "https://images.example.com/me.jpg",
+    "thumbUrl": null,
+    "alt": "Portrait of Leonid",
+    "caption": null,
+    "width": 800,
+    "height": 800
+  },
+  "interests": [
+    "Travel",
+    "Photography"
+  ],
+  "links": [
+    {
+      "kind": "email",
+      "label": "Email",
+      "url": "mailto:me@example.com"
+    },
+    {
+      "kind": "github",
+      "label": "GitHub",
+      "url": "https://github.com/example"
+    },
+    {
+      "kind": "linkedin",
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/example"
+    },
+    {
+      "kind": "telegram",
+      "label": "Telegram",
+      "url": "https://t.me/example"
+    }
+  ]
+}

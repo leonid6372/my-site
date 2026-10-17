@@ -1,0 +1,25 @@
+{
+  "fullName": "Leonid Solovev",
+  "headline": "Software Engineer",
+  "location": "Amsterdam, Netherlands",
+  "currently": "Building a personal website with spec-driven development",
+  "bio": [
+    "Placeholder bio. Write one to three short paragraphs about yourself here.",
+    "Separate paragraphs with a blank line."
+  ],
+  "photo": {
+    "url": "https://picsum.photos/id/64/800/800",
+    "thumbUrl": null,
+    "alt": "Portrait of Leonid",
+    "caption": null,
+    "width": 800,
+    "height": 800
+  },
+  "interests": ["Travel", "Photography", "Hiking"],
+  "links": [
+    { "kind": "email", "label": "Email", "url": "mailto:leonid@example.com" },
+    { "kind": "github", "label": "GitHub", "url": "https://github.com/leonid6372" },
+    { "kind": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/example" },
+    { "kind": "telegram", "label": "Telegram", "url": "https://t.me/example" }
+  ]
+}

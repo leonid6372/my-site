@@ -1,0 +1,11 @@
+# Local development only: publishes PostgreSQL and the API on localhost.
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db        # DB for `go run`
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build db api   # API in Docker for `npm run dev`
+services:
+  db:
+    ports: ["127.0.0.1:5432:5432"]
+  api:
+    ports: ["127.0.0.1:8080:8080"]
+    environment:
+      CORS_ORIGINS: http://localhost:5173
+      LOG_LEVEL: debug

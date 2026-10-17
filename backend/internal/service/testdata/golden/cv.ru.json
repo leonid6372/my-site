@@ -1,0 +1,68 @@
+{
+  "summary": "Инженер с фокусом на надёжный бэкенд.",
+  "experience": [
+    {
+      "id": "acme-2021",
+      "position": "Старший инженер-программист",
+      "company": "Acme Corp",
+      "companyUrl": "https://acme.example",
+      "location": "Амстердам, Нидерланды",
+      "startDate": "2021-05-01",
+      "endDate": null,
+      "description": "Команда бэкенд-платформы.",
+      "highlights": [
+        "Снизил задержку API на 30%"
+      ]
+    },
+    {
+      "id": "initech-2017",
+      "position": "Инженер-программист",
+      "company": "Initech",
+      "companyUrl": null,
+      "location": "Москва, Россия",
+      "startDate": "2017-02-01",
+      "endDate": "2021-04-30",
+      "description": null,
+      "highlights": []
+    }
+  ],
+  "education": [
+    {
+      "id": "msu-2015",
+      "institution": "МГУ им. М. В. Ломоносова",
+      "degree": "Магистр",
+      "field": "Информатика",
+      "startDate": "2013-09-01",
+      "endDate": "2015-06-30",
+      "description": null
+    }
+  ],
+  "skills": [
+    {
+      "category": "Языки программирования",
+      "items": [
+        "Go",
+        "TypeScript",
+        "SQL"
+      ]
+    },
+    {
+      "category": "Инструменты",
+      "items": [
+        "Docker",
+        "PostgreSQL",
+        "Git"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "name": "Русский",
+      "level": "Родной"
+    },
+    {
+      "name": "Английский",
+      "level": "C1"
+    }
+  ]
+}
