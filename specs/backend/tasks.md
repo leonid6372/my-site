@@ -126,7 +126,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B11
   - Done when: golden `travel.{en,ru}.json` match; unit tests for stats (0 places → all zeros, `worldPercent` 12/195 → 6.2) and the RU sort order (Cyrillic collation via `x/text/collate`).
 
-- [ ] **B14 · Response cache + ETag**
+- [x] **B14 · Response cache + ETag**
   - Per-(endpoint, lang) lazy cache: `body`, weak ETag `W/"<16 hex of sha256>"` (plan §4.3).
   - Refs: FR-B12
   - Depends on: B12, B13

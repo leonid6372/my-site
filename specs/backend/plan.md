@@ -114,7 +114,8 @@ Ties keep the earlier tag (strict `>`), which matches "ties resolved by header o
 Content only changes when the container restarts (the seed runs on every start), so the
 service **caches the serialised JSON per (endpoint, lang)** in memory:
 
-- built lazily on the first request, guarded by `sync.Once` per key;
+- built lazily on the first request, guarded by a mutex per key (concurrent first requests
+  wait for one build; a failed build is not cached, so a short DB outage does not stick);
 - each entry holds `body []byte` and `etag = W/"<first 16 hex of sha256(body)>"`;
 - the handler compares `If-None-Match` and returns `304` with an empty body when it matches;
 - headers: `Content-Type: application/json; charset=utf-8`, `Cache-Control: public, max-age=300`.
@@ -292,3 +293,4 @@ CI (later, optional): `go vet`, `golangci-lint run`, `go test ./...`,
 | Date       | Change |
 |------------|--------|
 | 2026-10-17 | Initial plan. |
+| 2026-10-17 | §4.3: per-key mutex instead of `sync.Once`, so failed builds are retried (found in B14). |
