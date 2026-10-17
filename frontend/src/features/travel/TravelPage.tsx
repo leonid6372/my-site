@@ -1,9 +1,11 @@
+import { AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useTravel } from '../../api/queries';
 import type { Travel } from '../../api/types';
 import { ErrorState } from '../../components/ErrorState';
 import { LoadingRegion, Skeleton } from '../../components/Skeleton';
 import { usePageTitle } from '../../lib/usePageTitle';
+import { DetailsPanel } from './DetailsPanel';
 import TravelMap from './map/TravelMap';
 import { StatsBar } from './StatsBar';
 import styles from './TravelPage.module.css';
@@ -61,6 +63,17 @@ function TravelContent({
           selection={selection}
           onSelect={onSelect}
         />
+        <AnimatePresence>
+          {selection && (
+            <DetailsPanel
+              key="details"
+              selection={selection}
+              countries={travel.countries}
+              places={travel.places}
+              onSelect={onSelect}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

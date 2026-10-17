@@ -1,11 +1,12 @@
 // Stand-in for the Leaflet map in jsdom tests (map rendering is checked manually,
-// plan §7). It renders the same labelled region plus one button per pin, so tests
-// can select places "on the map".
+// plan §7). It renders the same labelled region plus one button per pin and per
+// visited country, so tests can select things "on the map".
 import { useTranslation } from 'react-i18next';
 import type { Country, Place } from '../api/types';
 import type { Selection } from '../features/travel/useSelection';
 
 export default function MockTravelMap({
+  countries,
   places,
   onSelect,
 }: {
@@ -21,12 +22,22 @@ export default function MockTravelMap({
         <button
           key={p.id}
           type="button"
-          data-testid={`pin-${p.id}`}
           onClick={() => {
             onSelect({ type: 'place', id: p.id });
           }}
         >
-          pin {p.name}
+          pin {p.id}
+        </button>
+      ))}
+      {countries.map((c) => (
+        <button
+          key={c.iso2}
+          type="button"
+          onClick={() => {
+            onSelect({ type: 'country', iso2: c.iso2 });
+          }}
+        >
+          country {c.iso2}
         </button>
       ))}
     </div>

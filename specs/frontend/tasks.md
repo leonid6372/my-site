@@ -126,7 +126,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F12
   - Done when: manual checklist M-01…M-06 (below) passes; the Travel chunk is separate in `vite build` output; the main bundle doesn't contain Leaflet.
 
-- [ ] **F14 · Details panel**
+- [x] **F14 · Details panel**
   - `DetailsPanel` (desktop side panel / mobile bottom sheet with Motion), `PlaceDetails`
     (name, country, visits with "×N" badge, story paragraphs), `CountryDetails` (name,
     continent, places list → select place); close button + `Esc`; focus to the heading on open,
