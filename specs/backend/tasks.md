@@ -139,7 +139,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B05
   - Done when: tests show a panic → 500 JSON without details; the log line contains all the fields; preflight from `http://localhost:5173` → 204 with the right headers; another origin gets no CORS headers.
 
-- [ ] **B16 · Router and handlers**
+- [x] **B16 · Router and handlers**
   - Routes `GET /api/v1/{health,main,cv,travel}`; `If-None-Match` → 304; `Cache-Control`;
     unknown → 404 JSON; non-GET/HEAD → 405 JSON; middleware order per plan §4.1.
   - Refs: FR-B01…FR-B05, FR-B11, FR-B12
