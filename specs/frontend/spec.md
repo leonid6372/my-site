@@ -1,6 +1,6 @@
 # Frontend Specification
 
-Status: **Approved**  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Last updated: 2026-10-17
 Related: [Constitution](../000-constitution.md) · [Requirements](../001-requirements.md) · [API contract](../api/contract.md)
 
 ## 1. Responsibilities
@@ -256,29 +256,34 @@ and only opacity changes ≤ 100 ms are allowed.
 - The map container has `aria-label`; the list (§5.2) is the accessible equivalent of the map.
 - Colour contrast meets WCAG AA in both themes.
 
-## 9. Proposed code layout
+## 9. Code layout
 
 ```
 frontend/
-├── public/
-│   └── geo/countries-50m.json     # world-atlas TopoJSON
+├── public/favicon.svg
 ├── src/
 │   ├── api/                       # client, types (from contract), query hooks
-│   ├── app/                       # App, router, providers (query, i18n, theme)
-│   ├── components/                # Header, Footer, LangSwitch, ThemeToggle, RemoteImage, Skeleton, ErrorState, Chip…
+│   ├── app/                       # App, routes, Layout, providers (language, theme)
+│   ├── components/                # Header, Footer, SocialLinks, SkipLink, RemoteImage, Skeleton, ErrorState, Chip, icons/
 │   ├── features/
-│   │   ├── main/
-│   │   ├── travel/                # TravelMap, StatsBar, DetailsPanel, Lightbox, PlaceList
-│   │   └── cv/                    # CvSection, ExperienceItem, …
+│   │   ├── main/                  # MainPage
+│   │   ├── travel/                # TravelPage, StatsBar, DetailsPanel, PhotoGrid, PhotoLightbox, PlaceList,
+│   │   │   └── map/               #   TravelMap, world TopoJSON loader, antimeridian fix, colours
+│   │   └── cv/                    # CvPage
 │   ├── i18n/                      # en.json, ru.json, setup
-│   ├── lib/                       # date/duration formatting, plural helpers
+│   ├── lib/                       # dates, motion, storage, links, photos, media query, page title
+│   ├── pages/                     # NotFoundPage
 │   ├── styles/                    # tokens.css, global.css, print.css
+│   ├── test/                      # setup, MSW server + fixtures, render helper, map stand-in
 │   └── main.tsx
 ├── nginx.conf
 ├── Dockerfile                     # build with node, serve with nginx:alpine
-├── index.html
+├── index.html                     # incl. the inline theme script
 └── vite.config.ts
 ```
+
+The world TopoJSON is imported from `world-atlas` as a hashed static asset (plan §5.1), not
+copied to `public/`.
 
 ## 10. Build and serving
 
@@ -317,3 +322,4 @@ manual checklist is complete.
 | 2026-10-17 | Initial spec. |
 | 2026-10-17 | Route `/main` (`/` redirects); `Accept-Language` header; external photos via `RemoteImage`; up to 30 photos per place; Email/GitHub/LinkedIn/Telegram links. |
 | 2026-10-17 | (Plan phase clarification) Flags rendered as SVG instead of emoji, which Windows doesn't render. |
+| 2026-10-17 | Implemented (F01–F20). Clarifications from implementation: RU durations use full year words ("1 год / 2 года / 5 лет", as task F04 specified) rather than "г."; map pins and visited countries are also keyboard-operable buttons; rings crossing the antimeridian are unwrapped so the map has no world-spanning bands; §9 updated to the actual layout. |

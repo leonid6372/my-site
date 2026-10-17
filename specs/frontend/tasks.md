@@ -1,6 +1,6 @@
 # Frontend Tasks
 
-Status: **Approved**  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Last updated: 2026-10-17
 Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/contract.md](../api/contract.md)
 
 ## How to use this file
@@ -175,7 +175,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F18
   - Done when: no axe "serious/critical" issues; the manual checklist below is fully ticked; Lighthouse numbers recorded in the PR.
 
-- [ ] **F20 · Traceability and quality gate**
+- [x] **F20 · Traceability and quality gate**
   - Every FR-F01…FR-F14 and every acceptance criterion in `001-requirements.md` maps to a test
     or a checklist item; `lint`, `typecheck`, `test`, `build` are green.
   - Depends on: F19
@@ -258,22 +258,69 @@ F01 ─┬─ F02 ─────────────── F08 ─┬──
                                             └─ F16 ──────────┘
 ```
 
-## Traceability
+## Traceability (verified in F20)
 
-| Requirement | Tasks |
-|-------------|-------|
-| US-01 Navigation | F06, F07 |
-| US-02 Language | F03, F04, F05, F07, F17 |
-| US-03 Theme | F02, F05, F07 |
-| US-04 Animations | F02, F06, F10, F12, F13, F14 |
-| US-10 Main page | F07, F10 |
-| US-20 Map | F13 |
-| US-21 Stats | F12 |
-| US-22 Place details | F14, F15 |
-| US-23 Country focus | F13, F14 |
-| US-24 Place list | F16 |
-| US-30 CV | F09, F11 |
-| NFR-01…04 | F19 |
-| NFR-06 | F18 |
-| NFR-07 | F08 |
-| NFR-08 | F15 |
+Unit/component tests live next to the code (`*.test.ts(x)`); "M-xx" are the checklist items
+above, verified in F19.
+
+**Functional requirements**
+
+| Req | Tasks | Evidence |
+|-----|-------|----------|
+| FR-F01 app shell | F06, F07 | `shell.test.tsx` (landmarks, header, footer); M-11 |
+| FR-F02 active link | F07 | `shell.test.tsx` "marks … as the current page" (aria-current) |
+| FR-F03 404 and `/` redirect | F06 | `routes.test.tsx` (redirect, 4 unknown paths); F18 nginx deep links |
+| FR-F04 language detection | F05 | `providers.test.tsx` (ru-RU, stored choice wins, invalid value, `<html lang>`, throwing storage) |
+| FR-F05 Accept-Language, refetch | F03 | `api.test.tsx` (header per language, clean URLs, refetch with old data kept); F17 real-API sweep |
+| FR-F06 theme, no flash | F02, F05 | `providers.test.tsx`; F02 first-frame check in Edge; M-01 |
+| FR-F07 animations, reduced motion | F06, F12, F13 | M-05, M-12 (transform sampling); `TravelPage.test.tsx` stats without count-up |
+| FR-F08 Main page | F10 | `MainPage.test.tsx` (EN/RU fields, one h1, CTAs, skeleton, error → Retry) |
+| FR-F09 Travel page | F12–F16 | `TravelPage.test.tsx`, `DetailsPanel.test.tsx`, `PhotoGrid.test.tsx`, `PlaceList.test.tsx`; M-01…M-08 |
+| FR-F10 CV page | F09, F11 | `CvPage.test.tsx` (order, null fields, Present, print targets), `dates.test.ts`; M-10 |
+| FR-F11 loading/error/empty | F08, F10–F12 | `components.test.tsx` (ErrorState), page error/skeleton tests, "No trips yet" test |
+| FR-F12 responsive 360–1920 | F19 | 80-combination responsive matrix; M-07 |
+| FR-F13 accessibility | F07, F19 | axe 0 violations (24 runs); M-11; accessible-name tests (`PlaceList.test.tsx`, `shell.test.tsx`) |
+| FR-F14 RemoteImage | F08 | `components.test.tsx` (thumb/full, null fallback, aspect-ratio, error placeholder, alt chain, referrer) |
+
+**Acceptance criteria (001-requirements.md)**
+
+| AC | Evidence |
+|----|----------|
+| US-01 AC1 header + active link | `shell.test.tsx`; M-11 |
+| US-01 AC2 keyboard | `shell.test.tsx` (skip link, menu Esc); M-11 |
+| US-01 AC3 404 with link to Main | `routes.test.tsx`; F18 SPA 404 in browser |
+| US-01 AC4 `/` → `/main` | `routes.test.tsx`; F17, F18 |
+| US-02 AC1 browser language | `providers.test.tsx` (ru-RU → ru, de → en) |
+| US-02 AC2 switch without reload | `shell.test.tsx`, `api.test.tsx`; M-09 (no navigation entry added) |
+| US-02 AC3 remembered | `providers.test.tsx`; M-09 (reload) |
+| US-02 AC4 `<html lang>` | `providers.test.tsx`, `shell.test.tsx` |
+| US-02 AC5 header, never in URL | `api.test.tsx`; F17 (10 real calls) |
+| US-03 AC1 follows OS | `providers.test.tsx`; F02 first-frame check |
+| US-03 AC2 toggle remembered | `providers.test.tsx`, `shell.test.tsx` |
+| US-04 AC1 page fade/slide ≤ 400 ms | F07 transition sampling (300 ms in, 150 ms out) |
+| US-04 AC2 hover/focus transitions | CSS (150 ms); M-11 focus rings (hover is visual only) |
+| US-04 AC3 reduced motion | M-05, M-12 |
+| US-10 AC1 all fields | `MainPage.test.tsx` (EN and RU) |
+| US-10 AC2 link labels, targets | `shell.test.tsx` SocialLinks (target/rel per kind, names) |
+| US-10 AC3 CTAs | `MainPage.test.tsx` |
+| US-20 AC1–AC3 map | M-01, M-02, M-03 |
+| US-21 AC1 stats (195, one decimal) | `TravelPage.test.tsx` (EN/RU exact pairs); backend `TestWorldPercentRounding` |
+| US-21 AC2 count-up / reduced | M-12 (12 intermediate values vs final only) |
+| US-22 AC1 details panel | `DetailsPanel.test.tsx`; M-05 |
+| US-22 AC2 lightbox | `PhotoGrid.test.tsx` (3/30 → 4/30, Esc); M-08 |
+| US-22 AC3 close button / Esc / sheet | `DetailsPanel.test.tsx`; M-07 |
+| US-22 AC4 30 photos lazy | `PhotoGrid.test.tsx` (9 → 30), `components.test.tsx` (`loading=lazy`); M-08 (neighbours only) |
+| US-22 AC5 broken photo placeholder | `components.test.tsx`; M-08 |
+| US-23 AC1 country zoom + list | `DetailsPanel.test.tsx` (country → place); M-04 |
+| US-23 AC2 non-visited no-op | M-04 |
+| US-24 AC1 accessible list | `PlaceList.test.tsx` (order, keyboard → panel → focus back) |
+| US-30 AC1 section order | `CvPage.test.tsx` |
+| US-30 AC2 locale periods + duration | `dates.test.ts` (EN/RU table), `CvPage.test.tsx` |
+| US-30 AC3 printable | `CvPage.test.tsx` print targets; M-10 |
+| NFR-01 performance | F19 Lighthouse (fast 4G: LCP 2.1 s / 0.9 s, map 2.1 s) |
+| NFR-02 responsive | F19 matrix |
+| NFR-03 browsers | Edge + Firefox (F19); Safari not tested |
+| NFR-04 accessibility | axe 0 violations; M-11 |
+| NFR-06 deployability | F18 (`docker compose up -d --build`, smoke.sh through nginx) |
+| NFR-07 friendly errors | ErrorState + Retry tests on every page |
+| NFR-08 30 photos | `PhotoGrid.test.tsx`; M-08 |

@@ -1,6 +1,6 @@
 # 001 — Product Requirements
 
-Status: **Approved**  ·  Owner: Leonid Solovev  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Owner: Leonid Solovev  ·  Last updated: 2026-10-17
 
 ## 1. Overview
 
