@@ -110,7 +110,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
 
 ## Phase 3 — Service and HTTP API
 
-- [ ] **B12 · Service: Main and CV DTOs** `[P]`
+- [x] **B12 · Service: Main and CV DTOs** `[P]`
   - DTO structs mirroring contract §2.2/§2.3 exactly (camelCase tags, `null` not omitted).
   - Localise `LText` by lang; split `bio` on blank lines; sort experience/education by
     `startDate` desc; photo null fallbacks.

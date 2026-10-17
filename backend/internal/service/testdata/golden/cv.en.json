@@ -1,0 +1,68 @@
+{
+  "summary": "Engineer with a focus on reliable backends.",
+  "experience": [
+    {
+      "id": "acme-2021",
+      "position": "Senior Software Engineer",
+      "company": "Acme Corp",
+      "companyUrl": "https://acme.example",
+      "location": "Amsterdam, Netherlands",
+      "startDate": "2021-05-01",
+      "endDate": null,
+      "description": "Backend platform team.",
+      "highlights": [
+        "Cut API latency by 30%"
+      ]
+    },
+    {
+      "id": "initech-2017",
+      "position": "Software Engineer",
+      "company": "Initech",
+      "companyUrl": null,
+      "location": "Moscow, Russia",
+      "startDate": "2017-02-01",
+      "endDate": "2021-04-30",
+      "description": null,
+      "highlights": []
+    }
+  ],
+  "education": [
+    {
+      "id": "msu-2015",
+      "institution": "Lomonosov Moscow State University",
+      "degree": "MSc",
+      "field": "Computer Science",
+      "startDate": "2013-09-01",
+      "endDate": "2015-06-30",
+      "description": null
+    }
+  ],
+  "skills": [
+    {
+      "category": "Programming languages",
+      "items": [
+        "Go",
+        "TypeScript",
+        "SQL"
+      ]
+    },
+    {
+      "category": "Tools",
+      "items": [
+        "Docker",
+        "PostgreSQL",
+        "Git"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "name": "Russian",
+      "level": "Native"
+    },
+    {
+      "name": "English",
+      "level": "C1"
+    }
+  ]
+}
