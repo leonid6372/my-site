@@ -86,7 +86,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
 
 ## Phase 2 — Database
 
-- [ ] **B09 · Pool, migrations, `api migrate`**
+- [x] **B09 · Pool, migrations, `api migrate`**
   - `internal/store`: `Open(ctx, url)` with retry/backoff up to 30 s, `MaxConns=5`;
     `migrations/00001_init.sql` = spec §7 schema (goose, embedded); `Migrate(ctx)`.
   - `docker-compose.dev.yml` publishing `db` on `localhost:5432` (needed for local runs).

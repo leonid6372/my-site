@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/leonid6372/my-site/backend/internal/config"
 	"github.com/leonid6372/my-site/backend/internal/content"
+	"github.com/leonid6372/my-site/backend/internal/store"
 )
 
 // errNotImplemented is returned by subcommands that are not built yet.
@@ -92,8 +94,28 @@ func loadContent(dir string, w io.Writer) (content.All, error) {
 	return all, nil
 }
 
+func runMigrate(_ []string) error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+	if err := cfg.RequireDatabase(); err != nil {
+		return err
+	}
+	ctx := context.Background()
+	s, err := store.Open(ctx, cfg.DatabaseURL)
+	if err != nil {
+		return err
+	}
+	defer s.Close()
+	if err := s.Migrate(ctx); err != nil {
+		return err
+	}
+	fmt.Println("migrations OK")
+	return nil
+}
+
 func runServe(_ []string) error       { return errNotImplemented }
 func runSeed(_ []string) error        { return errNotImplemented }
-func runMigrate(_ []string) error     { return errNotImplemented }
 func runStart(_ []string) error       { return errNotImplemented }
 func runHealthcheck(_ []string) error { return errNotImplemented }
