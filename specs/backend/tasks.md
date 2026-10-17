@@ -132,7 +132,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B12, B13
   - Done when: a test with a counting fake store shows 1 store call for 100 requests per key; EN and RU ETags differ.
 
-- [ ] **B15 · HTTP helpers and middleware** `[P]`
+- [x] **B15 · HTTP helpers and middleware** `[P]`
   - `writeJSON`, `writeError` (contract §1.2 codes), request ID, recover, slog logging (incl. `lang`),
     CORS (only when configured; `Accept-Language` allowed; `OPTIONS` → 204), `gzhttp`.
   - Refs: FR-B11, FR-B13
