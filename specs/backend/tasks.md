@@ -75,7 +75,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B04, B06
   - Done when: table-driven tests have one broken fixture per rule (≥ 14 cases incl. 31 photos, `http://` URL, width without height, duplicate link kind, a bad `mailto:`, a missing `ru`, end < start, unknown country, lat 91), and each asserts the exact file + path; the valid fixture gives zero errors.
 
-- [ ] **B08 · Placeholder content + `api validate`**
+- [x] **B08 · Placeholder content + `api validate`**
   - `content/main.yaml`, `content/cv.yaml` (2 jobs, 1 education, 2 skill groups, 2 languages),
     `content/travel.yaml` (4 places in 3 countries on 2 continents; one place with 30 photos,
     one with 0, one with 2 visits) using `https://picsum.photos/id/<n>/1600/1067` and `/400/400` thumbs.

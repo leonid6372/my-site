@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/leonid6372/my-site/backend/internal/config"
+	"github.com/leonid6372/my-site/backend/internal/content"
 )
 
 // errNotImplemented is returned by subcommands that are not built yet.
@@ -61,9 +64,36 @@ func printUsage(w io.Writer) {
 	}
 }
 
+func runValidate(_ []string) error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+	if _, err := loadContent(cfg.ContentDir, os.Stderr); err != nil {
+		return err
+	}
+	fmt.Println("content OK")
+	return nil
+}
+
+// loadContent loads and validates the content files, printing every
+// validation error to w as "file:path: message".
+func loadContent(dir string, w io.Writer) (content.All, error) {
+	all, err := content.Load(dir)
+	if err != nil {
+		return content.All{}, err
+	}
+	if errs := content.Validate(all); len(errs) > 0 {
+		for _, e := range errs {
+			fmt.Fprintln(w, e)
+		}
+		return content.All{}, fmt.Errorf("content has %d validation error(s)", len(errs))
+	}
+	return all, nil
+}
+
 func runServe(_ []string) error       { return errNotImplemented }
 func runSeed(_ []string) error        { return errNotImplemented }
-func runValidate(_ []string) error    { return errNotImplemented }
 func runMigrate(_ []string) error     { return errNotImplemented }
 func runStart(_ []string) error       { return errNotImplemented }
 func runHealthcheck(_ []string) error { return errNotImplemented }
