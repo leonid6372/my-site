@@ -152,7 +152,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 5 — Integration and deployment
 
-- [ ] **F17 · Run against the real backend**
+- [x] **F17 · Run against the real backend**
   - `npm run dev` with the backend from B17; fix any contract mismatches (in the code, or via a
     contract change first).
   - Depends on: F11, F15, F16, B17
