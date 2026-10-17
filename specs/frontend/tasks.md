@@ -109,7 +109,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 4 — Travel page
 
-- [ ] **F12 · Travel page shell, selection state, stats**
+- [x] **F12 · Travel page shell, selection state, stats**
   - Lazy `TravelPage` with `useTravel`; `selection` state ↔ `?place=` (plan §5.3); `StatsBar` +
     `useCountUp` (IntersectionObserver, reduced motion → instant, `Intl.NumberFormat` for percent);
     empty state "No trips yet".
