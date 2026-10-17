@@ -172,6 +172,33 @@ func TestStoryKeepsBlankLineSeparators(t *testing.T) {
 	}
 }
 
+// FR-B06: photo URLs and sizes are passed through exactly as given.
+func TestPhotoURLsPassThrough(t *testing.T) {
+	odd := content.Photo{
+		URL:      "https://cdn.example.com/a%20b/IMG_0001.JPG?w=1600&sig=Ab+Cd==#frag",
+		ThumbURL: "https://cdn.example.com/a%20b/thumb.webp?w=400",
+		Width:    new(1600), Height: new(1067),
+	}
+	p := place(t, "x", "NL", "2020-01-01")
+	p.Photos = []content.Photo{odd, {URL: "http://localhost/plain.jpg"}}
+	got := travel(t, i18n.RU, p).Places[0].Photos
+
+	if got[0].URL != odd.URL || *got[0].ThumbURL != odd.ThumbURL || *got[0].Width != 1600 || *got[0].Height != 1067 {
+		t.Errorf("photo changed: %+v", got[0])
+	}
+	if got[1].URL != "http://localhost/plain.jpg" || got[1].ThumbURL != nil {
+		t.Errorf("second photo: %+v", got[1])
+	}
+
+	m, err := New(&fakeStore{all: content.All{Main: content.MainFile{Photo: odd}}}).Main(context.Background(), i18n.EN)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if m.Photo.URL != odd.URL || *m.Photo.ThumbURL != odd.ThumbURL {
+		t.Errorf("main photo changed: %+v", m.Photo)
+	}
+}
+
 func TestUnknownCountryIsAnError(t *testing.T) {
 	_, err := New(&fakeStore{all: content.All{Travel: content.TravelFile{
 		Places: []content.Place{place(t, "x", "ZZ", "2020-01-01")},

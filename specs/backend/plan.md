@@ -1,6 +1,6 @@
 # Backend Implementation Plan
 
-Status: **Approved**  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Last updated: 2026-10-17
 Implements: [backend/spec.md](spec.md) · [api/contract.md](../api/contract.md)
 
 This document describes **how** the backend is built. Behaviour is defined in the spec;
@@ -294,3 +294,4 @@ CI (later, optional): `go vet`, `golangci-lint run`, `go test ./...`,
 |------------|--------|
 | 2026-10-17 | Initial plan. |
 | 2026-10-17 | §4.3: per-key mutex instead of `sync.Once`, so failed builds are retried (found in B14). |
+| 2026-10-17 | Implemented (B01–B21). Notes from implementation: the store returns the `content` model types (same shape as the rows); pgx's JSON codec maps `LText` ↔ JSONB, so no custom `Value/Scan`; the router uses method-less patterns plus a GET/HEAD guard so 404/405 are JSON; the `live` test tag compares a running stack with the contract. |

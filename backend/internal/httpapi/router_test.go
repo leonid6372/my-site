@@ -143,6 +143,18 @@ func TestLocalisedEndpoints(t *testing.T) {
 	}
 }
 
+// FR-B05: the language comes only from Accept-Language, never from the URL.
+func TestLangQueryParamIsIgnored(t *testing.T) {
+	h := newHandler(&fakeStore{all: loadFixture(t)}, fakeDB{})
+	if got := do(h, http.MethodGet, "/api/v1/main?lang=ru").Header().Get("Content-Language"); got != "en" {
+		t.Errorf("?lang=ru: Content-Language = %q, want en", got)
+	}
+	rec := do(h, http.MethodGet, "/api/v1/main?lang=en", "Accept-Language", "ru")
+	if got := rec.Header().Get("Content-Language"); got != "ru" {
+		t.Errorf("?lang=en with Accept-Language ru: Content-Language = %q, want ru", got)
+	}
+}
+
 func TestConditionalGet(t *testing.T) {
 	h := newHandler(&fakeStore{all: loadFixture(t)}, fakeDB{})
 	etag := do(h, http.MethodGet, "/api/v1/cv", "Accept-Language", "ru").Header().Get("ETag")

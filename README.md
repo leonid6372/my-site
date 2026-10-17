@@ -74,6 +74,7 @@ Tests and lint, from `backend/`:
 ```sh
 go test ./...                              # unit tests
 go test -tags=integration ./...            # + PostgreSQL tests (needs Docker, uses testcontainers)
+BASE_URL=http://localhost:8080 go test -tags=live -run TestLive ./internal/service   # running API vs contract
 go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run --build-tags=integration ./...
 go test ./internal/service -update         # regenerate the golden JSON after an intended change
 ```

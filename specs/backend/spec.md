@@ -1,6 +1,6 @@
 # Backend Specification
 
-Status: **Approved**  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Last updated: 2026-10-17
 Related: [Constitution](../000-constitution.md) · [Requirements](../001-requirements.md) · [API contract](../api/contract.md)
 
 ## 1. Responsibilities
@@ -330,21 +330,22 @@ stored in the DB. It is a JSON file embedded in the binary (`go:embed`) and look
   configured; allows the `Accept-Language` header) → language negotiation → gzip.
 - Timeouts: read 5 s, write 10 s, idle 60 s. Graceful shutdown on SIGTERM (max 10 s).
 
-## 10. Proposed code layout
+## 10. Code layout
 
 ```
 backend/
-├── cmd/api/main.go          # subcommands: serve, seed, validate, migrate
+├── cmd/api/main.go          # subcommands: serve, seed, validate, migrate, start, healthcheck
 ├── internal/
 │   ├── config/              # env parsing
 │   ├── content/             # YAML/JSON structs, loader, validator
 │   ├── geo/                 # embedded countries.json + lookup
 │   ├── i18n/                # Accept-Language parsing + negotiation middleware
-│   ├── store/               # PostgreSQL repository (pgx) + migrations (embedded)
-│   ├── service/             # localisation, stats, sorting
+│   ├── store/               # PostgreSQL repository (pgx)
+│   │   └── migrations/      # SQL migrations (goose), embedded in the binary
+│   ├── service/             # localisation, stats, sorting, response cache
 │   └── httpapi/             # router, handlers, middleware, error helpers
-├── migrations/              # SQL migration files
-├── Dockerfile               # multi-stage, distroless/alpine final image
+├── tools/gencountries/      # one-off generator for internal/geo/countries.json
+├── Dockerfile               # multi-stage, distroless final image
 └── go.mod
 ```
 
@@ -385,3 +386,4 @@ The site is served over plain HTTP on the VPS IP (no TLS, by decision).
 | 2026-10-17 | `/profile` → `/main` (`main.yaml`, table `main_info`); language from `Accept-Language`; removed `/media` serving and `MEDIA_DIR`; photos are external URLs (optional thumb/size), max 30 per place; links limited to GitHub/LinkedIn/Telegram; JSON content files allowed. |
 | 2026-10-17 | Email link (`kind: email`, `mailto:` URL) added back. |
 | 2026-10-17 | (Plan phase clarification) Added the `api start` and `api healthcheck` commands for the shell-less container image. |
+| 2026-10-17 | Implemented (B01–B21). §10 updated to the actual layout (migrations embedded under `internal/store/`). No behaviour changes. |

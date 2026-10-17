@@ -1,6 +1,6 @@
 # Backend Tasks
 
-Status: **Approved**  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Last updated: 2026-10-17
 Implements: [backend/spec.md](spec.md) · [backend/plan.md](plan.md) · [api/contract.md](../api/contract.md)
 
 ## How to use this file
@@ -176,7 +176,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
 
 ## Phase 5 — Verification
 
-- [ ] **B21 · Traceability and quality gate**
+- [x] **B21 · Traceability and quality gate**
   - Check that every FR-B01…FR-B13 has at least one test (list the test names in the PR description).
   - `go vet`, `golangci-lint run`, `go test ./...`, `go test -tags=integration ./...` all pass.
   - Compare the live responses with every example in `api/contract.md` (field names, nulls, ordering).
@@ -198,20 +198,23 @@ B01 → B02 ─┬─ B03 ──────────────── B09 �
 
 ## Traceability
 
-| Requirement | Tasks |
-|-------------|-------|
-| FR-B01 health | B16, B17 |
-| FR-B02 main | B12, B16 |
-| FR-B03 cv | B12, B16 |
-| FR-B04 travel | B13, B16 |
-| FR-B05 Accept-Language | B05, B16 |
-| FR-B06 photo pass-through | B12, B13 |
-| FR-B07 seed | B10 |
-| FR-B08 validation | B07, B08, B10 |
-| FR-B09 country data | B04 |
-| FR-B10 migrations | B09, B17 |
-| FR-B11 errors | B15, B16 |
-| FR-B12 ETag / cache | B14, B16 |
-| FR-B13 logging | B15 |
-| NFR-05 | B07 |
-| NFR-06 | B18, B19, B20 |
+| Requirement | Tasks | Tests (verified in B21) |
+|-------------|-------|-------------------------|
+| FR-B01 health | B16, B17 | httpapi `TestHealth`; cmd/api `TestHealthcheck`, `TestHealthURL`; live `TestLiveShapesMatchContract` |
+| FR-B02 main | B12, B16 | service `TestGolden`, `TestShapesMatchContract`, `TestParagraphs`, `TestLocalisesEveryText`; httpapi `TestLocalisedEndpoints` |
+| FR-B03 cv | B12, B16 | service `TestGolden`, `TestCVSortsByStartDateDesc`, `TestOptionalFieldsAreNullNotOmitted`; httpapi `TestLocalisedEndpoints` |
+| FR-B04 travel | B13, B16 | service `TestGolden`, `TestStats*`, `TestWorldPercentRounding`, `TestPlacesAndVisitsSortedNewestFirst`, `TestCountriesSortedByLocalisedName`, `TestSortByNameUsesCollation`; httpapi `TestLocalisedEndpoints` |
+| FR-B05 Accept-Language | B05, B16 | i18n `TestNegotiate`, `TestMiddleware`; httpapi `TestLocalisedEndpoints`, `TestLangQueryParamIsIgnored` |
+| FR-B06 photo pass-through | B12, B13 | service `TestPhotoURLsPassThrough`, `TestGolden`; live `TestLiveOrderingMatchesContract` |
+| FR-B07 seed | B10 | store `TestReplaceAllIsIdempotent`, `TestReadRoundTrip`; cmd/api `TestSeedCommandPath` |
+| FR-B08 validation | B07, B08, B10 | content `TestValidateRules`, `TestValidateCollectsAllErrors`, `TestLoadErrors`; cmd/api `TestLoadContentPrintsErrors`, `TestSeedCommandPath`; store `TestReplaceAllKeepsPreviousDataOnError` |
+| FR-B09 country data | B04 | geo `TestLookup`, `TestLookupUnknown`, `TestAllComplete` |
+| FR-B10 migrations | B09, B17 | store `TestMigrateCreatesTablesAndIsIdempotent`; cmd/api `TestSeedCommandPath` |
+| FR-B11 errors | B15, B16 | httpapi `TestRecoverReturns500WithoutDetails`, `TestWriteErrorShape`, `TestNotFound`, `TestMethodNotAllowed`, `TestStoreErrorsMapToContractErrors` |
+| FR-B12 ETag / cache | B14, B16 | service `TestCacheBuildsOncePerKey`, `TestCacheDoesNotKeepErrors`; httpapi `TestConditionalGet`, `TestLocalisedEndpoints` |
+| FR-B13 logging | B15 | httpapi `TestLoggingLineHasAllFields`, `TestLoggingRecordsErrorStatus` |
+| NFR-05 | B07 | content `TestValidateRules` |
+| NFR-06 | B18, B19, B20 | `scripts/smoke.sh`; cmd/api `TestServeHTTPShutsDownGracefully` |
+
+Test tags: unit `go test ./...`; PostgreSQL `-tags=integration` (testcontainers); against a running
+stack `BASE_URL=… go test -tags=live -run TestLive ./internal/service`.
