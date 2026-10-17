@@ -59,7 +59,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B02
   - Done when: all the table cases from spec §12 pass, plus ties (`en, ru` → `en`; `ru;q=0.8, en;q=0.8` → `ru`) and `*` → `en`.
 
-- [ ] **B06 · Content model and loader**
+- [x] **B06 · Content model and loader**
   - `internal/content`: `LText`, `Photo`, `Link`, `MainFile`, `CVFile`, `TravelFile`, `All`.
     Date type that decodes `YYYY-MM-DD` from YAML and JSON.
   - `Load(dir) (All, []ValidationError, error)`: exactly one of `<name>.yaml|.yml|.json` per
