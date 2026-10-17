@@ -156,7 +156,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
 
 ## Phase 4 — Containers and deployment
 
-- [ ] **B18 · Backend Dockerfile**
+- [x] **B18 · Backend Dockerfile**
   - Multi-stage per plan §9.1 (`ENTRYPOINT ["/api"]`, `CMD ["start"]`, `HEALTHCHECK`).
   - Depends on: B17
   - Done when: `docker build ./backend` succeeds; the image is < 30 MB; `docker run … validate` with the content mounted prints `content OK`.

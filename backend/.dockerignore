@@ -1,0 +1,11 @@
+# Only sources needed to build cmd/api go into the build context.
+Dockerfile
+.dockerignore
+.golangci.yml
+bin/
+*.exe
+*.test
+*.out
+**/*_test.go
+**/testdata/
+tools/
