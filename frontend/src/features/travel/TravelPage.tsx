@@ -1,4 +1,5 @@
 import { AnimatePresence } from 'motion/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTravel } from '../../api/queries';
 import type { Travel } from '../../api/types';
@@ -7,6 +8,7 @@ import { LoadingRegion, Skeleton } from '../../components/Skeleton';
 import { usePageTitle } from '../../lib/usePageTitle';
 import { DetailsPanel } from './DetailsPanel';
 import TravelMap from './map/TravelMap';
+import { PhotoGrid } from './PhotoGrid';
 import { StatsBar } from './StatsBar';
 import styles from './TravelPage.module.css';
 import { useSelection, type Selection } from './useSelection';
@@ -52,6 +54,8 @@ function TravelContent({
   onSelect: (s: Selection) => void;
 }) {
   const { t } = useTranslation();
+  // While the lightbox is open, its Esc closes the lightbox only, not the panel.
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   return (
     <>
       <StatsBar stats={travel.stats} />
@@ -71,6 +75,14 @@ function TravelContent({
               countries={travel.countries}
               places={travel.places}
               onSelect={onSelect}
+              escapeDisabled={lightboxOpen}
+              renderPhotos={(place) => (
+                <PhotoGrid
+                  key={place.id}
+                  photos={place.photos}
+                  onLightboxChange={setLightboxOpen}
+                />
+              )}
             />
           )}
         </AnimatePresence>

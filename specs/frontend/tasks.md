@@ -135,7 +135,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F12
   - Done when: tests: selecting a place renders all fields; `Esc` closes it and focus returns to the trigger; a country selection lists its places, and clicking one switches to place details.
 
-- [ ] **F15 · Photo grid and lightbox**
+- [x] **F15 · Photo grid and lightbox**
   - `PhotoGrid` (3/2 columns, first 9 + "Show all N", counter), `PhotoLightbox`
     (yet-another-react-lightbox with Captions + Counter, `preload: 1`, blurred thumb placeholder,
     error placeholder, starts at the clicked index, covers all photos).
