@@ -60,7 +60,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F03, F04
   - Done when: tests cover `navigator.language = 'ru-RU'` → `ru`; a stored choice wins; a toggle updates `<html>` and storage; a throwing `localStorage` doesn't crash.
 
-- [ ] **F06 · Routing, layout, page transitions**
+- [x] **F06 · Routing, layout, page transitions**
   - `routes.tsx` (`/` → `/main` replace, `/main`, `/cv`, lazy `/travel`, `*` → NotFound),
     `Layout` with `AnimatePresence`, `MotionConfig reducedMotion="user"`, per-page `document.title`.
   - Refs: FR-F03, FR-F07, US-01 AC3/AC4, US-04

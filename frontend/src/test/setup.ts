@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import { afterAll, afterEach, beforeAll } from 'vitest';
+import i18n from '../i18n';
 import { requests, server } from './server';
 
 beforeAll(() => {
@@ -15,6 +16,7 @@ afterEach(() => {
   localStorage.clear();
   document.documentElement.removeAttribute('data-theme');
   document.documentElement.lang = '';
+  void i18n.changeLanguage('en');
 });
 
 afterAll(() => {
