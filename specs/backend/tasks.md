@@ -102,7 +102,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B08, B09
   - Done when: integration tests pass: seed the valid fixture → row counts match; seed twice → same counts (idempotent); force an insert error mid-tx → the previous data is unchanged.
 
-- [ ] **B11 · Read queries**
+- [x] **B11 · Read queries**
   - `GetMain`, `ListLinks`, `GetCV` (experience, education, skills, languages), `ListPlaces`
     (with visits and photos, no N+1: 3 queries + in-memory join).
   - Depends on: B10
