@@ -34,7 +34,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B01
   - Done when: `go build ./...`, `go vet ./...` and `golangci-lint run` pass; `go run ./cmd/api foo` prints usage and exits 2.
 
-- [ ] **B03 · Config package** `[P]`
+- [x] **B03 · Config package** `[P]`
   - `internal/config`: `Load() (Config, error)` for `HTTP_ADDR`, `DATABASE_URL`, `CONTENT_DIR`,
     `CORS_ORIGINS`, `LOG_LEVEL` with the defaults from spec §4. `DATABASE_URL` is required only
     by the commands that use the DB (`validate` does not need it).
