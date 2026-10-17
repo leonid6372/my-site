@@ -161,7 +161,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B17
   - Done when: `docker build ./backend` succeeds; the image is < 30 MB; `docker run … validate` with the content mounted prints `content OK`.
 
-- [ ] **B19 · docker-compose.yml**
+- [x] **B19 · docker-compose.yml**
   - `db`, `api`, `web` per plan §9.2 (`web` is added by F18; until then, comment it out or use a placeholder).
   - Depends on: B18
   - Done when: `docker compose up -d --build db api` → `docker compose ps` shows both as healthy; `docker compose logs api` shows the seed succeeded.
