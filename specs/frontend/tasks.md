@@ -28,7 +28,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: B01
   - Done when: `npm run lint`, `typecheck`, `test` (one sample test) and `build` all pass.
 
-- [ ] **F02 · Design tokens and global styles** `[P]`
+- [x] **F02 · Design tokens and global styles** `[P]`
   - `styles/tokens.css` (spec §4.3, light + `[data-theme="dark"]`), `global.css` (reset,
     typography scale, focus-visible ring, reduced-motion block), `print.css`.
   - `@fontsource-variable/inter` (latin + cyrillic). Inline theme script in `index.html` (plan §4.2).
