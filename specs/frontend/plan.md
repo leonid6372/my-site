@@ -289,3 +289,4 @@ nginx forwards `Accept-Language` by default (all client headers are proxied).
 | Date       | Change |
 |------------|--------|
 | 2026-10-17 | Initial plan. |
+| 2026-10-17 | (F01) Actual versions: Vite 8, TypeScript 6, React Router 8 (declarative API unchanged), MSW 3 (`onUnhandledFrame` replaces `onUnhandledRequest`), Vitest 5. The Vite template now ships oxlint; replaced by ESLint as planned, pinned to ESLint 9 because `eslint-plugin-jsx-a11y` does not support ESLint 10 yet. Test fixtures are captured from the real API (placeholder content, contract-verified in B21). |

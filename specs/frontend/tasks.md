@@ -18,7 +18,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 0 — Project setup
 
-- [ ] **F01 · Scaffold**
+- [x] **F01 · Scaffold**
   - `npm create vite@latest frontend -- --template react-ts`; TS `strict`; ESLint flat config
     (typescript-eslint, react-hooks, jsx-a11y) + Prettier; npm scripts from plan §6.4;
     Vite proxy `/api → http://localhost:8080`.
