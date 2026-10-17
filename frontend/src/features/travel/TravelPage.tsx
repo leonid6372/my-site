@@ -4,6 +4,7 @@ import type { Travel } from '../../api/types';
 import { ErrorState } from '../../components/ErrorState';
 import { LoadingRegion, Skeleton } from '../../components/Skeleton';
 import { usePageTitle } from '../../lib/usePageTitle';
+import TravelMap from './map/TravelMap';
 import { StatsBar } from './StatsBar';
 import styles from './TravelPage.module.css';
 import { useSelection, type Selection } from './useSelection';
@@ -13,7 +14,7 @@ export default function TravelPage() {
   usePageTitle('travel');
   const { t } = useTranslation();
   const travel = useTravel();
-  const { selection } = useSelection(travel.data?.places);
+  const { selection, select } = useSelection(travel.data?.places);
 
   return (
     <div className={styles.page}>
@@ -28,7 +29,7 @@ export default function TravelPage() {
       ) : travel.isPending ? (
         <TravelSkeleton />
       ) : (
-        <TravelContent travel={travel.data} selection={selection} />
+        <TravelContent travel={travel.data} selection={selection} onSelect={select} />
       )}
     </div>
   );
@@ -39,15 +40,27 @@ function selectionKey(s: Selection): string {
   return s.type === 'place' ? `place:${s.id}` : `country:${s.iso2}`;
 }
 
-function TravelContent({ travel, selection }: { travel: Travel; selection: Selection }) {
+function TravelContent({
+  travel,
+  selection,
+  onSelect,
+}: {
+  travel: Travel;
+  selection: Selection;
+  onSelect: (s: Selection) => void;
+}) {
   const { t } = useTranslation();
   return (
     <>
       <StatsBar stats={travel.stats} />
       {travel.places.length === 0 && <p className={styles.empty}>{t('travel.noTrips')}</p>}
       <div className={styles.mapArea} data-selection={selectionKey(selection)}>
-        {/* The map is added in F13. */}
-        <div className={styles.map} role="region" aria-label={t('travel.mapLabel')} />
+        <TravelMap
+          countries={travel.countries}
+          places={travel.places}
+          selection={selection}
+          onSelect={onSelect}
+        />
       </div>
     </>
   );

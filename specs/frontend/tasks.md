@@ -117,7 +117,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F08
   - Done when: tests: stats show fixture numbers (count-up mocked); `?place=amsterdam` → selected; an unknown id → removed from the URL; 0 places → the empty note.
 
-- [ ] **F13 · World map**
+- [x] **F13 · World map**
   - `useWorldGeo` (TopoJSON as `?url` asset → `feature()`), `TravelMap` per plan §5.2: no tiles,
     visited/land fills from tokens (re-applied on theme change), hover tooltip + highlight,
     `CircleMarker` pins with tooltips, country click → `flyToBounds` + select, pin click →
