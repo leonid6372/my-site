@@ -75,7 +75,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F06
   - Done when: tests: the active link has `aria-current="page"`; the lang switch changes UI text; link targets/rels are correct per kind. Manually: everything is reachable by Tab, and the mobile menu works at 360 px.
 
-- [ ] **F08 · Shared components** `[P]`
+- [x] **F08 · Shared components** `[P]`
   - `Skeleton`, `ErrorState` (message + Retry → `refetch`), `Chip`, `RemoteImage` (plan §4.4).
   - Refs: FR-F11, FR-F14
   - Depends on: F02
