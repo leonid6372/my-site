@@ -68,7 +68,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B02
   - Done when: tests load `testdata/valid/` (YAML) and an equivalent JSON fixture into equal structs; unknown key → error with the file name; both `main.yaml` and `main.json` → "ambiguous source" error; missing file → error.
 
-- [ ] **B07 · Content validator**
+- [x] **B07 · Content validator**
   - `Validate(All) []ValidationError` implementing **every** rule of spec §6, with paths like
     `places[3].photos[2].url`. Email via `net/mail.ParseAddress`; country via `geo.Lookup`.
   - Refs: FR-B08, NFR-05
