@@ -89,7 +89,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 2 — Main page
 
-- [ ] **F10 · Main page**
+- [x] **F10 · Main page**
   - Hero (portrait `RemoteImage` `fetchPriority="high"`, name h1, headline, location), "Currently"
     badge, bio paragraphs, interests chips, `SocialLinks`, two CTA cards; section stagger;
     skeleton/error states; two-column ≥ 768 px.

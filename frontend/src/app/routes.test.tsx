@@ -21,19 +21,27 @@ function renderAt(path: string, lang: 'en' | 'ru' = 'en') {
 }
 
 describe('routes', () => {
+  // Pages are identified by their document.title ("<Page> — <Full name>").
+  const titleOf = (page: string) => `${page} — ${fixtures.main.en.fullName}`;
+
   it('redirects / to /main', async () => {
     renderAt('/');
     expect(await screen.findByTestId('path')).toHaveTextContent(/^\/main$/);
-    expect(await screen.findByRole('heading', { level: 1, name: 'About' })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(document.title).toBe(titleOf('About'));
+    });
   });
 
   it.each([
     ['/main', 'About'],
     ['/cv', 'CV'],
     ['/travel', 'Travel'],
-  ])('renders %s', async (path, heading) => {
+  ])('renders %s', async (path, page) => {
     renderAt(path);
-    expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(document.title).toBe(titleOf(page));
+    });
+    expect(await screen.findByRole('heading', { level: 1 })).toBeInTheDocument();
   });
 
   it.each(['/nope', '/main/extra', '/en/main', '/profile'])(

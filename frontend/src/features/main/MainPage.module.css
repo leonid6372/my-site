@@ -1,0 +1,173 @@
+/* DOM order is content first (h1 early for screen readers and keyboard users),
+   then the aside with the portrait and contacts. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+/* Mobile: the aside dissolves; the portrait moves to the top, contacts follow the content. */
+.side {
+  display: contents;
+}
+
+.portrait {
+  order: -1;
+  align-self: center;
+}
+
+/* ≥ 768 px: portrait + contacts on the left, text on the right (spec §5.1). */
+@media (min-width: 768px) {
+  .page {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .side {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-8));
+  }
+
+  .body {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .portrait {
+    order: 0;
+  }
+}
+
+.portrait {
+  width: min(240px, 60vw);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+
+.contacts {
+  width: 100%;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.headline {
+  font-size: var(--fs-lg);
+  color: var(--text);
+}
+
+.location {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted);
+}
+
+.currently {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.currentlyLabel {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+/* Small uppercase section labels keep the page calm while staying real headings. */
+.label {
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.bio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ctas {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 560px) {
+  .ctas {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    border-color var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.cardTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.cardArrow {
+  color: var(--accent);
+  transition: transform var(--duration-fast) ease;
+}
+
+.card:hover .cardArrow {
+  transform: translateX(3px);
+}
+
+.cardText {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
