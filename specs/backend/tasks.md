@@ -166,7 +166,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B18
   - Done when: `docker compose up -d --build db api` → `docker compose ps` shows both as healthy; `docker compose logs api` shows the seed succeeded.
 
-- [ ] **B20 · Smoke script and docs**
+- [x] **B20 · Smoke script and docs**
   - `scripts/smoke.sh`: wait for health, assert `/api/v1/main` EN and RU, `/api/v1/travel` has `stats`.
   - Root `README.md`: prerequisites, local dev, deploy to the VPS, the content update workflow
     (validate → restart, plan §9.3), the YAML field reference (link to spec §5).
