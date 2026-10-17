@@ -71,6 +71,24 @@ describe('PhotoGrid and lightbox', () => {
     });
   });
 
+  it('Esc still closes the lightbox when focus has drifted out of it', async () => {
+    const user = userEvent.setup();
+    renderTravel('/travel?place=amsterdam');
+    const aside = await screen.findByRole('complementary');
+    await user.click(within(aside).getByRole('button', { name: 'Open photo 2 of 30' }));
+    await screen.findByRole('dialog');
+
+    // Focus leaves the lightbox (e.g. Tab into the browser UI and back to <body>).
+    (document.activeElement as HTMLElement | null)?.blur();
+    expect(document.activeElement).toBe(document.body);
+
+    await user.keyboard('{Escape}');
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull();
+    });
+    expect(screen.getByRole('complementary')).toBeInTheDocument(); // only the lightbox closed
+  });
+
   it('shows no grid for a place without photos', async () => {
     renderTravel('/travel?place=rotterdam');
     const aside = await screen.findByRole('complementary');

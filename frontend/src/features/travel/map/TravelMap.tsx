@@ -138,6 +138,12 @@ function Countries({
       click: () => {
         onSelect({ type: 'country', iso2: country.iso2 });
       },
+      // The SVG path exists once the layer is on the map.
+      add: () => {
+        makeKeyboardButton(layer.getElement(), country.name, () => {
+          onSelect({ type: 'country', iso2: country.iso2 });
+        });
+      },
     });
   };
 
@@ -163,8 +169,18 @@ function Pin({
   onSelect: (s: Selection) => void;
 }) {
   const colors = useMapColors();
+  const marker = useRef<L.CircleMarker>(null);
+
+  // Keyboard and screen-reader access to the pin; re-run when the name changes (language).
+  useEffect(() => {
+    return makeKeyboardButton(marker.current?.getElement(), place.name, () => {
+      onSelect({ type: 'place', id: place.id });
+    });
+  }, [place.id, place.name, onSelect]);
+
   return (
     <CircleMarker
+      ref={marker}
       center={[place.lat, place.lng]}
       radius={selected ? 9 : 6}
       pathOptions={{
@@ -185,6 +201,29 @@ function Pin({
       </Tooltip>
     </CircleMarker>
   );
+}
+
+/**
+ * Clickable SVG paths are focusable, so give them what a button needs: a role, a
+ * name and Enter/Space activation (the list below the map remains the full
+ * alternative). Returns a cleanup function.
+ */
+function makeKeyboardButton(el: Element | undefined, name: string, activate: () => void) {
+  if (!el) return undefined;
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-label', name);
+  const onKey = (e: Event) => {
+    const key = (e as KeyboardEvent).key;
+    if (key === 'Enter' || key === ' ') {
+      e.preventDefault();
+      activate();
+    }
+  };
+  el.addEventListener('keydown', onKey);
+  return () => {
+    el.removeEventListener('keydown', onKey);
+  };
 }
 
 /** Initial fit and fly-to on selection changes (instant under reduced motion). */

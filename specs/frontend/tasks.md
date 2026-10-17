@@ -167,7 +167,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 6 — Verification
 
-- [ ] **F19 · Accessibility, responsive and performance pass**
+- [x] **F19 · Accessibility, responsive and performance pass**
   - Keyboard-only walkthrough, a screen-reader spot check (NVDA), axe DevTools on every page,
     widths 360 / 768 / 1440 / 1920, both themes, both languages, reduced motion, a Lighthouse
     mobile run (LCP < 2.5 s on Main/CV, map interactive < 4 s).
@@ -199,6 +199,52 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 | M-10 | Print preview of `/cv` is clean (no nav/toggles, URLs visible). |
 | M-11 | All pages: Tab order is logical, focus is visible, "Skip to content" works. |
 | M-12 | Reduced motion: no slide/fade transforms, no count-up. |
+
+## Verification results (F19, 2026-10-17)
+
+Run against the production stack (`docker compose up`, nginx on port 80) with scripted
+browser checks (Playwright driving Edge and Firefox), axe-core and Lighthouse.
+
+| ID | Result | How it was checked |
+|----|--------|--------------------|
+| M-01 | ✅ | Visited fill = accent at 55 %, others `--land`; theme toggle re-colours countries, pins and background without reload. |
+| M-02 | ✅ | 4 pins for 4 places; hovering a pin shows its name. |
+| M-03 | ✅ | Zoom buttons; the wheel scrolls the page until the map is clicked, then zooms; drag pans. |
+| M-04 | ✅ | Visited country click → selection + fly to its mainland bounds; a non-visited click does nothing. |
+| M-05 | ✅ | Pin click → `?place=` + fly-to (pin centred); reduced motion jumps with no intermediate positions. |
+| M-06 | ✅ | Initial view fits all pins; 0 places → whole world + "No trips yet". |
+| M-07 | ✅ | 360 px: bottom sheet ≤ 70 % height, inner scroll, close button. |
+| M-08 | ✅ | Lightbox: arrows, Esc, counter, captions; only the photo and its neighbours load; broken URL → placeholder. Swipe is provided by the library (not driven by the scripts). |
+| M-09 | ✅ | EN → RU switch on each page without reload; the choice survives a reload. |
+| M-10 | ✅ | Print emulation of `/cv`: no header/footer/toggles, black on white, contact and company URLs printed, email without `mailto:`. |
+| M-11 | ✅ | Logical Tab order with visible focus on every stop; skip link; map paths are named buttons (Enter opens details); lightbox traps focus; Esc order lightbox → panel → focus back on the trigger. |
+| M-12 | ✅ | Reduced motion: no transforms in page transitions, stats only ever show final values, map jumps. |
+
+- **axe-core** (WCAG 2.1 A/AA + best practices): Main, CV, Travel, Travel with panel, lightbox, 404,
+  in both themes and both languages (24 runs): **0 violations** of any impact.
+- **Responsive:** 5 pages × 360/768/1440/1920 px × 2 themes × 2 languages (80 combinations): no
+  horizontal scroll, no page errors.
+- **Browsers:** Edge (Chromium) for everything above; Firefox for the main flows at 360 and
+  1440 px (all pass). Safari was not available on this Windows machine.
+- **Screen reader:** no NVDA session was run. Accessible names, roles, landmarks and focus
+  order were checked through the accessibility tree and axe instead.
+
+**Lighthouse (mobile, 4× CPU slowdown, simulated):**
+
+| Profile | Page | Perf | A11y | BP | FCP | LCP | TBT | CLS | TTI |
+|---------|------|------|------|----|-----|-----|-----|-----|-----|
+| fast 4G (NFR-01: 9 Mbps, 60 ms) | /main | 80 | 100 | 100 | 0.7 s | **2.1 s** ✅ | 380 ms | 0 | 2.1 s |
+| | /cv | 87 | 100 | 100 | 0.7 s | **0.9 s** ✅ | 190 ms | 0.051 | 1.1 s |
+| | /travel | 70 | 100 | 100 | 0.9 s | 1.7 s | 830 ms | 0.002 | **2.1 s** ✅ |
+| slow 4G (Lighthouse default: 1.6 Mbps, 150 ms) | /main | 70 | 100 | 100 | 2.3 s | 4.9 s | 60 ms | 0 | 4.9 s |
+| | /cv | 94 | 100 | 100 | 2.3 s | 2.6 s | 50 ms | 0.051 | 2.7 s |
+| | /travel | 60 | 100 | 100 | 2.7 s | 3.4 s | 750 ms | 0.014 | 4.2 s |
+
+NFR-01 (fast 4G) is met. Under the harsher slow-4G default, /main's LCP is the portrait,
+which waits on HTML → main JS (188 KB, ~half unused at first load) → `/api/v1/main` → the
+image; the placeholder photo host also redirects once (picsum.photos → fastly). Possible
+follow-ups if needed: start the `/main` API request and preload the portrait from an inline
+script before the JS bundle runs, and trim the main bundle (e.g. Motion's `LazyMotion`).
 
 ## Dependency overview
 

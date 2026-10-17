@@ -1,5 +1,5 @@
 import { ImageOff } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Lightbox, { type Slide } from 'yet-another-react-lightbox';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
@@ -36,6 +36,22 @@ export function PhotoLightbox({
     height: photo.height ?? undefined,
     photo,
   }));
+
+  // The lightbox only hears keys while focus is inside it. If focus has drifted out
+  // (e.g. Tab past the last button into the browser UI and back to <body>), Esc must
+  // still close it; otherwise a keyboard user is stuck (the panel ignores Esc while
+  // the lightbox is open).
+  const open = index !== null;
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !document.activeElement?.closest('.yarl__portal')) onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open, onClose]);
 
   return (
     <Lightbox
