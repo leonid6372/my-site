@@ -1,0 +1,19 @@
+# secrets
+.env
+*.local
+
+# frontend
+node_modules/
+dist/
+coverage/
+
+# backend
+/backend/bin/
+*.test
+*.out
+
+# editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
