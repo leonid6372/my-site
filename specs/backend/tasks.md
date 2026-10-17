@@ -44,7 +44,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
 
 ## Phase 1 — Domain foundations (no DB)
 
-- [ ] **B04 · Country reference data** `[P]`
+- [x] **B04 · Country reference data** `[P]`
   - `tools/gencountries/main.go`: download/read `mledoze/countries` JSON → write
     `internal/geo/countries.json` with the continent mapping from plan §6. Commit the output.
   - `internal/geo`: `//go:embed`, `Lookup(iso2)`, `All()`.

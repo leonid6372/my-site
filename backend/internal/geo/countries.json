@@ -1,0 +1,2252 @@
+[
+  {
+    "iso2": "AD",
+    "isoNumeric": "020",
+    "continent": "europe",
+    "name": {
+      "en": "Andorra",
+      "ru": "Андорра"
+    }
+  },
+  {
+    "iso2": "AE",
+    "isoNumeric": "784",
+    "continent": "asia",
+    "name": {
+      "en": "United Arab Emirates",
+      "ru": "Объединённые Арабские Эмираты"
+    }
+  },
+  {
+    "iso2": "AF",
+    "isoNumeric": "004",
+    "continent": "asia",
+    "name": {
+      "en": "Afghanistan",
+      "ru": "Афганистан"
+    }
+  },
+  {
+    "iso2": "AG",
+    "isoNumeric": "028",
+    "continent": "north-america",
+    "name": {
+      "en": "Antigua and Barbuda",
+      "ru": "Антигуа и Барбуда"
+    }
+  },
+  {
+    "iso2": "AI",
+    "isoNumeric": "660",
+    "continent": "north-america",
+    "name": {
+      "en": "Anguilla",
+      "ru": "Ангилья"
+    }
+  },
+  {
+    "iso2": "AL",
+    "isoNumeric": "008",
+    "continent": "europe",
+    "name": {
+      "en": "Albania",
+      "ru": "Албания"
+    }
+  },
+  {
+    "iso2": "AM",
+    "isoNumeric": "051",
+    "continent": "asia",
+    "name": {
+      "en": "Armenia",
+      "ru": "Армения"
+    }
+  },
+  {
+    "iso2": "AO",
+    "isoNumeric": "024",
+    "continent": "africa",
+    "name": {
+      "en": "Angola",
+      "ru": "Ангола"
+    }
+  },
+  {
+    "iso2": "AQ",
+    "isoNumeric": "010",
+    "continent": "antarctica",
+    "name": {
+      "en": "Antarctica",
+      "ru": "Антарктида"
+    }
+  },
+  {
+    "iso2": "AR",
+    "isoNumeric": "032",
+    "continent": "south-america",
+    "name": {
+      "en": "Argentina",
+      "ru": "Аргентина"
+    }
+  },
+  {
+    "iso2": "AS",
+    "isoNumeric": "016",
+    "continent": "oceania",
+    "name": {
+      "en": "American Samoa",
+      "ru": "Американское Самоа"
+    }
+  },
+  {
+    "iso2": "AT",
+    "isoNumeric": "040",
+    "continent": "europe",
+    "name": {
+      "en": "Austria",
+      "ru": "Австрия"
+    }
+  },
+  {
+    "iso2": "AU",
+    "isoNumeric": "036",
+    "continent": "oceania",
+    "name": {
+      "en": "Australia",
+      "ru": "Австралия"
+    }
+  },
+  {
+    "iso2": "AW",
+    "isoNumeric": "533",
+    "continent": "north-america",
+    "name": {
+      "en": "Aruba",
+      "ru": "Аруба"
+    }
+  },
+  {
+    "iso2": "AX",
+    "isoNumeric": "248",
+    "continent": "europe",
+    "name": {
+      "en": "Åland Islands",
+      "ru": "Аландские острова"
+    }
+  },
+  {
+    "iso2": "AZ",
+    "isoNumeric": "031",
+    "continent": "asia",
+    "name": {
+      "en": "Azerbaijan",
+      "ru": "Азербайджан"
+    }
+  },
+  {
+    "iso2": "BA",
+    "isoNumeric": "070",
+    "continent": "europe",
+    "name": {
+      "en": "Bosnia and Herzegovina",
+      "ru": "Босния и Герцеговина"
+    }
+  },
+  {
+    "iso2": "BB",
+    "isoNumeric": "052",
+    "continent": "north-america",
+    "name": {
+      "en": "Barbados",
+      "ru": "Барбадос"
+    }
+  },
+  {
+    "iso2": "BD",
+    "isoNumeric": "050",
+    "continent": "asia",
+    "name": {
+      "en": "Bangladesh",
+      "ru": "Бангладеш"
+    }
+  },
+  {
+    "iso2": "BE",
+    "isoNumeric": "056",
+    "continent": "europe",
+    "name": {
+      "en": "Belgium",
+      "ru": "Бельгия"
+    }
+  },
+  {
+    "iso2": "BF",
+    "isoNumeric": "854",
+    "continent": "africa",
+    "name": {
+      "en": "Burkina Faso",
+      "ru": "Буркина-Фасо"
+    }
+  },
+  {
+    "iso2": "BG",
+    "isoNumeric": "100",
+    "continent": "europe",
+    "name": {
+      "en": "Bulgaria",
+      "ru": "Болгария"
+    }
+  },
+  {
+    "iso2": "BH",
+    "isoNumeric": "048",
+    "continent": "asia",
+    "name": {
+      "en": "Bahrain",
+      "ru": "Бахрейн"
+    }
+  },
+  {
+    "iso2": "BI",
+    "isoNumeric": "108",
+    "continent": "africa",
+    "name": {
+      "en": "Burundi",
+      "ru": "Бурунди"
+    }
+  },
+  {
+    "iso2": "BJ",
+    "isoNumeric": "204",
+    "continent": "africa",
+    "name": {
+      "en": "Benin",
+      "ru": "Бенин"
+    }
+  },
+  {
+    "iso2": "BL",
+    "isoNumeric": "652",
+    "continent": "north-america",
+    "name": {
+      "en": "Saint Barthélemy",
+      "ru": "Сен-Бартелеми"
+    }
+  },
+  {
+    "iso2": "BM",
+    "isoNumeric": "060",
+    "continent": "north-america",
+    "name": {
+      "en": "Bermuda",
+      "ru": "Бермудские Острова"
+    }
+  },
+  {
+    "iso2": "BN",
+    "isoNumeric": "096",
+    "continent": "asia",
+    "name": {
+      "en": "Brunei",
+      "ru": "Бруней"
+    }
+  },
+  {
+    "iso2": "BO",
+    "isoNumeric": "068",
+    "continent": "south-america",
+    "name": {
+      "en": "Bolivia",
+      "ru": "Боливия"
+    }
+  },
+  {
+    "iso2": "BQ",
+    "isoNumeric": "535",
+    "continent": "north-america",
+    "name": {
+      "en": "Caribbean Netherlands",
+      "ru": "Карибские Нидерланды"
+    }
+  },
+  {
+    "iso2": "BR",
+    "isoNumeric": "076",
+    "continent": "south-america",
+    "name": {
+      "en": "Brazil",
+      "ru": "Бразилия"
+    }
+  },
+  {
+    "iso2": "BS",
+    "isoNumeric": "044",
+    "continent": "north-america",
+    "name": {
+      "en": "Bahamas",
+      "ru": "Багамские Острова"
+    }
+  },
+  {
+    "iso2": "BT",
+    "isoNumeric": "064",
+    "continent": "asia",
+    "name": {
+      "en": "Bhutan",
+      "ru": "Бутан"
+    }
+  },
+  {
+    "iso2": "BV",
+    "isoNumeric": "074",
+    "continent": "antarctica",
+    "name": {
+      "en": "Bouvet Island",
+      "ru": "Остров Буве"
+    }
+  },
+  {
+    "iso2": "BW",
+    "isoNumeric": "072",
+    "continent": "africa",
+    "name": {
+      "en": "Botswana",
+      "ru": "Ботсвана"
+    }
+  },
+  {
+    "iso2": "BY",
+    "isoNumeric": "112",
+    "continent": "europe",
+    "name": {
+      "en": "Belarus",
+      "ru": "Беларусь"
+    }
+  },
+  {
+    "iso2": "BZ",
+    "isoNumeric": "084",
+    "continent": "north-america",
+    "name": {
+      "en": "Belize",
+      "ru": "Белиз"
+    }
+  },
+  {
+    "iso2": "CA",
+    "isoNumeric": "124",
+    "continent": "north-america",
+    "name": {
+      "en": "Canada",
+      "ru": "Канада"
+    }
+  },
+  {
+    "iso2": "CC",
+    "isoNumeric": "166",
+    "continent": "oceania",
+    "name": {
+      "en": "Cocos (Keeling) Islands",
+      "ru": "Кокосовые острова"
+    }
+  },
+  {
+    "iso2": "CD",
+    "isoNumeric": "180",
+    "continent": "africa",
+    "name": {
+      "en": "DR Congo",
+      "ru": "Демократическая Республика Конго"
+    }
+  },
+  {
+    "iso2": "CF",
+    "isoNumeric": "140",
+    "continent": "africa",
+    "name": {
+      "en": "Central African Republic",
+      "ru": "Центральноафриканская Республика"
+    }
+  },
+  {
+    "iso2": "CG",
+    "isoNumeric": "178",
+    "continent": "africa",
+    "name": {
+      "en": "Congo",
+      "ru": "Республика Конго"
+    }
+  },
+  {
+    "iso2": "CH",
+    "isoNumeric": "756",
+    "continent": "europe",
+    "name": {
+      "en": "Switzerland",
+      "ru": "Швейцария"
+    }
+  },
+  {
+    "iso2": "CI",
+    "isoNumeric": "384",
+    "continent": "africa",
+    "name": {
+      "en": "Ivory Coast",
+      "ru": "Кот-д’Ивуар"
+    }
+  },
+  {
+    "iso2": "CK",
+    "isoNumeric": "184",
+    "continent": "oceania",
+    "name": {
+      "en": "Cook Islands",
+      "ru": "Острова Кука"
+    }
+  },
+  {
+    "iso2": "CL",
+    "isoNumeric": "152",
+    "continent": "south-america",
+    "name": {
+      "en": "Chile",
+      "ru": "Чили"
+    }
+  },
+  {
+    "iso2": "CM",
+    "isoNumeric": "120",
+    "continent": "africa",
+    "name": {
+      "en": "Cameroon",
+      "ru": "Камерун"
+    }
+  },
+  {
+    "iso2": "CN",
+    "isoNumeric": "156",
+    "continent": "asia",
+    "name": {
+      "en": "China",
+      "ru": "Китай"
+    }
+  },
+  {
+    "iso2": "CO",
+    "isoNumeric": "170",
+    "continent": "south-america",
+    "name": {
+      "en": "Colombia",
+      "ru": "Колумбия"
+    }
+  },
+  {
+    "iso2": "CR",
+    "isoNumeric": "188",
+    "continent": "north-america",
+    "name": {
+      "en": "Costa Rica",
+      "ru": "Коста-Рика"
+    }
+  },
+  {
+    "iso2": "CU",
+    "isoNumeric": "192",
+    "continent": "north-america",
+    "name": {
+      "en": "Cuba",
+      "ru": "Куба"
+    }
+  },
+  {
+    "iso2": "CV",
+    "isoNumeric": "132",
+    "continent": "africa",
+    "name": {
+      "en": "Cape Verde",
+      "ru": "Кабо-Верде"
+    }
+  },
+  {
+    "iso2": "CW",
+    "isoNumeric": "531",
+    "continent": "north-america",
+    "name": {
+      "en": "Curaçao",
+      "ru": "Кюрасао"
+    }
+  },
+  {
+    "iso2": "CX",
+    "isoNumeric": "162",
+    "continent": "oceania",
+    "name": {
+      "en": "Christmas Island",
+      "ru": "Остров Рождества"
+    }
+  },
+  {
+    "iso2": "CY",
+    "isoNumeric": "196",
+    "continent": "europe",
+    "name": {
+      "en": "Cyprus",
+      "ru": "Кипр"
+    }
+  },
+  {
+    "iso2": "CZ",
+    "isoNumeric": "203",
+    "continent": "europe",
+    "name": {
+      "en": "Czechia",
+      "ru": "Чехия"
+    }
+  },
+  {
+    "iso2": "DE",
+    "isoNumeric": "276",
+    "continent": "europe",
+    "name": {
+      "en": "Germany",
+      "ru": "Германия"
+    }
+  },
+  {
+    "iso2": "DJ",
+    "isoNumeric": "262",
+    "continent": "africa",
+    "name": {
+      "en": "Djibouti",
+      "ru": "Джибути"
+    }
+  },
+  {
+    "iso2": "DK",
+    "isoNumeric": "208",
+    "continent": "europe",
+    "name": {
+      "en": "Denmark",
+      "ru": "Дания"
+    }
+  },
+  {
+    "iso2": "DM",
+    "isoNumeric": "212",
+    "continent": "north-america",
+    "name": {
+      "en": "Dominica",
+      "ru": "Доминика"
+    }
+  },
+  {
+    "iso2": "DO",
+    "isoNumeric": "214",
+    "continent": "north-america",
+    "name": {
+      "en": "Dominican Republic",
+      "ru": "Доминиканская Республика"
+    }
+  },
+  {
+    "iso2": "DZ",
+    "isoNumeric": "012",
+    "continent": "africa",
+    "name": {
+      "en": "Algeria",
+      "ru": "Алжир"
+    }
+  },
+  {
+    "iso2": "EC",
+    "isoNumeric": "218",
+    "continent": "south-america",
+    "name": {
+      "en": "Ecuador",
+      "ru": "Эквадор"
+    }
+  },
+  {
+    "iso2": "EE",
+    "isoNumeric": "233",
+    "continent": "europe",
+    "name": {
+      "en": "Estonia",
+      "ru": "Эстония"
+    }
+  },
+  {
+    "iso2": "EG",
+    "isoNumeric": "818",
+    "continent": "africa",
+    "name": {
+      "en": "Egypt",
+      "ru": "Египет"
+    }
+  },
+  {
+    "iso2": "EH",
+    "isoNumeric": "732",
+    "continent": "africa",
+    "name": {
+      "en": "Western Sahara",
+      "ru": "Западная Сахара"
+    }
+  },
+  {
+    "iso2": "ER",
+    "isoNumeric": "232",
+    "continent": "africa",
+    "name": {
+      "en": "Eritrea",
+      "ru": "Эритрея"
+    }
+  },
+  {
+    "iso2": "ES",
+    "isoNumeric": "724",
+    "continent": "europe",
+    "name": {
+      "en": "Spain",
+      "ru": "Испания"
+    }
+  },
+  {
+    "iso2": "ET",
+    "isoNumeric": "231",
+    "continent": "africa",
+    "name": {
+      "en": "Ethiopia",
+      "ru": "Эфиопия"
+    }
+  },
+  {
+    "iso2": "FI",
+    "isoNumeric": "246",
+    "continent": "europe",
+    "name": {
+      "en": "Finland",
+      "ru": "Финляндия"
+    }
+  },
+  {
+    "iso2": "FJ",
+    "isoNumeric": "242",
+    "continent": "oceania",
+    "name": {
+      "en": "Fiji",
+      "ru": "Фиджи"
+    }
+  },
+  {
+    "iso2": "FK",
+    "isoNumeric": "238",
+    "continent": "south-america",
+    "name": {
+      "en": "Falkland Islands",
+      "ru": "Фолклендские острова"
+    }
+  },
+  {
+    "iso2": "FM",
+    "isoNumeric": "583",
+    "continent": "oceania",
+    "name": {
+      "en": "Micronesia",
+      "ru": "Федеративные Штаты Микронезии"
+    }
+  },
+  {
+    "iso2": "FO",
+    "isoNumeric": "234",
+    "continent": "europe",
+    "name": {
+      "en": "Faroe Islands",
+      "ru": "Фарерские острова"
+    }
+  },
+  {
+    "iso2": "FR",
+    "isoNumeric": "250",
+    "continent": "europe",
+    "name": {
+      "en": "France",
+      "ru": "Франция"
+    }
+  },
+  {
+    "iso2": "GA",
+    "isoNumeric": "266",
+    "continent": "africa",
+    "name": {
+      "en": "Gabon",
+      "ru": "Габон"
+    }
+  },
+  {
+    "iso2": "GB",
+    "isoNumeric": "826",
+    "continent": "europe",
+    "name": {
+      "en": "United Kingdom",
+      "ru": "Великобритания"
+    }
+  },
+  {
+    "iso2": "GD",
+    "isoNumeric": "308",
+    "continent": "north-america",
+    "name": {
+      "en": "Grenada",
+      "ru": "Гренада"
+    }
+  },
+  {
+    "iso2": "GE",
+    "isoNumeric": "268",
+    "continent": "asia",
+    "name": {
+      "en": "Georgia",
+      "ru": "Грузия"
+    }
+  },
+  {
+    "iso2": "GF",
+    "isoNumeric": "254",
+    "continent": "south-america",
+    "name": {
+      "en": "French Guiana",
+      "ru": "Французская Гвиана"
+    }
+  },
+  {
+    "iso2": "GG",
+    "isoNumeric": "831",
+    "continent": "europe",
+    "name": {
+      "en": "Guernsey",
+      "ru": "Гернси"
+    }
+  },
+  {
+    "iso2": "GH",
+    "isoNumeric": "288",
+    "continent": "africa",
+    "name": {
+      "en": "Ghana",
+      "ru": "Гана"
+    }
+  },
+  {
+    "iso2": "GI",
+    "isoNumeric": "292",
+    "continent": "europe",
+    "name": {
+      "en": "Gibraltar",
+      "ru": "Гибралтар"
+    }
+  },
+  {
+    "iso2": "GL",
+    "isoNumeric": "304",
+    "continent": "north-america",
+    "name": {
+      "en": "Greenland",
+      "ru": "Гренландия"
+    }
+  },
+  {
+    "iso2": "GM",
+    "isoNumeric": "270",
+    "continent": "africa",
+    "name": {
+      "en": "Gambia",
+      "ru": "Гамбия"
+    }
+  },
+  {
+    "iso2": "GN",
+    "isoNumeric": "324",
+    "continent": "africa",
+    "name": {
+      "en": "Guinea",
+      "ru": "Гвинея"
+    }
+  },
+  {
+    "iso2": "GP",
+    "isoNumeric": "312",
+    "continent": "north-america",
+    "name": {
+      "en": "Guadeloupe",
+      "ru": "Гваделупа"
+    }
+  },
+  {
+    "iso2": "GQ",
+    "isoNumeric": "226",
+    "continent": "africa",
+    "name": {
+      "en": "Equatorial Guinea",
+      "ru": "Экваториальная Гвинея"
+    }
+  },
+  {
+    "iso2": "GR",
+    "isoNumeric": "300",
+    "continent": "europe",
+    "name": {
+      "en": "Greece",
+      "ru": "Греция"
+    }
+  },
+  {
+    "iso2": "GS",
+    "isoNumeric": "239",
+    "continent": "antarctica",
+    "name": {
+      "en": "South Georgia",
+      "ru": "Южная Георгия и Южные Сандвичевы острова"
+    }
+  },
+  {
+    "iso2": "GT",
+    "isoNumeric": "320",
+    "continent": "north-america",
+    "name": {
+      "en": "Guatemala",
+      "ru": "Гватемала"
+    }
+  },
+  {
+    "iso2": "GU",
+    "isoNumeric": "316",
+    "continent": "oceania",
+    "name": {
+      "en": "Guam",
+      "ru": "Гуам"
+    }
+  },
+  {
+    "iso2": "GW",
+    "isoNumeric": "624",
+    "continent": "africa",
+    "name": {
+      "en": "Guinea-Bissau",
+      "ru": "Гвинея-Бисау"
+    }
+  },
+  {
+    "iso2": "GY",
+    "isoNumeric": "328",
+    "continent": "south-america",
+    "name": {
+      "en": "Guyana",
+      "ru": "Гайана"
+    }
+  },
+  {
+    "iso2": "HK",
+    "isoNumeric": "344",
+    "continent": "asia",
+    "name": {
+      "en": "Hong Kong",
+      "ru": "Гонконг"
+    }
+  },
+  {
+    "iso2": "HM",
+    "isoNumeric": "334",
+    "continent": "antarctica",
+    "name": {
+      "en": "Heard Island and McDonald Islands",
+      "ru": "Остров Херд и острова Макдональд"
+    }
+  },
+  {
+    "iso2": "HN",
+    "isoNumeric": "340",
+    "continent": "north-america",
+    "name": {
+      "en": "Honduras",
+      "ru": "Гондурас"
+    }
+  },
+  {
+    "iso2": "HR",
+    "isoNumeric": "191",
+    "continent": "europe",
+    "name": {
+      "en": "Croatia",
+      "ru": "Хорватия"
+    }
+  },
+  {
+    "iso2": "HT",
+    "isoNumeric": "332",
+    "continent": "north-america",
+    "name": {
+      "en": "Haiti",
+      "ru": "Гаити"
+    }
+  },
+  {
+    "iso2": "HU",
+    "isoNumeric": "348",
+    "continent": "europe",
+    "name": {
+      "en": "Hungary",
+      "ru": "Венгрия"
+    }
+  },
+  {
+    "iso2": "ID",
+    "isoNumeric": "360",
+    "continent": "asia",
+    "name": {
+      "en": "Indonesia",
+      "ru": "Индонезия"
+    }
+  },
+  {
+    "iso2": "IE",
+    "isoNumeric": "372",
+    "continent": "europe",
+    "name": {
+      "en": "Ireland",
+      "ru": "Ирландия"
+    }
+  },
+  {
+    "iso2": "IL",
+    "isoNumeric": "376",
+    "continent": "asia",
+    "name": {
+      "en": "Israel",
+      "ru": "Израиль"
+    }
+  },
+  {
+    "iso2": "IM",
+    "isoNumeric": "833",
+    "continent": "europe",
+    "name": {
+      "en": "Isle of Man",
+      "ru": "Остров Мэн"
+    }
+  },
+  {
+    "iso2": "IN",
+    "isoNumeric": "356",
+    "continent": "asia",
+    "name": {
+      "en": "India",
+      "ru": "Индия"
+    }
+  },
+  {
+    "iso2": "IO",
+    "isoNumeric": "086",
+    "continent": "africa",
+    "name": {
+      "en": "British Indian Ocean Territory",
+      "ru": "Британская территория в Индийском океане"
+    }
+  },
+  {
+    "iso2": "IQ",
+    "isoNumeric": "368",
+    "continent": "asia",
+    "name": {
+      "en": "Iraq",
+      "ru": "Ирак"
+    }
+  },
+  {
+    "iso2": "IR",
+    "isoNumeric": "364",
+    "continent": "asia",
+    "name": {
+      "en": "Iran",
+      "ru": "Иран"
+    }
+  },
+  {
+    "iso2": "IS",
+    "isoNumeric": "352",
+    "continent": "europe",
+    "name": {
+      "en": "Iceland",
+      "ru": "Исландия"
+    }
+  },
+  {
+    "iso2": "IT",
+    "isoNumeric": "380",
+    "continent": "europe",
+    "name": {
+      "en": "Italy",
+      "ru": "Италия"
+    }
+  },
+  {
+    "iso2": "JE",
+    "isoNumeric": "832",
+    "continent": "europe",
+    "name": {
+      "en": "Jersey",
+      "ru": "Джерси"
+    }
+  },
+  {
+    "iso2": "JM",
+    "isoNumeric": "388",
+    "continent": "north-america",
+    "name": {
+      "en": "Jamaica",
+      "ru": "Ямайка"
+    }
+  },
+  {
+    "iso2": "JO",
+    "isoNumeric": "400",
+    "continent": "asia",
+    "name": {
+      "en": "Jordan",
+      "ru": "Иордания"
+    }
+  },
+  {
+    "iso2": "JP",
+    "isoNumeric": "392",
+    "continent": "asia",
+    "name": {
+      "en": "Japan",
+      "ru": "Япония"
+    }
+  },
+  {
+    "iso2": "KE",
+    "isoNumeric": "404",
+    "continent": "africa",
+    "name": {
+      "en": "Kenya",
+      "ru": "Кения"
+    }
+  },
+  {
+    "iso2": "KG",
+    "isoNumeric": "417",
+    "continent": "asia",
+    "name": {
+      "en": "Kyrgyzstan",
+      "ru": "Киргизия"
+    }
+  },
+  {
+    "iso2": "KH",
+    "isoNumeric": "116",
+    "continent": "asia",
+    "name": {
+      "en": "Cambodia",
+      "ru": "Камбоджа"
+    }
+  },
+  {
+    "iso2": "KI",
+    "isoNumeric": "296",
+    "continent": "oceania",
+    "name": {
+      "en": "Kiribati",
+      "ru": "Кирибати"
+    }
+  },
+  {
+    "iso2": "KM",
+    "isoNumeric": "174",
+    "continent": "africa",
+    "name": {
+      "en": "Comoros",
+      "ru": "Коморы"
+    }
+  },
+  {
+    "iso2": "KN",
+    "isoNumeric": "659",
+    "continent": "north-america",
+    "name": {
+      "en": "Saint Kitts and Nevis",
+      "ru": "Сент-Китс и Невис"
+    }
+  },
+  {
+    "iso2": "KP",
+    "isoNumeric": "408",
+    "continent": "asia",
+    "name": {
+      "en": "North Korea",
+      "ru": "Северная Корея"
+    }
+  },
+  {
+    "iso2": "KR",
+    "isoNumeric": "410",
+    "continent": "asia",
+    "name": {
+      "en": "South Korea",
+      "ru": "Южная Корея"
+    }
+  },
+  {
+    "iso2": "KW",
+    "isoNumeric": "414",
+    "continent": "asia",
+    "name": {
+      "en": "Kuwait",
+      "ru": "Кувейт"
+    }
+  },
+  {
+    "iso2": "KY",
+    "isoNumeric": "136",
+    "continent": "north-america",
+    "name": {
+      "en": "Cayman Islands",
+      "ru": "Каймановы острова"
+    }
+  },
+  {
+    "iso2": "KZ",
+    "isoNumeric": "398",
+    "continent": "asia",
+    "name": {
+      "en": "Kazakhstan",
+      "ru": "Казахстан"
+    }
+  },
+  {
+    "iso2": "LA",
+    "isoNumeric": "418",
+    "continent": "asia",
+    "name": {
+      "en": "Laos",
+      "ru": "Лаос"
+    }
+  },
+  {
+    "iso2": "LB",
+    "isoNumeric": "422",
+    "continent": "asia",
+    "name": {
+      "en": "Lebanon",
+      "ru": "Ливан"
+    }
+  },
+  {
+    "iso2": "LC",
+    "isoNumeric": "662",
+    "continent": "north-america",
+    "name": {
+      "en": "Saint Lucia",
+      "ru": "Сент-Люсия"
+    }
+  },
+  {
+    "iso2": "LI",
+    "isoNumeric": "438",
+    "continent": "europe",
+    "name": {
+      "en": "Liechtenstein",
+      "ru": "Лихтенштейн"
+    }
+  },
+  {
+    "iso2": "LK",
+    "isoNumeric": "144",
+    "continent": "asia",
+    "name": {
+      "en": "Sri Lanka",
+      "ru": "Шри-Ланка"
+    }
+  },
+  {
+    "iso2": "LR",
+    "isoNumeric": "430",
+    "continent": "africa",
+    "name": {
+      "en": "Liberia",
+      "ru": "Либерия"
+    }
+  },
+  {
+    "iso2": "LS",
+    "isoNumeric": "426",
+    "continent": "africa",
+    "name": {
+      "en": "Lesotho",
+      "ru": "Лесото"
+    }
+  },
+  {
+    "iso2": "LT",
+    "isoNumeric": "440",
+    "continent": "europe",
+    "name": {
+      "en": "Lithuania",
+      "ru": "Литва"
+    }
+  },
+  {
+    "iso2": "LU",
+    "isoNumeric": "442",
+    "continent": "europe",
+    "name": {
+      "en": "Luxembourg",
+      "ru": "Люксембург"
+    }
+  },
+  {
+    "iso2": "LV",
+    "isoNumeric": "428",
+    "continent": "europe",
+    "name": {
+      "en": "Latvia",
+      "ru": "Латвия"
+    }
+  },
+  {
+    "iso2": "LY",
+    "isoNumeric": "434",
+    "continent": "africa",
+    "name": {
+      "en": "Libya",
+      "ru": "Ливия"
+    }
+  },
+  {
+    "iso2": "MA",
+    "isoNumeric": "504",
+    "continent": "africa",
+    "name": {
+      "en": "Morocco",
+      "ru": "Марокко"
+    }
+  },
+  {
+    "iso2": "MC",
+    "isoNumeric": "492",
+    "continent": "europe",
+    "name": {
+      "en": "Monaco",
+      "ru": "Монако"
+    }
+  },
+  {
+    "iso2": "MD",
+    "isoNumeric": "498",
+    "continent": "europe",
+    "name": {
+      "en": "Moldova",
+      "ru": "Молдавия"
+    }
+  },
+  {
+    "iso2": "ME",
+    "isoNumeric": "499",
+    "continent": "europe",
+    "name": {
+      "en": "Montenegro",
+      "ru": "Черногория"
+    }
+  },
+  {
+    "iso2": "MF",
+    "isoNumeric": "663",
+    "continent": "north-america",
+    "name": {
+      "en": "Saint Martin",
+      "ru": "Сен-Мартен"
+    }
+  },
+  {
+    "iso2": "MG",
+    "isoNumeric": "450",
+    "continent": "africa",
+    "name": {
+      "en": "Madagascar",
+      "ru": "Мадагаскар"
+    }
+  },
+  {
+    "iso2": "MH",
+    "isoNumeric": "584",
+    "continent": "oceania",
+    "name": {
+      "en": "Marshall Islands",
+      "ru": "Маршалловы Острова"
+    }
+  },
+  {
+    "iso2": "MK",
+    "isoNumeric": "807",
+    "continent": "europe",
+    "name": {
+      "en": "North Macedonia",
+      "ru": "Северная Македония"
+    }
+  },
+  {
+    "iso2": "ML",
+    "isoNumeric": "466",
+    "continent": "africa",
+    "name": {
+      "en": "Mali",
+      "ru": "Мали"
+    }
+  },
+  {
+    "iso2": "MM",
+    "isoNumeric": "104",
+    "continent": "asia",
+    "name": {
+      "en": "Myanmar",
+      "ru": "Мьянма"
+    }
+  },
+  {
+    "iso2": "MN",
+    "isoNumeric": "496",
+    "continent": "asia",
+    "name": {
+      "en": "Mongolia",
+      "ru": "Монголия"
+    }
+  },
+  {
+    "iso2": "MO",
+    "isoNumeric": "446",
+    "continent": "asia",
+    "name": {
+      "en": "Macau",
+      "ru": "Макао"
+    }
+  },
+  {
+    "iso2": "MP",
+    "isoNumeric": "580",
+    "continent": "oceania",
+    "name": {
+      "en": "Northern Mariana Islands",
+      "ru": "Северные Марианские острова"
+    }
+  },
+  {
+    "iso2": "MQ",
+    "isoNumeric": "474",
+    "continent": "north-america",
+    "name": {
+      "en": "Martinique",
+      "ru": "Мартиника"
+    }
+  },
+  {
+    "iso2": "MR",
+    "isoNumeric": "478",
+    "continent": "africa",
+    "name": {
+      "en": "Mauritania",
+      "ru": "Мавритания"
+    }
+  },
+  {
+    "iso2": "MS",
+    "isoNumeric": "500",
+    "continent": "north-america",
+    "name": {
+      "en": "Montserrat",
+      "ru": "Монтсеррат"
+    }
+  },
+  {
+    "iso2": "MT",
+    "isoNumeric": "470",
+    "continent": "europe",
+    "name": {
+      "en": "Malta",
+      "ru": "Мальта"
+    }
+  },
+  {
+    "iso2": "MU",
+    "isoNumeric": "480",
+    "continent": "africa",
+    "name": {
+      "en": "Mauritius",
+      "ru": "Маврикий"
+    }
+  },
+  {
+    "iso2": "MV",
+    "isoNumeric": "462",
+    "continent": "asia",
+    "name": {
+      "en": "Maldives",
+      "ru": "Мальдивы"
+    }
+  },
+  {
+    "iso2": "MW",
+    "isoNumeric": "454",
+    "continent": "africa",
+    "name": {
+      "en": "Malawi",
+      "ru": "Малави"
+    }
+  },
+  {
+    "iso2": "MX",
+    "isoNumeric": "484",
+    "continent": "north-america",
+    "name": {
+      "en": "Mexico",
+      "ru": "Мексика"
+    }
+  },
+  {
+    "iso2": "MY",
+    "isoNumeric": "458",
+    "continent": "asia",
+    "name": {
+      "en": "Malaysia",
+      "ru": "Малайзия"
+    }
+  },
+  {
+    "iso2": "MZ",
+    "isoNumeric": "508",
+    "continent": "africa",
+    "name": {
+      "en": "Mozambique",
+      "ru": "Мозамбик"
+    }
+  },
+  {
+    "iso2": "NA",
+    "isoNumeric": "516",
+    "continent": "africa",
+    "name": {
+      "en": "Namibia",
+      "ru": "Намибия"
+    }
+  },
+  {
+    "iso2": "NC",
+    "isoNumeric": "540",
+    "continent": "oceania",
+    "name": {
+      "en": "New Caledonia",
+      "ru": "Новая Каледония"
+    }
+  },
+  {
+    "iso2": "NE",
+    "isoNumeric": "562",
+    "continent": "africa",
+    "name": {
+      "en": "Niger",
+      "ru": "Нигер"
+    }
+  },
+  {
+    "iso2": "NF",
+    "isoNumeric": "574",
+    "continent": "oceania",
+    "name": {
+      "en": "Norfolk Island",
+      "ru": "Норфолк"
+    }
+  },
+  {
+    "iso2": "NG",
+    "isoNumeric": "566",
+    "continent": "africa",
+    "name": {
+      "en": "Nigeria",
+      "ru": "Нигерия"
+    }
+  },
+  {
+    "iso2": "NI",
+    "isoNumeric": "558",
+    "continent": "north-america",
+    "name": {
+      "en": "Nicaragua",
+      "ru": "Никарагуа"
+    }
+  },
+  {
+    "iso2": "NL",
+    "isoNumeric": "528",
+    "continent": "europe",
+    "name": {
+      "en": "Netherlands",
+      "ru": "Нидерланды"
+    }
+  },
+  {
+    "iso2": "NO",
+    "isoNumeric": "578",
+    "continent": "europe",
+    "name": {
+      "en": "Norway",
+      "ru": "Норвегия"
+    }
+  },
+  {
+    "iso2": "NP",
+    "isoNumeric": "524",
+    "continent": "asia",
+    "name": {
+      "en": "Nepal",
+      "ru": "Непал"
+    }
+  },
+  {
+    "iso2": "NR",
+    "isoNumeric": "520",
+    "continent": "oceania",
+    "name": {
+      "en": "Nauru",
+      "ru": "Науру"
+    }
+  },
+  {
+    "iso2": "NU",
+    "isoNumeric": "570",
+    "continent": "oceania",
+    "name": {
+      "en": "Niue",
+      "ru": "Ниуэ"
+    }
+  },
+  {
+    "iso2": "NZ",
+    "isoNumeric": "554",
+    "continent": "oceania",
+    "name": {
+      "en": "New Zealand",
+      "ru": "Новая Зеландия"
+    }
+  },
+  {
+    "iso2": "OM",
+    "isoNumeric": "512",
+    "continent": "asia",
+    "name": {
+      "en": "Oman",
+      "ru": "Оман"
+    }
+  },
+  {
+    "iso2": "PA",
+    "isoNumeric": "591",
+    "continent": "north-america",
+    "name": {
+      "en": "Panama",
+      "ru": "Панама"
+    }
+  },
+  {
+    "iso2": "PE",
+    "isoNumeric": "604",
+    "continent": "south-america",
+    "name": {
+      "en": "Peru",
+      "ru": "Перу"
+    }
+  },
+  {
+    "iso2": "PF",
+    "isoNumeric": "258",
+    "continent": "oceania",
+    "name": {
+      "en": "French Polynesia",
+      "ru": "Французская Полинезия"
+    }
+  },
+  {
+    "iso2": "PG",
+    "isoNumeric": "598",
+    "continent": "oceania",
+    "name": {
+      "en": "Papua New Guinea",
+      "ru": "Папуа — Новая Гвинея"
+    }
+  },
+  {
+    "iso2": "PH",
+    "isoNumeric": "608",
+    "continent": "asia",
+    "name": {
+      "en": "Philippines",
+      "ru": "Филиппины"
+    }
+  },
+  {
+    "iso2": "PK",
+    "isoNumeric": "586",
+    "continent": "asia",
+    "name": {
+      "en": "Pakistan",
+      "ru": "Пакистан"
+    }
+  },
+  {
+    "iso2": "PL",
+    "isoNumeric": "616",
+    "continent": "europe",
+    "name": {
+      "en": "Poland",
+      "ru": "Польша"
+    }
+  },
+  {
+    "iso2": "PM",
+    "isoNumeric": "666",
+    "continent": "north-america",
+    "name": {
+      "en": "Saint Pierre and Miquelon",
+      "ru": "Сен-Пьер и Микелон"
+    }
+  },
+  {
+    "iso2": "PN",
+    "isoNumeric": "612",
+    "continent": "oceania",
+    "name": {
+      "en": "Pitcairn Islands",
+      "ru": "Острова Питкэрн"
+    }
+  },
+  {
+    "iso2": "PR",
+    "isoNumeric": "630",
+    "continent": "north-america",
+    "name": {
+      "en": "Puerto Rico",
+      "ru": "Пуэрто-Рико"
+    }
+  },
+  {
+    "iso2": "PS",
+    "isoNumeric": "275",
+    "continent": "asia",
+    "name": {
+      "en": "Palestine",
+      "ru": "Палестина"
+    }
+  },
+  {
+    "iso2": "PT",
+    "isoNumeric": "620",
+    "continent": "europe",
+    "name": {
+      "en": "Portugal",
+      "ru": "Португалия"
+    }
+  },
+  {
+    "iso2": "PW",
+    "isoNumeric": "585",
+    "continent": "oceania",
+    "name": {
+      "en": "Palau",
+      "ru": "Палау"
+    }
+  },
+  {
+    "iso2": "PY",
+    "isoNumeric": "600",
+    "continent": "south-america",
+    "name": {
+      "en": "Paraguay",
+      "ru": "Парагвай"
+    }
+  },
+  {
+    "iso2": "QA",
+    "isoNumeric": "634",
+    "continent": "asia",
+    "name": {
+      "en": "Qatar",
+      "ru": "Катар"
+    }
+  },
+  {
+    "iso2": "RE",
+    "isoNumeric": "638",
+    "continent": "africa",
+    "name": {
+      "en": "Réunion",
+      "ru": "Реюньон"
+    }
+  },
+  {
+    "iso2": "RO",
+    "isoNumeric": "642",
+    "continent": "europe",
+    "name": {
+      "en": "Romania",
+      "ru": "Румыния"
+    }
+  },
+  {
+    "iso2": "RS",
+    "isoNumeric": "688",
+    "continent": "europe",
+    "name": {
+      "en": "Serbia",
+      "ru": "Сербия"
+    }
+  },
+  {
+    "iso2": "RU",
+    "isoNumeric": "643",
+    "continent": "europe",
+    "name": {
+      "en": "Russia",
+      "ru": "Россия"
+    }
+  },
+  {
+    "iso2": "RW",
+    "isoNumeric": "646",
+    "continent": "africa",
+    "name": {
+      "en": "Rwanda",
+      "ru": "Руанда"
+    }
+  },
+  {
+    "iso2": "SA",
+    "isoNumeric": "682",
+    "continent": "asia",
+    "name": {
+      "en": "Saudi Arabia",
+      "ru": "Саудовская Аравия"
+    }
+  },
+  {
+    "iso2": "SB",
+    "isoNumeric": "090",
+    "continent": "oceania",
+    "name": {
+      "en": "Solomon Islands",
+      "ru": "Соломоновы Острова"
+    }
+  },
+  {
+    "iso2": "SC",
+    "isoNumeric": "690",
+    "continent": "africa",
+    "name": {
+      "en": "Seychelles",
+      "ru": "Сейшельские Острова"
+    }
+  },
+  {
+    "iso2": "SD",
+    "isoNumeric": "729",
+    "continent": "africa",
+    "name": {
+      "en": "Sudan",
+      "ru": "Судан"
+    }
+  },
+  {
+    "iso2": "SE",
+    "isoNumeric": "752",
+    "continent": "europe",
+    "name": {
+      "en": "Sweden",
+      "ru": "Швеция"
+    }
+  },
+  {
+    "iso2": "SG",
+    "isoNumeric": "702",
+    "continent": "asia",
+    "name": {
+      "en": "Singapore",
+      "ru": "Сингапур"
+    }
+  },
+  {
+    "iso2": "SH",
+    "isoNumeric": "654",
+    "continent": "africa",
+    "name": {
+      "en": "Saint Helena, Ascension and Tristan da Cunha",
+      "ru": "Острова Святой Елены, Вознесения и Тристан-да-Кунья"
+    }
+  },
+  {
+    "iso2": "SI",
+    "isoNumeric": "705",
+    "continent": "europe",
+    "name": {
+      "en": "Slovenia",
+      "ru": "Словения"
+    }
+  },
+  {
+    "iso2": "SJ",
+    "isoNumeric": "744",
+    "continent": "europe",
+    "name": {
+      "en": "Svalbard and Jan Mayen",
+      "ru": "Шпицберген и Ян-Майен"
+    }
+  },
+  {
+    "iso2": "SK",
+    "isoNumeric": "703",
+    "continent": "europe",
+    "name": {
+      "en": "Slovakia",
+      "ru": "Словакия"
+    }
+  },
+  {
+    "iso2": "SL",
+    "isoNumeric": "694",
+    "continent": "africa",
+    "name": {
+      "en": "Sierra Leone",
+      "ru": "Сьерра-Леоне"
+    }
+  },
+  {
+    "iso2": "SM",
+    "isoNumeric": "674",
+    "continent": "europe",
+    "name": {
+      "en": "San Marino",
+      "ru": "Сан-Марино"
+    }
+  },
+  {
+    "iso2": "SN",
+    "isoNumeric": "686",
+    "continent": "africa",
+    "name": {
+      "en": "Senegal",
+      "ru": "Сенегал"
+    }
+  },
+  {
+    "iso2": "SO",
+    "isoNumeric": "706",
+    "continent": "africa",
+    "name": {
+      "en": "Somalia",
+      "ru": "Сомали"
+    }
+  },
+  {
+    "iso2": "SR",
+    "isoNumeric": "740",
+    "continent": "south-america",
+    "name": {
+      "en": "Suriname",
+      "ru": "Суринам"
+    }
+  },
+  {
+    "iso2": "SS",
+    "isoNumeric": "728",
+    "continent": "africa",
+    "name": {
+      "en": "South Sudan",
+      "ru": "Южный Судан"
+    }
+  },
+  {
+    "iso2": "ST",
+    "isoNumeric": "678",
+    "continent": "africa",
+    "name": {
+      "en": "São Tomé and Príncipe",
+      "ru": "Сан-Томе и Принсипи"
+    }
+  },
+  {
+    "iso2": "SV",
+    "isoNumeric": "222",
+    "continent": "north-america",
+    "name": {
+      "en": "El Salvador",
+      "ru": "Сальвадор"
+    }
+  },
+  {
+    "iso2": "SX",
+    "isoNumeric": "534",
+    "continent": "north-america",
+    "name": {
+      "en": "Sint Maarten",
+      "ru": "Синт-Мартен"
+    }
+  },
+  {
+    "iso2": "SY",
+    "isoNumeric": "760",
+    "continent": "asia",
+    "name": {
+      "en": "Syria",
+      "ru": "Сирия"
+    }
+  },
+  {
+    "iso2": "SZ",
+    "isoNumeric": "748",
+    "continent": "africa",
+    "name": {
+      "en": "Eswatini",
+      "ru": "Свазиленд"
+    }
+  },
+  {
+    "iso2": "TC",
+    "isoNumeric": "796",
+    "continent": "north-america",
+    "name": {
+      "en": "Turks and Caicos Islands",
+      "ru": "Теркс и Кайкос"
+    }
+  },
+  {
+    "iso2": "TD",
+    "isoNumeric": "148",
+    "continent": "africa",
+    "name": {
+      "en": "Chad",
+      "ru": "Чад"
+    }
+  },
+  {
+    "iso2": "TF",
+    "isoNumeric": "260",
+    "continent": "antarctica",
+    "name": {
+      "en": "French Southern and Antarctic Lands",
+      "ru": "Французские Южные и Антарктические территории"
+    }
+  },
+  {
+    "iso2": "TG",
+    "isoNumeric": "768",
+    "continent": "africa",
+    "name": {
+      "en": "Togo",
+      "ru": "Того"
+    }
+  },
+  {
+    "iso2": "TH",
+    "isoNumeric": "764",
+    "continent": "asia",
+    "name": {
+      "en": "Thailand",
+      "ru": "Таиланд"
+    }
+  },
+  {
+    "iso2": "TJ",
+    "isoNumeric": "762",
+    "continent": "asia",
+    "name": {
+      "en": "Tajikistan",
+      "ru": "Таджикистан"
+    }
+  },
+  {
+    "iso2": "TK",
+    "isoNumeric": "772",
+    "continent": "oceania",
+    "name": {
+      "en": "Tokelau",
+      "ru": "Токелау"
+    }
+  },
+  {
+    "iso2": "TL",
+    "isoNumeric": "626",
+    "continent": "asia",
+    "name": {
+      "en": "Timor-Leste",
+      "ru": "Восточный Тимор"
+    }
+  },
+  {
+    "iso2": "TM",
+    "isoNumeric": "795",
+    "continent": "asia",
+    "name": {
+      "en": "Turkmenistan",
+      "ru": "Туркмения"
+    }
+  },
+  {
+    "iso2": "TN",
+    "isoNumeric": "788",
+    "continent": "africa",
+    "name": {
+      "en": "Tunisia",
+      "ru": "Тунис"
+    }
+  },
+  {
+    "iso2": "TO",
+    "isoNumeric": "776",
+    "continent": "oceania",
+    "name": {
+      "en": "Tonga",
+      "ru": "Тонга"
+    }
+  },
+  {
+    "iso2": "TR",
+    "isoNumeric": "792",
+    "continent": "asia",
+    "name": {
+      "en": "Türkiye",
+      "ru": "Турция"
+    }
+  },
+  {
+    "iso2": "TT",
+    "isoNumeric": "780",
+    "continent": "north-america",
+    "name": {
+      "en": "Trinidad and Tobago",
+      "ru": "Тринидад и Тобаго"
+    }
+  },
+  {
+    "iso2": "TV",
+    "isoNumeric": "798",
+    "continent": "oceania",
+    "name": {
+      "en": "Tuvalu",
+      "ru": "Тувалу"
+    }
+  },
+  {
+    "iso2": "TW",
+    "isoNumeric": "158",
+    "continent": "asia",
+    "name": {
+      "en": "Taiwan",
+      "ru": "Тайвань"
+    }
+  },
+  {
+    "iso2": "TZ",
+    "isoNumeric": "834",
+    "continent": "africa",
+    "name": {
+      "en": "Tanzania",
+      "ru": "Танзания"
+    }
+  },
+  {
+    "iso2": "UA",
+    "isoNumeric": "804",
+    "continent": "europe",
+    "name": {
+      "en": "Ukraine",
+      "ru": "Украина"
+    }
+  },
+  {
+    "iso2": "UG",
+    "isoNumeric": "800",
+    "continent": "africa",
+    "name": {
+      "en": "Uganda",
+      "ru": "Уганда"
+    }
+  },
+  {
+    "iso2": "UM",
+    "isoNumeric": "581",
+    "continent": "north-america",
+    "name": {
+      "en": "United States Minor Outlying Islands",
+      "ru": "Внешние малые острова США"
+    }
+  },
+  {
+    "iso2": "US",
+    "isoNumeric": "840",
+    "continent": "north-america",
+    "name": {
+      "en": "United States",
+      "ru": "Соединённые Штаты Америки"
+    }
+  },
+  {
+    "iso2": "UY",
+    "isoNumeric": "858",
+    "continent": "south-america",
+    "name": {
+      "en": "Uruguay",
+      "ru": "Уругвай"
+    }
+  },
+  {
+    "iso2": "UZ",
+    "isoNumeric": "860",
+    "continent": "asia",
+    "name": {
+      "en": "Uzbekistan",
+      "ru": "Узбекистан"
+    }
+  },
+  {
+    "iso2": "VA",
+    "isoNumeric": "336",
+    "continent": "europe",
+    "name": {
+      "en": "Vatican City",
+      "ru": "Ватикан"
+    }
+  },
+  {
+    "iso2": "VC",
+    "isoNumeric": "670",
+    "continent": "north-america",
+    "name": {
+      "en": "Saint Vincent and the Grenadines",
+      "ru": "Сент-Винсент и Гренадины"
+    }
+  },
+  {
+    "iso2": "VE",
+    "isoNumeric": "862",
+    "continent": "south-america",
+    "name": {
+      "en": "Venezuela",
+      "ru": "Венесуэла"
+    }
+  },
+  {
+    "iso2": "VG",
+    "isoNumeric": "092",
+    "continent": "north-america",
+    "name": {
+      "en": "British Virgin Islands",
+      "ru": "Британские Виргинские острова"
+    }
+  },
+  {
+    "iso2": "VI",
+    "isoNumeric": "850",
+    "continent": "north-america",
+    "name": {
+      "en": "United States Virgin Islands",
+      "ru": "Виргинские Острова"
+    }
+  },
+  {
+    "iso2": "VN",
+    "isoNumeric": "704",
+    "continent": "asia",
+    "name": {
+      "en": "Vietnam",
+      "ru": "Вьетнам"
+    }
+  },
+  {
+    "iso2": "VU",
+    "isoNumeric": "548",
+    "continent": "oceania",
+    "name": {
+      "en": "Vanuatu",
+      "ru": "Вануату"
+    }
+  },
+  {
+    "iso2": "WF",
+    "isoNumeric": "876",
+    "continent": "oceania",
+    "name": {
+      "en": "Wallis and Futuna",
+      "ru": "Уоллис и Футуна"
+    }
+  },
+  {
+    "iso2": "WS",
+    "isoNumeric": "882",
+    "continent": "oceania",
+    "name": {
+      "en": "Samoa",
+      "ru": "Самоа"
+    }
+  },
+  {
+    "iso2": "XK",
+    "isoNumeric": "",
+    "continent": "europe",
+    "name": {
+      "en": "Kosovo",
+      "ru": "Республика Косово"
+    }
+  },
+  {
+    "iso2": "YE",
+    "isoNumeric": "887",
+    "continent": "asia",
+    "name": {
+      "en": "Yemen",
+      "ru": "Йемен"
+    }
+  },
+  {
+    "iso2": "YT",
+    "isoNumeric": "175",
+    "continent": "africa",
+    "name": {
+      "en": "Mayotte",
+      "ru": "Майотта"
+    }
+  },
+  {
+    "iso2": "ZA",
+    "isoNumeric": "710",
+    "continent": "africa",
+    "name": {
+      "en": "South Africa",
+      "ru": "Южно-Африканская Республика"
+    }
+  },
+  {
+    "iso2": "ZM",
+    "isoNumeric": "894",
+    "continent": "africa",
+    "name": {
+      "en": "Zambia",
+      "ru": "Замбия"
+    }
+  },
+  {
+    "iso2": "ZW",
+    "isoNumeric": "716",
+    "continent": "africa",
+    "name": {
+      "en": "Zimbabwe",
+      "ru": "Зимбабве"
+    }
+  }
+]
