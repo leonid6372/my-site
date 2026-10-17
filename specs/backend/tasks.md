@@ -119,7 +119,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B11
   - Done when: golden tests `main.{en,ru}.json`, `cv.{en,ru}.json` match (`-update` flag regenerates them); a key-by-key check shows the shapes equal the contract examples.
 
-- [ ] **B13 · Service: Travel DTO and stats** `[P]`
+- [x] **B13 · Service: Travel DTO and stats** `[P]`
   - Countries (from `geo`, localised name, sorted by localised name, `placeIds`), places sorted by
     latest visit desc, visits sorted desc, story with `\n\n`, stats incl. `worldPercent` rounding.
   - Refs: FR-B04, US-21

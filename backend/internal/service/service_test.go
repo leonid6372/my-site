@@ -91,6 +91,12 @@ func TestGolden(t *testing.T) {
 			t.Fatal(err)
 		}
 		checkGolden(t, "cv."+string(lang)+".json", marshal(t, cv))
+
+		tr, err := svc.Travel(ctx, lang)
+		if err != nil {
+			t.Fatal(err)
+		}
+		checkGolden(t, "travel."+string(lang)+".json", marshal(t, tr))
 	}
 }
 
@@ -176,6 +182,10 @@ func TestShapesMatchContract(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	tr, err := svc.Travel(ctx, i18n.EN)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	for _, tc := range []struct {
 		heading string
@@ -183,6 +193,7 @@ func TestShapesMatchContract(t *testing.T) {
 	}{
 		{"### 2.2", m},
 		{"### 2.3", cv},
+		{"### 2.4", tr},
 	} {
 		var got any
 		if err := json.Unmarshal(marshal(t, tc.dto), &got); err != nil {
@@ -310,5 +321,8 @@ func TestStoreErrorsPropagate(t *testing.T) {
 	}
 	if _, err := svc.CV(context.Background(), i18n.EN); !errors.Is(err, want) {
 		t.Errorf("CV err = %v", err)
+	}
+	if _, err := svc.Travel(context.Background(), i18n.EN); !errors.Is(err, want) {
+		t.Errorf("Travel err = %v", err)
 	}
 }
