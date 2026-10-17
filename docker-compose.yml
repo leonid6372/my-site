@@ -26,12 +26,12 @@ services:
     restart: unless-stopped
     # Health comes from the image's HEALTHCHECK (/api healthcheck).
 
-  # web is added by frontend task F18 (nginx serving the SPA and proxying /api to api:8080).
-  # web:
-  #   build: ./frontend
-  #   ports: ["80:80"]
-  #   depends_on: { api: { condition: service_healthy } }
-  #   restart: unless-stopped
+  # nginx: serves the SPA and proxies /api to api:8080. The only published port.
+  web:
+    build: ./frontend
+    ports: ["80:80"]
+    depends_on: { api: { condition: service_healthy } }
+    restart: unless-stopped
 
 volumes:
   pgdata:

@@ -158,7 +158,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F11, F15, F16, B17
   - Done when: all three pages work with the real API in EN and RU; the network tab shows `Accept-Language` on every API call and no `lang` params.
 
-- [ ] **F18 · Dockerfile, nginx, compose**
+- [x] **F18 · Dockerfile, nginx, compose**
   - `frontend/Dockerfile` and `nginx.conf` (plan §6.2–6.3); enable the `web` service in
     `docker-compose.yml`.
   - Refs: NFR-06
