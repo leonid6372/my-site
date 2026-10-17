@@ -143,7 +143,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F14
   - Done when: tests: 30-photo fixture → 9 tiles + "Show all 30 photos" → 30 tiles; clicking tile 3 opens the lightbox at 3/30; `→` → 4/30; `Esc` closes the lightbox but **not** the panel; 0 photos → no grid.
 
-- [ ] **F16 · Place list** `[P]`
+- [x] **F16 · Place list** `[P]`
   - `PlaceList`: grouped by country (SVG flag via `country-flag-icons`, localised name, count) →
     place buttons (name + latest visit year); selecting one scrolls the map into view.
   - Refs: US-24

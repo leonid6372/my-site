@@ -38,9 +38,13 @@ describe('routes', () => {
     ['/travel', 'Travel'],
   ])('renders %s', async (path, page) => {
     renderAt(path);
-    await waitFor(() => {
-      expect(document.title).toBe(titleOf(page));
-    });
+    // /travel is a lazy chunk: its first dynamic import can be slow under a full test run.
+    await waitFor(
+      () => {
+        expect(document.title).toBe(titleOf(page));
+      },
+      { timeout: 5000 },
+    );
     expect(await screen.findByRole('heading', { level: 1 })).toBeInTheDocument();
   });
 

@@ -44,7 +44,8 @@ export function DetailsPanel({
 
   const key = selection.type === 'place' ? `p:${selection.id}` : `c:${selection.iso2}`;
   useEffect(() => {
-    heading.current?.focus();
+    // preventScroll: the page itself scrolls the map into view (list selections).
+    heading.current?.focus({ preventScroll: true });
   }, [key]);
 
   const close = () => {

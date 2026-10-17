@@ -1,5 +1,5 @@
-import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTravel } from '../../api/queries';
 import type { Travel } from '../../api/types';
@@ -9,6 +9,7 @@ import { usePageTitle } from '../../lib/usePageTitle';
 import { DetailsPanel } from './DetailsPanel';
 import TravelMap from './map/TravelMap';
 import { PhotoGrid } from './PhotoGrid';
+import { PlaceList } from './PlaceList';
 import { StatsBar } from './StatsBar';
 import styles from './TravelPage.module.css';
 import { useSelection, type Selection } from './useSelection';
@@ -54,13 +55,22 @@ function TravelContent({
   onSelect: (s: Selection) => void;
 }) {
   const { t } = useTranslation();
+  const reduced = useReducedMotion() ?? false;
   // While the lightbox is open, its Esc closes the lightbox only, not the panel.
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const mapArea = useRef<HTMLDivElement>(null);
+
+  // Choosing a place in the list selects it and brings the map into view (US-24).
+  const selectFromList = (s: Selection) => {
+    onSelect(s);
+    mapArea.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+  };
+
   return (
     <>
       <StatsBar stats={travel.stats} />
       {travel.places.length === 0 && <p className={styles.empty}>{t('travel.noTrips')}</p>}
-      <div className={styles.mapArea} data-selection={selectionKey(selection)}>
+      <div ref={mapArea} className={styles.mapArea} data-selection={selectionKey(selection)}>
         <TravelMap
           countries={travel.countries}
           places={travel.places}
@@ -87,6 +97,12 @@ function TravelContent({
           )}
         </AnimatePresence>
       </div>
+      <PlaceList
+        countries={travel.countries}
+        places={travel.places}
+        selection={selection}
+        onSelect={selectFromList}
+      />
     </>
   );
 }
