@@ -52,7 +52,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B02
   - Done when: tests show `NL → 528, europe, "Нидерланды"`; `BR → south-america`; `MX → north-america`; `AQ → antarctica`; unknown `XX` → `false`; the file has ≥ 240 entries.
 
-- [ ] **B05 · Language negotiation** `[P]`
+- [x] **B05 · Language negotiation** `[P]`
   - `internal/i18n`: `Lang`, `Negotiate(header) Lang` (plan §4.2), `Middleware` (puts the lang
     in the context, sets `Content-Language` + `Vary: Accept-Language`), `FromContext`.
   - Refs: FR-B05, contract §1.1
