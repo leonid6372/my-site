@@ -94,7 +94,7 @@ export function Header() {
           aria-label={name ? t('header.home', { name }) : undefined}
           onClick={closeMenu}
         >
-          {name ?? ' '}
+          {name ?? <>&nbsp;</>}
         </Link>
 
         <nav

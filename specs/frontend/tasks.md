@@ -81,7 +81,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F02
   - Done when: RemoteImage tests cover thumb vs. full `src`, the `thumbUrl` null fallback, `aspect-ratio` set only with width/height, `error` event → placeholder, the alt chain, `referrerPolicy`; an ErrorState test shows Retry calls the handler.
 
-- [ ] **F09 · Date helpers** `[P]`
+- [x] **F09 · Date helpers** `[P]`
   - `lib/dates.ts`: `formatPeriod`, `formatDuration`, `formatVisit` (plan §4.5).
   - Refs: US-30 AC2
   - Depends on: F04
