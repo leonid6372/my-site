@@ -19,14 +19,14 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
 
 ## Phase 0 — Repository and project setup
 
-- [ ] **B01 · Repo scaffolding**
+- [x] **B01 · Repo scaffolding**
   - Add a root `.gitignore` (`.env`, `node_modules/`, `dist/`, `*.local`, coverage),
     `.gitattributes` (`* text=auto eol=lf`, so the shell scripts and YAML work in Linux containers),
     and `.env.example` (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`).
   - Depends on: —
   - Done when: `git status` is clean after copying `.env.example` to `.env`; `.env` is ignored.
 
-- [ ] **B02 · Go module and CLI skeleton**
+- [x] **B02 · Go module and CLI skeleton**
   - `backend/go.mod` (module `github.com/leonid6372/my-site/backend`, pinned `go`/`toolchain`).
   - `cmd/api/main.go`: dispatch on `os.Args[1]` → `serve | seed | validate | migrate | start | healthcheck`;
     unknown/missing → usage + exit 2. Stubs return "not implemented".

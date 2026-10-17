@@ -9,6 +9,7 @@ coverage/
 
 # backend
 /backend/bin/
+*.exe
 *.test
 *.out
 
