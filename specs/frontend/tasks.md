@@ -38,7 +38,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 1 — Core infrastructure
 
-- [ ] **F03 · API types, client, queries** `[P]`
+- [x] **F03 · API types, client, queries** `[P]`
   - `api/types.ts` (copy of contract §3), `client.ts` (`apiGet` with `Accept-Language`, `ApiError`),
     `queries.ts` (`useMain`, `useCv`, `useTravel` keyed by `[name, lang]`, `keepPreviousData`).
   - Refs: FR-F05, US-02 AC5
