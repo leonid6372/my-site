@@ -7,15 +7,20 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
+	"net"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/leonid6372/my-site/backend/internal/config"
 	"github.com/leonid6372/my-site/backend/internal/content"
+	"github.com/leonid6372/my-site/backend/internal/httpapi"
+	"github.com/leonid6372/my-site/backend/internal/service"
 	"github.com/leonid6372/my-site/backend/internal/store"
 )
-
-// errNotImplemented is returned by subcommands that are not built yet.
-var errNotImplemented = errors.New("not implemented")
 
 type command struct {
 	name  string
@@ -114,6 +119,7 @@ func runSeed(_ []string) error {
 	if err != nil {
 		return err
 	}
+	setupLogger(cfg.LogLevel)
 	ctx := context.Background()
 	s, err := openMigrated(ctx, cfg)
 	if err != nil {
@@ -149,11 +155,129 @@ func seed(ctx context.Context, s *store.Store, dir string) error {
 	if err := s.ReplaceAll(ctx, all); err != nil {
 		return err
 	}
-	fmt.Printf("seeded: %d links, %d jobs, %d places\n",
-		len(all.Main.Links), len(all.CV.Experience), len(all.Travel.Places))
+	slog.Info("content seeded", "links", len(all.Main.Links), "jobs", len(all.CV.Experience),
+		"places", len(all.Travel.Places))
 	return nil
 }
 
-func runServe(_ []string) error       { return errNotImplemented }
-func runStart(_ []string) error       { return errNotImplemented }
-func runHealthcheck(_ []string) error { return errNotImplemented }
+func runServe(_ []string) error { return serveCommand(false) }
+func runStart(_ []string) error { return serveCommand(true) }
+
+// serveCommand migrates (and seeds, for start) and then serves until
+// SIGINT/SIGTERM. The server never starts if the seed fails.
+func serveCommand(withSeed bool) error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+	log := setupLogger(cfg.LogLevel)
+
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	s, err := openMigrated(ctx, cfg)
+	if err != nil {
+		return err
+	}
+	defer s.Close()
+	if withSeed {
+		if err := seed(ctx, s, cfg.ContentDir); err != nil {
+			return err
+		}
+	}
+
+	handler := httpapi.New(httpapi.Options{
+		Cache:       service.NewCache(service.New(s)),
+		DB:          s,
+		Log:         log,
+		CORSOrigins: cfg.CORSOrigins,
+	})
+	ln, err := net.Listen("tcp", cfg.HTTPAddr)
+	if err != nil {
+		return err
+	}
+	log.Info("listening", "addr", ln.Addr().String(), "cors_origins", cfg.CORSOrigins)
+	return serveHTTP(ctx, ln, handler, log)
+}
+
+// setupLogger installs a JSON slog logger on stdout as the default.
+func setupLogger(level slog.Level) *slog.Logger {
+	log := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: level}))
+	slog.SetDefault(log)
+	return log
+}
+
+// Server timeouts (spec §9).
+const (
+	readTimeout     = 5 * time.Second
+	writeTimeout    = 10 * time.Second
+	idleTimeout     = 60 * time.Second
+	shutdownTimeout = 10 * time.Second
+)
+
+// serveHTTP serves on ln until ctx is cancelled, then shuts down gracefully,
+// waiting up to 10 s for in-flight requests.
+func serveHTTP(ctx context.Context, ln net.Listener, h http.Handler, log *slog.Logger) error {
+	srv := &http.Server{
+		Handler:           h,
+		ReadTimeout:       readTimeout,
+		ReadHeaderTimeout: readTimeout,
+		WriteTimeout:      writeTimeout,
+		IdleTimeout:       idleTimeout,
+		ErrorLog:          slog.NewLogLogger(log.Handler(), slog.LevelWarn),
+	}
+	errc := make(chan error, 1)
+	go func() { errc <- srv.Serve(ln) }()
+
+	select {
+	case err := <-errc:
+		return err
+	case <-ctx.Done():
+	}
+	log.Info("shutting down")
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
+	defer cancel()
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		return fmt.Errorf("shutdown: %w", err)
+	}
+	if err := <-errc; !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+	log.Info("stopped")
+	return nil
+}
+
+func runHealthcheck(_ []string) error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+	return healthcheck(healthURL(cfg.HTTPAddr))
+}
+
+// healthURL turns a listen address into the local health URL, e.g.
+// ":8080" or "0.0.0.0:8080" → "http://127.0.0.1:8080/api/v1/health".
+func healthURL(addr string) string {
+	host, port, err := net.SplitHostPort(addr)
+	if err != nil {
+		host, port = "", "8080"
+	}
+	if host == "" || host == "0.0.0.0" || host == "::" {
+		host = "127.0.0.1"
+	}
+	return "http://" + net.JoinHostPort(host, port) + "/api/v1/health"
+}
+
+// healthcheck returns nil if url answers 200 within 2 s.
+func healthcheck(url string) error {
+	client := &http.Client{Timeout: 2 * time.Second}
+	resp, err := client.Get(url) //nolint:gosec // local URL built from our own config
+	if err != nil {
+		return err
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unhealthy: %s", resp.Status)
+	}
+	return nil
+}

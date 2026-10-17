@@ -146,7 +146,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B14, B15
   - Done when: `httptest` tests for each endpoint × {no header, `en`, `ru`, `ru-RU,ru;q=0.9`, `de`} check the status, `Content-Language`, `Vary`, `ETag`, body language; 304 on a matching ETag; 404; 405 on `POST`.
 
-- [ ] **B17 · `serve`, `start`, `healthcheck`, health endpoint**
+- [x] **B17 · `serve`, `start`, `healthcheck`, health endpoint**
   - `/api/v1/health`: DB ping with 1 s timeout → 200 `{status:ok,db:ok}` / 503 `{status:degraded,db:down}`.
   - `serve`: migrate → HTTP server with the timeouts from spec §9 → graceful shutdown on SIGTERM/SIGINT (10 s).
   - `start`: seed → serve (the server doesn't start if the seed fails). `healthcheck`: GET local health, exit 0/1.
