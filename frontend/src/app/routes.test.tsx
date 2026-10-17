@@ -13,7 +13,8 @@ function CurrentPath() {
 function renderAt(path: string, lang: 'en' | 'ru' = 'en') {
   return renderWithQuery(
     <MemoryRouter initialEntries={[path]}>
-      <AppRoutes footer={<CurrentPath />} />
+      <AppRoutes />
+      <CurrentPath />
     </MemoryRouter>,
     { lang },
   );

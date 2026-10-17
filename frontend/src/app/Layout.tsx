@@ -1,16 +1,20 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useOutlet } from 'react-router';
-import { pageVariants } from '../lib/motion';
+import { Footer } from '../components/Footer';
+import { Header } from '../components/Header';
+import { SkipLink } from '../components/SkipLink';
+import { usePageVariants } from '../lib/motion';
 import styles from './Layout.module.css';
 
 /**
- * App shell: header, the animated page outlet and the footer. The outgoing page fades
- * out before the incoming one fades in (AnimatePresence mode="wait", spec §7).
+ * App shell (FR-F01): skip link, header, the animated page outlet and the footer.
+ * The outgoing page fades out before the incoming one fades in (spec §7).
  */
-export function Layout({ header, footer }: { header?: ReactNode; footer?: ReactNode }) {
+export function Layout() {
   const location = useLocation();
   const outlet = useOutlet();
+  const pageVariants = usePageVariants();
 
   // A new page starts at the top (query-only changes like ?place= keep the scroll).
   useEffect(() => {
@@ -19,7 +23,8 @@ export function Layout({ header, footer }: { header?: ReactNode; footer?: ReactN
 
   return (
     <div className={styles.shell}>
-      {header}
+      <SkipLink />
+      <Header />
       <main id="content" tabIndex={-1} className={styles.main}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -33,7 +38,7 @@ export function Layout({ header, footer }: { header?: ReactNode; footer?: ReactN
           </motion.div>
         </AnimatePresence>
       </main>
-      {footer}
+      <Footer />
     </div>
   );
 }

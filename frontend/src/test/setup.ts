@@ -4,6 +4,10 @@ import { afterAll, afterEach, beforeAll } from 'vitest';
 import i18n from '../i18n';
 import { requests, server } from './server';
 
+// jsdom does not implement layout APIs.
+Element.prototype.scrollIntoView = function scrollIntoView() {};
+window.scrollTo = () => {};
+
 beforeAll(() => {
   // MSW 3 name for v2's onUnhandledRequest: any request without a handler fails the test.
   server.listen({ onUnhandledFrame: 'error' });

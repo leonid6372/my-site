@@ -67,7 +67,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Depends on: F05
   - Done when: routing tests pass (`/` → `/main`, unknown → 404 with a link to `/main`); manually, page transitions animate and are off with reduced motion.
 
-- [ ] **F07 · Header, footer, navigation**
+- [x] **F07 · Header, footer, navigation**
   - `SkipLink`, `Header` (name → `/main`, `Nav` with `aria-current`, `LangSwitch` with
     `aria-pressed`, `ThemeToggle` with `aria-label`), a mobile menu < 640 px, `Footer`,
     `SocialLinks` + brand SVG icons (email = lucide `Mail`; `mailto:` same tab, others `_blank` + `rel`).
