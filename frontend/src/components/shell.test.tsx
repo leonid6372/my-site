@@ -52,7 +52,9 @@ describe('header navigation', () => {
     renderApp('/main');
     const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     await user.click(within(nav).getByRole('link', { name: 'CV' }));
-    expect(await screen.findByRole('heading', { level: 1, name: 'CV' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Experience' }),
+    ).toBeInTheDocument();
   });
 });
 

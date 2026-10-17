@@ -99,7 +99,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Phase 3 — CV page
 
-- [ ] **F11 · CV page**
+- [x] **F11 · CV page**
   - Header (from `useMain`), summary, experience (period + duration, company link if `companyUrl`,
     highlights), education, skills chips, languages; section order per spec §5.3; print styles
     (URLs printed, plain email address).
