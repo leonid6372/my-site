@@ -94,7 +94,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B03
   - Done when: `api migrate` against the dev DB creates all 9 tables; running it twice is a no-op; an integration test (`-tags=integration`, testcontainers) asserts the tables exist.
 
-- [ ] **B10 · `ReplaceAll` + `api seed`**
+- [x] **B10 · `ReplaceAll` + `api seed`**
   - `ReplaceAll(ctx, content.All)`: one tx → `TRUNCATE … RESTART IDENTITY CASCADE` → batch
     inserts (`LText` ↔ JSONB via `Value/Scan`; `sort_order` from list position).
   - `api seed` = migrate → load → validate → ReplaceAll; exit 1 on any error.

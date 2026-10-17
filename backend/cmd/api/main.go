@@ -99,23 +99,61 @@ func runMigrate(_ []string) error {
 	if err != nil {
 		return err
 	}
-	if err := cfg.RequireDatabase(); err != nil {
-		return err
-	}
 	ctx := context.Background()
-	s, err := store.Open(ctx, cfg.DatabaseURL)
+	s, err := openMigrated(ctx, cfg)
 	if err != nil {
 		return err
 	}
-	defer s.Close()
-	if err := s.Migrate(ctx); err != nil {
-		return err
-	}
+	s.Close()
 	fmt.Println("migrations OK")
 	return nil
 }
 
+func runSeed(_ []string) error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+	ctx := context.Background()
+	s, err := openMigrated(ctx, cfg)
+	if err != nil {
+		return err
+	}
+	defer s.Close()
+	return seed(ctx, s, cfg.ContentDir)
+}
+
+// openMigrated connects to the database and applies pending migrations.
+func openMigrated(ctx context.Context, cfg config.Config) (*store.Store, error) {
+	if err := cfg.RequireDatabase(); err != nil {
+		return nil, err
+	}
+	s, err := store.Open(ctx, cfg.DatabaseURL)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.Migrate(ctx); err != nil {
+		s.Close()
+		return nil, err
+	}
+	return s, nil
+}
+
+// seed loads and validates content/ and replaces all database content.
+// Nothing is written unless the content is valid.
+func seed(ctx context.Context, s *store.Store, dir string) error {
+	all, err := loadContent(dir, os.Stderr)
+	if err != nil {
+		return err
+	}
+	if err := s.ReplaceAll(ctx, all); err != nil {
+		return err
+	}
+	fmt.Printf("seeded: %d links, %d jobs, %d places\n",
+		len(all.Main.Links), len(all.CV.Experience), len(all.Travel.Places))
+	return nil
+}
+
 func runServe(_ []string) error       { return errNotImplemented }
-func runSeed(_ []string) error        { return errNotImplemented }
 func runStart(_ []string) error       { return errNotImplemented }
 func runHealthcheck(_ []string) error { return errNotImplemented }
