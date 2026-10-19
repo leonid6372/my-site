@@ -108,8 +108,16 @@ a.company:hover {
   color: var(--muted);
 }
 
+.project + .project {
+  margin-top: var(--space-2);
+}
+
 .description {
   margin-top: var(--space-3);
+}
+
+.project .description {
+  font-weight: 600;
 }
 
 .highlights {

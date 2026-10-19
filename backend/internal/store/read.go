@@ -64,7 +64,7 @@ func (s *Store) GetCV(ctx context.Context) (content.CVFile, error) {
 	}
 
 	rows, _ := s.pool.Query(ctx, `SELECT id, position, company, company_url, location,
-		start_date, end_date, description, highlights
+		start_date, end_date, projects
 		FROM cv_experience ORDER BY start_date DESC, id`)
 	cv.Experience, err = pgx.CollectRows(rows, func(r pgx.CollectableRow) (content.Experience, error) {
 		var (
@@ -73,9 +73,9 @@ func (s *Store) GetCV(ctx context.Context) (content.CVFile, error) {
 			start, end *time.Time
 		)
 		err := r.Scan(&e.ID, &e.Position, &e.Company, &companyURL, &e.Location,
-			&start, &end, &e.Description, &e.Highlights)
+			&start, &end, &e.Projects)
 		e.CompanyURL, e.StartDate, e.EndDate = deref(companyURL), toDate(start), toDate(end)
-		e.Highlights = nilIfEmpty(e.Highlights)
+		e.Projects = nilIfEmpty(e.Projects)
 		return e, err
 	})
 	if err != nil {

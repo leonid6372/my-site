@@ -79,10 +79,10 @@ func queueMain(b *pgx.Batch, m content.MainFile, summary content.LText) {
 func queueCV(b *pgx.Batch, cv content.CVFile) {
 	for _, e := range cv.Experience {
 		b.Queue(`INSERT INTO cv_experience (id, position, company, company_url, location,
-			start_date, end_date, description, highlights)
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+			start_date, end_date, projects)
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
 			e.ID, e.Position, e.Company, nullString(e.CompanyURL), e.Location,
-			date(e.StartDate), date(e.EndDate), e.Description, nonNil(e.Highlights))
+			date(e.StartDate), date(e.EndDate), nonNil(e.Projects))
 	}
 	for _, e := range cv.Education {
 		b.Queue(`INSERT INTO cv_education (id, institution, degree, field, start_date, end_date, description)

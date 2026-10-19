@@ -1,7 +1,7 @@
 {
   "main": {
     "fullName": {
-      "en": "Leonid Solovev",
+      "en": "Leonid Solovyev",
       "ru": "Леонид Соловьёв"
     },
     "headline": {
@@ -94,14 +94,30 @@
         },
         "startDate": "2021-05-01",
         "endDate": null,
-        "description": {
-          "en": "Backend platform team.",
-          "ru": "Команда бэкенд-платформы."
-        },
-        "highlights": [
+        "projects": [
           {
-            "en": "Cut API latency by 30%",
-            "ru": "Снизил задержку API на 30%"
+            "description": {
+              "en": "Backend platform team.",
+              "ru": "Команда бэкенд-платформы."
+            },
+            "highlights": [
+              {
+                "en": "Cut API latency by 30%",
+                "ru": "Снизил задержку API на 30%"
+              }
+            ]
+          },
+          {
+            "description": {
+              "en": "Payments service.",
+              "ru": "Платёжный сервис."
+            },
+            "highlights": [
+              {
+                "en": "Moved payouts to PostgreSQL 16",
+                "ru": "Перевёл выплаты на PostgreSQL 16"
+              }
+            ]
           }
         ]
       },

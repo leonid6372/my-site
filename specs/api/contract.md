@@ -89,7 +89,7 @@ Accept-Language: en
 `200 OK` (`Content-Language: en`)
 ```json
 {
-  "fullName": "Leonid Solovev",
+  "fullName": "Leonid Solovyev",
   "headline": "Software Engineer",
   "location": "Amsterdam, Netherlands",
   "currently": "Building a personal website with spec-driven development",
@@ -139,8 +139,12 @@ Everything on the CV page except the header (the header comes from `/main`).
       "location": "Amsterdam, Netherlands",
       "startDate": "2021-05-01",
       "endDate": null,
-      "description": "Short description of the role.",
-      "highlights": ["Did X which improved Y by 30%", "Led Z"]
+      "projects": [
+        {
+          "description": "Short description of one project or area of the role.",
+          "highlights": ["Did X which improved Y by 30%", "Led Z"]
+        }
+      ]
     }
   ],
   "education": [
@@ -168,6 +172,7 @@ Everything on the CV page except the header (the header comes from `/main`).
 - `experience` and `education` are sorted by `startDate` descending.
 - `skills` and `languages` keep the order defined in the content files.
 - Optional fields (`companyUrl`, `description`) are `null` when absent, never omitted.
+- `projects` keeps the order stored in the database; a job without projects has `[]`.
 
 ---
 
@@ -261,8 +266,9 @@ export interface MainInfo {
 
 export interface Experience {
   id: string; position: string; company: string; companyUrl: string | null; location: string;
-  startDate: string; endDate: string | null; description: string | null; highlights: string[];
+  startDate: string; endDate: string | null; projects: Project[];
 }
+export interface Project { description: string | null; highlights: string[]; }
 export interface Education {
   id: string; institution: string; degree: string; field: string;
   startDate: string; endDate: string | null; description: string | null;

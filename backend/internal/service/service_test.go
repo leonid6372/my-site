@@ -206,7 +206,10 @@ func TestShapesMatchContract(t *testing.T) {
 
 func TestOptionalFieldsAreNullNotOmitted(t *testing.T) {
 	svc := New(&fakeStore{all: content.All{CV: content.CVFile{
-		Experience: []content.Experience{{ID: "x", StartDate: &content.Date{}}},
+		Experience: []content.Experience{
+			{ID: "x", StartDate: &content.Date{}},
+			{ID: "z", StartDate: &content.Date{}, Projects: []content.Project{{}}},
+		},
 		Education:  []content.Education{{ID: "y", StartDate: &content.Date{}}},
 	}}})
 	cv, err := svc.CV(context.Background(), i18n.EN)
@@ -214,7 +217,7 @@ func TestOptionalFieldsAreNullNotOmitted(t *testing.T) {
 		t.Fatal(err)
 	}
 	b := string(marshal(t, cv))
-	for _, want := range []string{`"companyUrl": null`, `"endDate": null`, `"description": null`, `"highlights": []`} {
+	for _, want := range []string{`"companyUrl": null`, `"endDate": null`, `"description": null`, `"highlights": []`, `"projects": []`} {
 		if !strings.Contains(b, want) {
 			t.Errorf("CV JSON lacks %s:\n%s", want, b)
 		}

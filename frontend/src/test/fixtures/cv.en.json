@@ -9,8 +9,10 @@
       "location": "Amsterdam, Netherlands",
       "startDate": "2021-05-01",
       "endDate": null,
-      "description": "Backend platform team.",
-      "highlights": ["Reduced API latency by 30%", "Led the migration to PostgreSQL 16"]
+      "projects": [
+        { "description": "Backend platform team.", "highlights": ["Reduced API latency by 30%"] },
+        { "description": "Payments service.", "highlights": ["Led the migration to PostgreSQL 16"] }
+      ]
     },
     {
       "id": "initech-2017",
@@ -20,8 +22,7 @@
       "location": "Moscow, Russia",
       "startDate": "2017-02-01",
       "endDate": "2021-04-30",
-      "description": null,
-      "highlights": ["Built internal reporting services"]
+      "projects": [{ "description": null, "highlights": ["Built internal reporting services"] }]
     }
   ],
   "education": [

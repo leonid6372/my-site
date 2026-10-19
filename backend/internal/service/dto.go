@@ -40,7 +40,12 @@ type ExperienceDTO struct {
 	CompanyURL  *string  `json:"companyUrl"`
 	Location    string   `json:"location"`
 	StartDate   string   `json:"startDate"`
-	EndDate     *string  `json:"endDate"`
+	EndDate     *string      `json:"endDate"`
+	Projects    []ProjectDTO `json:"projects"`
+}
+
+// ProjectDTO is one description within a job, with its own highlights.
+type ProjectDTO struct {
 	Description *string  `json:"description"`
 	Highlights  []string `json:"highlights"`
 }

@@ -1,6 +1,6 @@
 # 001 — Product Requirements
 
-Status: **Implemented**  ·  Owner: Leonid Solovev  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Owner: Leonid Solovyev  ·  Last updated: 2026-10-17
 
 ## 1. Overview
 
@@ -119,7 +119,7 @@ As a recruiter, I want a clear résumé.
   1. Header: name, headline, location, contact links (Email, GitHub, LinkedIn, Telegram).
   2. **Professional summary** (a short paragraph).
   3. **Experience**: position, company, location, period (start – end/"Present"),
-     description and bullet highlights, newest first.
+     one or more descriptions, each with its own bullet highlights, newest first.
   4. **Education**: degree, field, institution, period, optional description, newest first.
   5. **Skills**: grouped by category (e.g. Languages, Frameworks, Tools).
   6. **Languages** (spoken): language and level (e.g. "Russian — Native", "English — C1").

@@ -75,8 +75,10 @@ describe('CvPage', () => {
           location: 'Remote',
           startDate: '2022-01-01',
           endDate: null,
-          description: 'Has a description.',
-          highlights: ['One'],
+          projects: [
+            { description: 'Has a description.', highlights: ['One'] },
+            { description: 'Second project.', highlights: ['Two', 'Three'] },
+          ],
         },
         {
           id: 'no-url',
@@ -86,8 +88,7 @@ describe('CvPage', () => {
           location: 'Remote',
           startDate: '2019-01-01',
           endDate: '2021-12-31',
-          description: null,
-          highlights: [],
+          projects: [{ description: null, highlights: [] }],
         },
       ],
     };
@@ -106,6 +107,45 @@ describe('CvPage', () => {
     expect(within(plain).queryAllByRole('listitem')).toHaveLength(0); // no highlights list
     expect(plain.querySelectorAll('p')).toHaveLength(2); // meta + period, no description
     expect(screen.getByText('Has a description.')).toBeInTheDocument();
+  });
+
+  it('shows every project of a job with its own highlights', async () => {
+    const cv: Cv = {
+      ...fixtures.cv.en,
+      experience: [
+        {
+          id: 'multi',
+          position: 'Multi',
+          company: 'Multi Co',
+          companyUrl: null,
+          location: 'Remote',
+          startDate: '2022-01-01',
+          endDate: null,
+          projects: [
+            { description: 'First project.', highlights: ['A1'] },
+            { description: 'Second project.', highlights: ['B1', 'B2'] },
+          ],
+        },
+      ],
+    };
+    server.use(http.get('*/api/v1/cv', () => HttpResponse.json(cv)));
+    renderCv();
+
+    const item = (await screen.findByRole('heading', { level: 3, name: 'Multi' })).parentElement;
+    if (!item) throw new Error('no item');
+    const lists = within(item).getAllByRole('list');
+    expect(lists).toHaveLength(2);
+    const [first, second] = lists;
+    if (!first || !second) throw new Error('no lists');
+    const texts = (ul: HTMLElement) =>
+      within(ul)
+        .getAllByRole('listitem')
+        .map((li) => li.textContent);
+    expect(texts(first)).toEqual(['A1']);
+    expect(texts(second)).toEqual(['B1', 'B2']);
+    // each description sits right before its own list
+    expect(first.previousElementSibling).toHaveTextContent('First project.');
+    expect(second.previousElementSibling).toHaveTextContent('Second project.');
   });
 
   it('prints contact targets: plain email, URLs for the rest', async () => {
