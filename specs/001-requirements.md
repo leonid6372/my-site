@@ -41,7 +41,7 @@ As a visitor, I want a persistent header so that I can move between pages.
   Main, Travel and CV, and the current page link is visually marked as active.
 - AC2: Given the header, when I use only the keyboard, then I can reach and activate all links.
 - AC3: Given an unknown URL, when it loads, then a 404 page with a link back to Main is shown.
-- AC4: Given I open the site root `/`, then I am redirected to `/main`.
+- AC4: Given I open the site root `/`, then the Main page is shown; the old `/main` URL redirects to `/`.
 
 **US-02 — Language switch (EN/RU)**
 As a visitor, I want to switch the language between English and Russian.
@@ -65,7 +65,7 @@ As a visitor, I want subtle animations that make the site feel alive but calm.
 - AC2: Links, buttons and cards have subtle hover/focus transitions.
 - AC3: Given `prefers-reduced-motion: reduce`, then all non-essential animations are disabled.
 
-### 5.2 Main page (`/main`)
+### 5.2 Main page (`/`)
 
 **US-10 — Learn about me**
 As a visitor, I want to see who the owner is.

@@ -8,7 +8,7 @@ import { fixtures, requests } from '../test/server';
 import { printTarget } from '../lib/links';
 import { SocialLinks } from './SocialLinks';
 
-function renderApp(path = '/main', lang: 'en' | 'ru' = 'en') {
+function renderApp(path = '/', lang: 'en' | 'ru' = 'en') {
   return renderWithQuery(
     <MemoryRouter initialEntries={[path]}>
       <AppRoutes />
@@ -19,7 +19,7 @@ function renderApp(path = '/main', lang: 'en' | 'ru' = 'en') {
 
 describe('header navigation', () => {
   it.each([
-    ['/main', 'Main'],
+    ['/', 'Main'],
     ['/travel', 'Travel'],
     ['/cv', 'CV'],
   ])('marks %s as the current page', async (path, label) => {
@@ -39,17 +39,17 @@ describe('header navigation', () => {
     });
   });
 
-  it('links the site name to /main', async () => {
+  it('links the site name to /', async () => {
     renderApp('/cv');
     const home = await screen.findByRole('link', {
       name: `${fixtures.main.en.fullName}, main page`,
     });
-    expect(home).toHaveAttribute('href', '/main');
+    expect(home).toHaveAttribute('href', '/');
   });
 
   it('navigates between pages', async () => {
     const user = userEvent.setup();
-    renderApp('/main');
+    renderApp('/');
     const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     await user.click(within(nav).getByRole('link', { name: 'CV' }));
     expect(
@@ -61,7 +61,7 @@ describe('header navigation', () => {
 describe('language switch', () => {
   it('has aria-pressed buttons and switches UI text and content', async () => {
     const user = userEvent.setup();
-    renderApp('/main', 'en');
+    renderApp('/', 'en');
     const group = screen.getByRole('group', { name: 'Language' });
     const en = within(group).getByRole('button', { name: 'EN' });
     const ru = within(group).getByRole('button', { name: 'RU' });
@@ -95,7 +95,7 @@ describe('theme toggle', () => {
 describe('mobile menu', () => {
   it('toggles aria-expanded, closes on Esc and after navigation', async () => {
     const user = userEvent.setup();
-    renderApp('/main');
+    renderApp('/');
     const button = screen.getByRole('button', { name: 'Open menu' });
     const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     expect(button).toHaveAttribute('aria-expanded', 'false');

@@ -43,7 +43,7 @@ src/
 ├── main.tsx                     # mount, import fonts + global CSS
 ├── app/
 │   ├── App.tsx                  # providers + <AppRoutes/>
-│   ├── routes.tsx               # route table (lazy pages, / → /main redirect)
+│   ├── routes.tsx               # route table (lazy pages, /main → / redirect)
 │   ├── Layout.tsx               # Header, <main id="content">, Footer, page transition
 │   └── providers/
 │       ├── QueryProvider.tsx
@@ -262,7 +262,7 @@ nginx forwards `Accept-Language` by default (all client headers are proxied).
 | i18n parity | A test flattens the keys of `en.json` and `ru.json` and expects equal sets. |
 | `lib/dates` | Table tests: EN/RU periods, "Present"/"н. в.", durations 1/2/5/11/21 months and years (RU plural forms). |
 | API client | MSW handler records `request.headers.get('accept-language')`; asserts `en`/`ru` and that the URL has no `lang`. Error JSON → `ApiError`. |
-| Routing | `/` → `/main`; unknown path → NotFound. |
+| Routing | `/` → Main; `/main` → `/`; unknown path → NotFound. |
 | Providers | Language/theme persistence (mocked `localStorage`), `<html lang>` and `data-theme` updates. |
 | RemoteImage | thumb/full source selection, null fallbacks, error placeholder (fire `error` event), alt chain. |
 | Pages | Main and CV render from MSW fixtures (fixtures = the contract examples); section order; null fields hidden; ErrorState + Retry. |

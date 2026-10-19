@@ -17,8 +17,8 @@ A React + Vite + TypeScript single-page application that:
 
 | Path      | Page        | Data source |
 |-----------|-------------|-------------|
-| `/`       | —           | redirects (replace) to `/main` |
-| `/main`   | Main (about me, start page) | `GET /api/v1/main` |
+| `/`       | Main (about me, start page) | `GET /api/v1/main` |
+| `/main`   | —           | redirects (replace) to `/` |
 | `/travel` | Travel      | `GET /api/v1/travel` (+ static world TopoJSON) |
 | `/cv`     | CV          | `GET /api/v1/main` + `GET /api/v1/cv` |
 | `*`       | Not found   | — |
@@ -34,7 +34,7 @@ A React + Vite + TypeScript single-page application that:
 |--------|-------------|-----------|
 | FR-F01 | App shell: header (site name, nav, language switch, theme toggle), main, footer. | US-01 |
 | FR-F02 | The active nav link is marked with `aria-current="page"` and a visual indicator. | US-01 |
-| FR-F03 | 404 page with a link to `/main`; `/` redirects to `/main`. | US-01 AC3, AC4 |
+| FR-F03 | 404 page with a link to `/`; the old `/main` redirects to `/`. | US-01 AC3, AC4 |
 | FR-F04 | Language detection (stored choice → `navigator.language` → `en`), persisted to `localStorage`, `<html lang>` updated. | US-02 |
 | FR-F05 | Every API request sends `Accept-Language: <active lang>`; a language change refetches content and swaps UI strings without reload. | US-02 AC2, AC5 |
 | FR-F06 | Theme: stored choice → `prefers-color-scheme`; toggle persisted to `localStorage`; no flash of the wrong theme on load. | US-03 |
@@ -50,7 +50,7 @@ A React + Vite + TypeScript single-page application that:
 ## 4. Global UI
 
 ### 4.1 Header
-- Left: site name (`fullName` or initials), linking to `/main`.
+- Left: site name (`fullName` or initials), linking to `/`.
 - Centre/right: nav links **Main · Travel · CV** (RU: **Главная · Путешествия · Резюме**).
 - Right: language switch `EN | RU` (two buttons with `aria-pressed`) and theme toggle
   (icon button: sun/moon, with `aria-label`).
@@ -106,7 +106,7 @@ All photos are external URLs from the API (no images are served by our backend).
 
 ## 5. Pages
 
-### 5.1 Main (`/main`)
+### 5.1 Main (`/`)
 
 Layout (desktop: two columns; mobile: stacked):
 
@@ -305,7 +305,7 @@ copied to `public/`.
 | i18n | The key sets of `en.json` and `ru.json` are identical. |
 | lib  | Date range and duration formatting in EN and RU (incl. plural forms 1/2/5, "Present"). |
 | API client | Every request carries `Accept-Language` equal to the active language; switching the language triggers a refetch; no `lang` in any request URL. |
-| Routing | `/` redirects to `/main`; unknown path → 404. |
+| Routing | `/` shows Main; `/main` redirects to `/`; unknown path → 404. |
 | Components | Header active link and language/theme toggles (persistence, `<html lang>`); ErrorState retry calls refetch. |
 | RemoteImage | Uses `thumbUrl` in grids and `url` in the lightbox; falls back to `url` when `thumbUrl` is null; shows the placeholder on error; `alt` fallback chain. |
 | Main / CV | Render from fixture API responses; section order; `null` optional fields are not rendered. |

@@ -8,7 +8,7 @@
 
 `my-site` is a personal website with three pages:
 
-1. **Main** (`/main`, the start page): who I am.
+1. **Main** (`/`, the start page): who I am.
 2. **Travel**: an interactive map of the places I have visited.
 3. **CV**: my professional résumé.
 

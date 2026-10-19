@@ -61,14 +61,14 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
   - Done when: tests cover `navigator.language = 'ru-RU'` → `ru`; a stored choice wins; a toggle updates `<html>` and storage; a throwing `localStorage` doesn't crash.
 
 - [x] **F06 · Routing, layout, page transitions**
-  - `routes.tsx` (`/` → `/main` replace, `/main`, `/cv`, lazy `/travel`, `*` → NotFound),
+  - `routes.tsx` (`/` Main, `/main` → `/` replace, `/cv`, lazy `/travel`, `*` → NotFound),
     `Layout` with `AnimatePresence`, `MotionConfig reducedMotion="user"`, per-page `document.title`.
   - Refs: FR-F03, FR-F07, US-01 AC3/AC4, US-04
   - Depends on: F05
-  - Done when: routing tests pass (`/` → `/main`, unknown → 404 with a link to `/main`); manually, page transitions animate and are off with reduced motion.
+  - Done when: routing tests pass (`/main` → `/`, unknown → 404 with a link to `/`); manually, page transitions animate and are off with reduced motion.
 
 - [x] **F07 · Header, footer, navigation**
-  - `SkipLink`, `Header` (name → `/main`, `Nav` with `aria-current`, `LangSwitch` with
+  - `SkipLink`, `Header` (name → `/`, `Nav` with `aria-current`, `LangSwitch` with
     `aria-pressed`, `ThemeToggle` with `aria-label`), a mobile menu < 640 px, `Footer`,
     `SocialLinks` + brand SVG icons (email = lucide `Mail`; `mailto:` same tab, others `_blank` + `rel`).
   - Refs: FR-F01, FR-F02, US-01 AC1/AC2, US-10 AC2
@@ -163,7 +163,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
     `docker-compose.yml`.
   - Refs: NFR-06
   - Depends on: F17, B19
-  - Done when: `docker compose up -d --build` on a clean machine → `http://localhost/` redirects to `/main`; a deep reload of `/travel?place=…` works; `/assets/*` has the immutable cache header; `index.html` has `no-cache`.
+  - Done when: `docker compose up -d --build` on a clean machine → `http://localhost/` shows the Main page; a deep reload of `/travel?place=…` works; `/assets/*` has the immutable cache header; `index.html` has `no-cache`.
 
 ## Phase 6 — Verification
 
@@ -289,7 +289,7 @@ above, verified in F19.
 | US-01 AC1 header + active link | `shell.test.tsx`; M-11 |
 | US-01 AC2 keyboard | `shell.test.tsx` (skip link, menu Esc); M-11 |
 | US-01 AC3 404 with link to Main | `routes.test.tsx`; F18 SPA 404 in browser |
-| US-01 AC4 `/` → `/main` | `routes.test.tsx`; F17, F18 |
+| US-01 AC4 `/` = Main, `/main` → `/` | `routes.test.tsx`; F17, F18 |
 | US-02 AC1 browser language | `providers.test.tsx` (ru-RU → ru, de → en) |
 | US-02 AC2 switch without reload | `shell.test.tsx`, `api.test.tsx`; M-09 (no navigation entry added) |
 | US-02 AC3 remembered | `providers.test.tsx`; M-09 (reload) |

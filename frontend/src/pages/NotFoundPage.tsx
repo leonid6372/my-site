@@ -13,7 +13,7 @@ export default function NotFoundPage() {
       </p>
       <h1>{t('notFound.title')}</h1>
       <p className={styles.text}>{t('notFound.text')}</p>
-      <Link to="/main" className={styles.back}>
+      <Link to="/" className={styles.back}>
         {t('notFound.back')}
       </Link>
     </div>
