@@ -5,8 +5,8 @@ Status: **Implemented**  ·  Owner: Leonid Solovev  ·  Last updated: 2026-10-17
 ## 1. Overview
 
 A minimal, bilingual (EN/RU) personal website with three pages: **Main** (about me),
-**Travel** and **CV**. A small Go API serves the content from PostgreSQL. The content itself
-is authored as YAML files in the repository; photos are referenced by external URLs.
+**Travel** and **CV**. A small Go API serves the content from PostgreSQL, which is the only place
+content is stored (it is edited directly in the database); photos are referenced by external URLs.
 
 ## 2. Goals
 
@@ -29,7 +29,7 @@ is authored as YAML files in the repository; photos are referenced by external U
 |-------------------|---------------------------------------------------------------|
 | Recruiter / HR    | Quickly understand my experience, skills and how to reach me. |
 | Friend / visitor  | Learn about me and browse my travels.                         |
-| Me (site owner)   | Update content by editing YAML and redeploying.               |
+| Me (site owner)   | Update content by editing the database; changes show immediately. |
 
 ## 5. User stories and acceptance criteria
 
@@ -41,7 +41,7 @@ As a visitor, I want a persistent header so that I can move between pages.
   Main, Travel and CV, and the current page link is visually marked as active.
 - AC2: Given the header, when I use only the keyboard, then I can reach and activate all links.
 - AC3: Given an unknown URL, when it loads, then a 404 page with a link back to Main is shown.
-- AC4: Given I open the site root `/`, then I am redirected to `/main`.
+- AC4: Given I open the site root `/`, then the Main page is shown; the old `/main` URL redirects to `/`.
 
 **US-02 — Language switch (EN/RU)**
 As a visitor, I want to switch the language between English and Russian.
@@ -65,7 +65,7 @@ As a visitor, I want subtle animations that make the site feel alive but calm.
 - AC2: Links, buttons and cards have subtle hover/focus transitions.
 - AC3: Given `prefers-reduced-motion: reduce`, then all non-essential animations are disabled.
 
-### 5.2 Main page (`/main`)
+### 5.2 Main page (`/`)
 
 **US-10 — Learn about me**
 As a visitor, I want to see who the owner is.
@@ -135,8 +135,8 @@ As a recruiter, I want a clear résumé.
 | NFR-02  | **Responsive:** layouts work from 360 px to 1920 px wide; no horizontal scroll. |
 | NFR-03  | **Browsers:** last 2 versions of Chrome, Firefox, Safari and Edge. |
 | NFR-04  | **Accessibility:** semantic landmarks, keyboard operable, visible focus, alt text, WCAG AA contrast. |
-| NFR-05  | **Content validation:** the seed process fails with a clear message if any required field or translation is missing, a country code is unknown, or a photo URL is not a valid `https://` URL. (Photo URLs are not fetched; their availability is not checked.) |
-| NFR-06  | **Deployability:** `docker compose up -d --build` on a clean VPS starts the whole site, served over HTTP on port 80. |
+| NFR-05  | **Content integrity:** the database schema enforces required fields and allowed values; the remaining data rules (both translations present, known country codes, `https://` photo URLs) are kept by the editor (backend spec §6). Photo URLs are not fetched. |
+| NFR-06  | **Deployability:** `docker compose up -d --build` on a clean VPS starts the whole site, served over HTTPS on port 443 (port 80 redirects; Let's Encrypt certificate when `DOMAIN` is set). |
 | NFR-07  | **Reliability:** the API returns well-formed JSON errors; the frontend shows a friendly error state with a retry button instead of a blank page. |
 | NFR-08  | **Data volume:** designed for ~15 places with **up to 30 photos each**, but must work without changes up to ~200 places. |
 
@@ -146,11 +146,11 @@ As a recruiter, I want a clear résumé.
 |----|------------|
 | A1 | The theme follows the OS setting, with a manual light/dark toggle (US-03). |
 | A2 | Animations: page fade-in, page transitions, hover effects, map fly-to, stats count-up. |
-| A3 | The repository starts with **placeholder seed content**; the owner replaces it with real data. |
+| A3 | A fresh database is **empty**; the owner adds the data directly in PostgreSQL. The API never seeds it. |
 | A4 | The owner writes both the EN and RU texts. |
-| A5 | Monorepo: `frontend/`, `backend/`, `content/` and `specs/` with one `docker-compose.yml`. |
+| A5 | Monorepo: `frontend/`, `backend/` and `specs/` with one `docker-compose.yml`. |
 | A6 | Visit dates are stored as full dates (`YYYY-MM-DD`); a place can have several visits. |
-| A7 | Photos are hosted elsewhere (any public `https://` image URL) and only referenced in YAML. Optionally, a smaller `thumbUrl` and `width`/`height` can be given per photo for faster loading. |
+| A7 | Photos are hosted elsewhere (any public `https://` image URL) and only referenced by URL in the database. Optionally, a smaller `thumbUrl` and `width`/`height` can be given per photo for faster loading. |
 
 ## 8. Decisions log (resolved questions)
 
@@ -158,7 +158,7 @@ As a recruiter, I want a clear résumé.
 |----|----------|----------|
 | D1 | Which contact links? | Email, GitHub, LinkedIn, Telegram. |
 | D2 | Photo volume? | Up to 30 photos per place. |
-| D3 | Where are photos stored? | External URLs in YAML; nothing is uploaded to the server. |
+| D3 | Where are photos stored? | External URLs in the database; nothing is uploaded to the server. |
 | D4 | How is the language passed to the API? | `Accept-Language` request header, not a URL parameter. |
 | D5 | Start page name? | Frontend route `/main` (`/` redirects there); API endpoint `/api/v1/main`. |
 
@@ -171,4 +171,4 @@ As a recruiter, I want a clear résumé.
 - **Place:** a city or location visited, with coordinates.
 - **Visit:** one trip to a place, with start and end dates.
 - **Visited country:** a country that has at least one place.
-- **Content files:** YAML files in `content/` that are the source of all site content.
+- **Content:** the rows in PostgreSQL that are the only source of all site content.

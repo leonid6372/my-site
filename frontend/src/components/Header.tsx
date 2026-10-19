@@ -9,7 +9,7 @@ import { useTheme } from '../app/providers/theme-context';
 import styles from './Header.module.css';
 
 const NAV = [
-  { to: '/main', key: 'nav.main' },
+  { to: '/', key: 'nav.main' },
   { to: '/travel', key: 'nav.travel' },
   { to: '/cv', key: 'nav.cv' },
 ] as const;
@@ -59,7 +59,7 @@ export function ThemeToggle() {
   );
 }
 
-/** Site header (spec §4.1): name → /main, nav, language switch, theme toggle. */
+/** Site header (spec §4.1): name → /, nav, language switch, theme toggle. */
 export function Header() {
   const { t } = useTranslation();
   const name = useMain().data?.fullName;
@@ -89,7 +89,7 @@ export function Header() {
     <header className={styles.header} data-print="hide">
       <div className={styles.inner}>
         <Link
-          to="/main"
+          to="/"
           className={styles.brand}
           aria-label={name ? t('header.home', { name }) : undefined}
           onClick={closeMenu}
@@ -106,8 +106,9 @@ export function Header() {
           <ul className={styles.navList}>
             {NAV.map((item) => (
               <li key={item.to}>
-                {/* NavLink sets aria-current="page" on the active link (FR-F02). */}
-                <NavLink to={item.to} className={styles.navLink} onClick={closeMenu}>
+                {/* NavLink sets aria-current="page" on the active link (FR-F02).
+                    `end` stops "/" from matching every page. */}
+                <NavLink to={item.to} end className={styles.navLink} onClick={closeMenu}>
                   {t(item.key)}
                 </NavLink>
               </li>

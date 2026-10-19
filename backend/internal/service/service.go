@@ -178,7 +178,7 @@ func nonNil[T any](s []T) []T {
 var blankLines = regexp.MustCompile(`\n[ \t]*\n\s*`)
 
 // paragraphs splits text on blank lines. Line breaks inside a paragraph
-// (wrapped lines in YAML) become spaces.
+// (wrapped lines) become spaces.
 func paragraphs(text string) []string {
 	text = strings.TrimSpace(strings.ReplaceAll(text, "\r\n", "\n"))
 	out := []string{}

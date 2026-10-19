@@ -8,7 +8,7 @@
 
 `my-site` is a personal website with three pages:
 
-1. **Main** (`/main`, the start page): who I am.
+1. **Main** (`/`, the start page): who I am.
 2. **Travel**: an interactive map of the places I have visited.
 3. **CV**: my professional résumé.
 
@@ -35,7 +35,6 @@ my-site/
 │   ├── api/contract.md    # shared HTTP contract between frontend and backend
 │   ├── backend/           # spec.md, plan.md, tasks.md
 │   └── frontend/          # spec.md, plan.md, tasks.md
-├── content/               # site content as YAML (edited by hand)
 ├── backend/               # Go API
 ├── frontend/              # React + Vite + TypeScript SPA
 ├── docker-compose.yml
@@ -49,7 +48,7 @@ my-site/
 | Frontend   | React 18+, Vite, TypeScript (strict)               |
 | Backend    | Go (latest stable), REST/JSON API                  |
 | Database   | PostgreSQL 16                                      |
-| Content    | YAML files in `content/`, imported into PostgreSQL |
+| Content    | Stored only in PostgreSQL, edited directly in the database |
 | Runtime    | Docker + Docker Compose on a single VPS            |
 | Web server | nginx (serves the SPA, proxies `/api`)             |
 | Images     | External URLs only (no file uploads/storage on the server) |
@@ -60,11 +59,12 @@ Detailed library choices go into the `plan.md` files, not here.
 
 1. **Simplicity over cleverness.** It is a small personal site. No microservices, no
    message queues, no premature abstractions.
-2. **Content as code.** All content lives in version-controlled YAML files. Photos are
-   **not** stored on the server; content references them by external URL. There is no
-   admin UI. Content is updated by editing the files and redeploying.
+2. **Database as the source of content.** All content lives only in PostgreSQL and is
+   edited there directly; the application never writes it and startup never seeds it.
+   Photos are **not** stored on the server; content references them by external URL.
+   There is no admin UI.
 3. **Bilingual parity (EN + RU).** Every user-visible text exists in both English and
-   Russian. Missing translations are a **build/seed error**, not a silent fallback.
+   Russian. Missing translations are a data error to fix in the database, not a silent fallback.
 4. **Minimal design.** Plenty of whitespace, clean typography, restrained colours, and a
    small set of subtle animations. Animations must respect `prefers-reduced-motion`.
 5. **Read-only public API.** The backend exposes only `GET` endpoints to the public.
@@ -95,7 +95,6 @@ Detailed library choices go into the `plan.md` files, not here.
 ## 7. Out of scope (project-wide)
 
 - Authentication, admin panel, user accounts.
-- HTTPS / TLS and a domain name (for now the site is served over plain HTTP on the VPS IP).
 - Analytics, SEO optimisation, comments, a contact form, a CV PDF download.
 
 ## Changelog

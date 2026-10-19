@@ -24,16 +24,16 @@ describe('routes', () => {
   // Pages are identified by their document.title ("<Page> — <Full name>").
   const titleOf = (page: string) => `${page} — ${fixtures.main.en.fullName}`;
 
-  it('redirects / to /main', async () => {
-    renderAt('/');
-    expect(await screen.findByTestId('path')).toHaveTextContent(/^\/main$/);
+  it('redirects /main to /', async () => {
+    renderAt('/main');
+    expect(await screen.findByTestId('path')).toHaveTextContent(/^\/$/);
     await waitFor(() => {
       expect(document.title).toBe(titleOf('About'));
     });
   });
 
   it.each([
-    ['/main', 'About'],
+    ['/', 'About'],
     ['/cv', 'CV'],
     ['/travel', 'Travel'],
   ])('renders %s', async (path, page) => {
@@ -49,7 +49,7 @@ describe('routes', () => {
   });
 
   it.each(['/nope', '/main/extra', '/en/main', '/profile'])(
-    'shows the 404 page with a link to /main for %s',
+    'shows the 404 page with a link to / for %s',
     async (path) => {
       renderAt(path);
       expect(
@@ -57,7 +57,7 @@ describe('routes', () => {
       ).toBeInTheDocument();
       expect(screen.getByRole('link', { name: 'Back to the main page' })).toHaveAttribute(
         'href',
-        '/main',
+        '/',
       );
     },
   );
@@ -70,7 +70,7 @@ describe('routes', () => {
   });
 
   it('has exactly one h1 and a focusable main landmark', async () => {
-    renderAt('/main');
+    renderAt('/');
     await screen.findByRole('heading', { level: 1 });
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     expect(screen.getByRole('main')).toHaveAttribute('id', 'content');

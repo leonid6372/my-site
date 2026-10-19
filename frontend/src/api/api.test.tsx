@@ -106,7 +106,7 @@ describe('query hooks', () => {
     expect(mainRequests.map((r) => r.acceptLanguage)).toEqual(['en', 'ru']);
   });
 
-  it('serves a language from the cache when switching back', async () => {
+  it('refetches a language when switching back', async () => {
     renderWithQuery(<Probe />, { lang: 'en' });
     const button = screen.getByRole('button', { name: 'switch' });
     await waitFor(() => {
@@ -121,7 +121,14 @@ describe('query hooks', () => {
     act(() => {
       button.click();
     });
-    expect(screen.getByTestId('name')).toHaveTextContent(fixtures.main.en.fullName);
-    expect(requests.filter((r) => r.endpoint === 'main')).toHaveLength(2); // en, ru — no third fetch
+    await waitFor(() => {
+      expect(screen.getByTestId('name')).toHaveTextContent(fixtures.main.en.fullName);
+    });
+    // en, ru, en again: nothing is served from a client cache.
+    expect(requests.filter((r) => r.endpoint === 'main').map((r) => r.acceptLanguage)).toEqual([
+      'en',
+      'ru',
+      'en',
+    ]);
   });
 });

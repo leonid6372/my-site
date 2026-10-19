@@ -27,10 +27,7 @@ func assertEqual(t *testing.T, name string, got, want any) {
 func TestReadRoundTrip(t *testing.T) {
 	ctx := context.Background()
 	s := openTestStore(t)
-	want := loadFixture(t)
-	if err := s.ReplaceAll(ctx, want); err != nil {
-		t.Fatal(err)
-	}
+	want := loadFixture(t, s)
 
 	gotMain, err := s.GetMain(ctx)
 	if err != nil {
@@ -71,11 +68,11 @@ func TestReadEmptyDatabase(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if _, err := s.GetMain(ctx); !errors.Is(err, ErrNotSeeded) {
-		t.Errorf("GetMain err = %v, want ErrNotSeeded", err)
+	if _, err := s.GetMain(ctx); !errors.Is(err, ErrNoContent) {
+		t.Errorf("GetMain err = %v, want ErrNoContent", err)
 	}
-	if _, err := s.GetCV(ctx); !errors.Is(err, ErrNotSeeded) {
-		t.Errorf("GetCV err = %v, want ErrNotSeeded", err)
+	if _, err := s.GetCV(ctx); !errors.Is(err, ErrNoContent) {
+		t.Errorf("GetCV err = %v, want ErrNoContent", err)
 	}
 	if places, err := s.ListPlaces(ctx); err != nil || places != nil {
 		t.Errorf("ListPlaces = %v, %v; want nil, nil", places, err)

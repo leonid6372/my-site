@@ -220,7 +220,6 @@ func TestGzipOnlyLargeBodies(t *testing.T) {
 
 func TestWriteErrorShape(t *testing.T) {
 	rec := httptest.NewRecorder()
-	rec.Header().Set("ETag", `W/"x"`)
 	writeError(rec, http.StatusServiceUnavailable, CodeUnavailable, "database unavailable")
 	var body errorBody
 	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
@@ -229,7 +228,7 @@ func TestWriteErrorShape(t *testing.T) {
 	if rec.Code != 503 || body.Error.Code != "unavailable" || body.Error.Message != "database unavailable" {
 		t.Errorf("got %d %+v", rec.Code, body)
 	}
-	if rec.Header().Get("ETag") != "" || rec.Header().Get("Cache-Control") != "no-store" {
+	if rec.Header().Get("Cache-Control") != "no-store" {
 		t.Errorf("errors must not be cached: %v", rec.Header())
 	}
 }

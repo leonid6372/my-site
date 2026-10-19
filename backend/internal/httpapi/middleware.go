@@ -157,7 +157,7 @@ func CORS(origins []string) Middleware {
 				w.WriteHeader(http.StatusNoContent)
 				return
 			}
-			h.Set("Access-Control-Expose-Headers", "Content-Language, ETag, X-Request-ID")
+			h.Set("Access-Control-Expose-Headers", "Content-Language, X-Request-ID")
 			next.ServeHTTP(w, r)
 		})
 	}

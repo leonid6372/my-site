@@ -1,22 +1,39 @@
+//go:build integration
+
 package store
 
 import (
 	"context"
 	"errors"
 	"fmt"
+	"testing"
 	"time"
 
 	"github.com/jackc/pgx/v5"
 
 	"github.com/leonid6372/my-site/backend/internal/content"
+	"github.com/leonid6372/my-site/backend/internal/content/contenttest"
 )
+
+// The application never writes content: the database is the only source of
+// data. These helpers fill a test database with the shared fixture.
+
+// loadFixture inserts the sample content into s (replacing what is there)
+// and returns it.
+func loadFixture(t *testing.T, s *Store) content.All {
+	t.Helper()
+	all := contenttest.Fixture(t)
+	if err := s.insertAll(context.Background(), all); err != nil {
+		t.Fatal(err)
+	}
+	return all
+}
 
 // LText and *LText values are passed to pgx as-is: its JSON codec encodes
 // them as JSONB {"en": ..., "ru": ...} and nil pointers as NULL.
 
-// ReplaceAll replaces all content in one transaction: on any error the
-// previous content is left untouched.
-func (s *Store) ReplaceAll(ctx context.Context, all content.All) (err error) {
+// insertAll replaces all content in one transaction.
+func (s *Store) insertAll(ctx context.Context, all content.All) (err error) {
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
 		return fmt.Errorf("begin: %w", err)

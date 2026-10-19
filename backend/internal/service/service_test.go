@@ -16,12 +16,13 @@ import (
 	"testing"
 
 	"github.com/leonid6372/my-site/backend/internal/content"
+	"github.com/leonid6372/my-site/backend/internal/content/contenttest"
 	"github.com/leonid6372/my-site/backend/internal/i18n"
 )
 
 var update = flag.Bool("update", false, "regenerate golden files in testdata/golden")
 
-// fakeStore serves content in file order, as loaded from a content directory.
+// fakeStore serves the content in the order it was given.
 type fakeStore struct {
 	all content.All
 	err error
@@ -38,11 +39,7 @@ func (f *fakeStore) ListPlaces(context.Context) ([]content.Place, error) {
 
 func fixtureStore(t *testing.T) *fakeStore {
 	t.Helper()
-	all, err := content.Load(filepath.Join("..", "content", "testdata", "valid"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	return &fakeStore{all: all}
+	return &fakeStore{all: contenttest.Fixture(t)}
 }
 
 func marshal(t *testing.T, v any) []byte {

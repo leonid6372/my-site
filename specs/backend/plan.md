@@ -6,6 +6,11 @@ Implements: [backend/spec.md](spec.md) · [api/contract.md](../api/contract.md)
 This document describes **how** the backend is built. Behaviour is defined in the spec;
 if this plan contradicts the spec, the spec wins.
 
+> **Superseded in part (2026-10-19):** the YAML content files, the loader/validator and the
+> `seed`, `validate` and `start` commands described below were removed. PostgreSQL is now the
+> only source of data and `api serve` never writes content; see [spec §5–§6](spec.md#5-content-data-source-of-truth-postgresql).
+> The response cache and ETag were removed too (`Cache-Control: no-store`).
+
 ## 1. Constitution check
 
 | Principle | How the plan complies |
@@ -42,7 +47,7 @@ content/  │  content.Load ─► content.Validate ─► store.ReplaceAll (tx)
 (yaml)    │                                                            │
           │  HTTP ─► middleware ─► handler ─► service ─► store.Read*   │◄── PostgreSQL
           │                       (i18n lang)   (localise, stats,      │
-          │                                      sort, cache)          │
+          │                                      sort)                 │
           └────────────────────────────────────────────────────────────┘
 ```
 
@@ -56,7 +61,7 @@ content/  │  content.Load ─► content.Validate ─► store.ReplaceAll (tx)
 | `internal/geo` | Embedded `countries.json`; `Lookup(iso2) (Country, bool)`. | — |
 | `internal/i18n` | `Negotiate(header string) Lang`, middleware storing `Lang` in the context, `FromContext(ctx)`. | `x/text` |
 | `internal/store` | `pgxpool` setup, embedded migrations, `ReplaceAll(ctx, content.All)`, read queries returning DB models. | `pgx`, `goose` |
-| `internal/service` | Builds localised response DTOs (matching the contract) from store models, stats, sorting; response cache. | `store`, `geo`, `i18n` |
+| `internal/service` | Builds localised response DTOs (matching the contract) from store models, stats, sorting; JSON rendering. | `store`, `geo`, `i18n` |
 | `internal/httpapi` | Router, handlers, middleware (request ID, recover, logging, CORS, gzip), JSON/error helpers, ETag. | `service`, `i18n` |
 
 Dependencies flow downward only: `httpapi → service → store`, and `content` is used only
@@ -109,19 +114,16 @@ return best or EN
 
 Ties keep the earlier tag (strict `>`), which matches "ties resolved by header order".
 
-### 4.3 Response cache and ETag
+### 4.3 No caching
 
-Content only changes when the container restarts (the seed runs on every start), so the
-service **caches the serialised JSON per (endpoint, lang)** in memory:
+There is no response cache. Every request to a content endpoint reads the database
+(`service.Render`) and serialises a fresh response, so changes in the DB show up on the
+next request without a restart.
 
-- built lazily on the first request, guarded by a mutex per key (concurrent first requests
-  wait for one build; a failed build is not cached, so a short DB outage does not stick);
-- each entry holds `body []byte` and `etag = W/"<first 16 hex of sha256(body)>"`;
-- the handler compares `If-None-Match` and returns `304` with an empty body when it matches;
-- headers: `Content-Type: application/json; charset=utf-8`, `Cache-Control: public, max-age=300`.
+- headers: `Content-Type: application/json; charset=utf-8`, `Cache-Control: no-store`;
+- no `ETag` and no `304`.
 
-So the DB is queried at most once per endpoint and language per process lifetime.
-`/health` is never cached (it pings the DB with a 1 s timeout).
+`/health` pings the DB with a 1 s timeout and is also `no-store`.
 
 ### 4.4 Errors
 
@@ -175,7 +177,7 @@ needs two helpers, which were added to the spec during this phase:
 | Command | Purpose |
 |---------|---------|
 | `api start` | `seed` then `serve` in one process: the container entrypoint (replaces `api seed && api serve`). |
-| `api healthcheck` | `GET http://127.0.0.1:8080/api/v1/health`; exit 0 on 200, else 1. Used by the Docker `HEALTHCHECK`. |
+| `api healthcheck` | `GET https://127.0.0.1:8080/api/v1/health` (certificate not verified); exit 0 on 200, else 1. Used by the Docker `HEALTHCHECK`. |
 
 They are recorded in the spec changelog (a clarification, with no change to the API behaviour).
 
@@ -232,12 +234,20 @@ services:
 
   web:
     build: ./frontend
-    ports: ["80:80"]
+    ports: ["80:80", "443:443"]
+    environment: { DOMAIN: "${DOMAIN:-}" }
+    volumes: [letsencrypt:/etc/letsencrypt:ro, certbot-www:/var/www/certbot:ro]
     depends_on: { api: { condition: service_healthy } }
     restart: unless-stopped
 
+  certbot:   # issues/renews the Let's Encrypt certificate for DOMAIN (webroot challenge)
+    image: certbot/certbot:v4.1.1
+    volumes: [letsencrypt:/etc/letsencrypt, certbot-www:/var/www/certbot]
+
 volumes:
   pgdata:
+  letsencrypt:
+  certbot-www:
 ```
 
 `docker-compose.dev.yml` (used only locally) publishes `db` on `localhost:5432`.
@@ -247,7 +257,7 @@ volumes:
 ```
 git pull                                   # new YAML content
 docker compose run --rm api validate       # check content first; fix errors before restarting
-docker compose restart api                 # start → re-seed → serve with fresh cache
+docker compose restart api                 # start → re-seed → serve
 ```
 
 The content is bind-mounted, so content changes need **no image rebuild**. Code changes:
@@ -272,7 +282,7 @@ URLs (plus `/400/400` thumbs), so the site works out of the box.
 | `content` validator | Table-driven; `testdata/valid/` plus one minimal broken fixture per rule; asserts the exact `File:Path` of each error. | `internal/content/*_test.go` |
 | `i18n` | Table tests for every case listed in spec §12. | `internal/i18n/*_test.go` |
 | `service` | Fake store (interface) → DTOs; golden JSON files in `testdata/golden/{main,cv,travel}.{en,ru}.json`; `-update` flag regenerates them. | `internal/service` |
-| `httpapi` | `httptest.Server` with the fake service: status codes, headers (`Content-Language`, `Vary`, `ETag`, `Cache-Control`), `304`, `404`, `405`, CORS preflight. | `internal/httpapi` |
+| `httpapi` | `httptest.Server` with the fake service: status codes, headers (`Content-Language`, `Vary`, `Cache-Control`), `404`, `405`, CORS preflight. | `internal/httpapi` |
 | `store` | testcontainers PostgreSQL: migrate → `ReplaceAll(valid)` → read back equality; run twice (idempotent); a failing insert mid-tx leaves the previous data. Guarded by `-tags=integration`. | `internal/store` |
 | Smoke | Script `scripts/smoke.sh`: compose up, curl health + `Accept-Language: ru` main. | repo root |
 

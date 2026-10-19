@@ -17,8 +17,8 @@ A React + Vite + TypeScript single-page application that:
 
 | Path      | Page        | Data source |
 |-----------|-------------|-------------|
-| `/`       | —           | redirects (replace) to `/main` |
-| `/main`   | Main (about me, start page) | `GET /api/v1/main` |
+| `/`       | Main (about me, start page) | `GET /api/v1/main` |
+| `/main`   | —           | redirects (replace) to `/` |
 | `/travel` | Travel      | `GET /api/v1/travel` (+ static world TopoJSON) |
 | `/cv`     | CV          | `GET /api/v1/main` + `GET /api/v1/cv` |
 | `*`       | Not found   | — |
@@ -34,7 +34,7 @@ A React + Vite + TypeScript single-page application that:
 |--------|-------------|-----------|
 | FR-F01 | App shell: header (site name, nav, language switch, theme toggle), main, footer. | US-01 |
 | FR-F02 | The active nav link is marked with `aria-current="page"` and a visual indicator. | US-01 |
-| FR-F03 | 404 page with a link to `/main`; `/` redirects to `/main`. | US-01 AC3, AC4 |
+| FR-F03 | 404 page with a link to `/`; the old `/main` redirects to `/`. | US-01 AC3, AC4 |
 | FR-F04 | Language detection (stored choice → `navigator.language` → `en`), persisted to `localStorage`, `<html lang>` updated. | US-02 |
 | FR-F05 | Every API request sends `Accept-Language: <active lang>`; a language change refetches content and swaps UI strings without reload. | US-02 AC2, AC5 |
 | FR-F06 | Theme: stored choice → `prefers-color-scheme`; toggle persisted to `localStorage`; no flash of the wrong theme on load. | US-03 |
@@ -50,7 +50,7 @@ A React + Vite + TypeScript single-page application that:
 ## 4. Global UI
 
 ### 4.1 Header
-- Left: site name (`fullName` or initials), linking to `/main`.
+- Left: site name (`fullName` or initials), linking to `/`.
 - Centre/right: nav links **Main · Travel · CV** (RU: **Главная · Путешествия · Резюме**).
 - Right: language switch `EN | RU` (two buttons with `aria-pressed`) and theme toggle
   (icon button: sun/moon, with `aria-label`).
@@ -106,7 +106,7 @@ All photos are external URLs from the API (no images are served by our backend).
 
 ## 5. Pages
 
-### 5.1 Main (`/main`)
+### 5.1 Main (`/`)
 
 Layout (desktop: two columns; mobile: stacked):
 
@@ -212,12 +212,12 @@ plain email address (without `mailto:`) for Email.
 - The API client adds the header `Accept-Language: <lang>` (exactly `en` or `ru`) to every
   request. No language query parameter is ever sent.
 - Server state via a query library (e.g. TanStack Query): query keys still include `lang`
-  (`['main', lang]`, `['cv', lang]`, `['travel', lang]`) so each language is cached
-  separately, even though `lang` travels in a header. `staleTime` 5 min, 1 retry.
+  (`['main', lang]`, `['cv', lang]`, `['travel', lang]`) because `lang` travels
+  in a header. No client cache (`staleTime` 0, `gcTime` 0): every page view refetches. 1 retry.
 - Changing the language keeps previous data on screen until the new data arrives (no flicker).
 - UI state (language, theme) lives in a small React context; selected place/country lives
   in Travel page state, synced with the `?place=` query parameter.
-- API base URL: relative `/api/v1` (Vite dev server proxies to `http://localhost:8080`).
+- API base URL: relative `/api/v1` (Vite dev server proxies to `https://localhost:8080`).
 
 ### Loading / error / empty states
 
@@ -287,11 +287,15 @@ copied to `public/`.
 
 ## 10. Build and serving
 
-- `npm run dev`: Vite on `:5173` with a proxy `/api` → `http://localhost:8080`.
+- `npm run dev`: Vite on `:5173` with a proxy `/api` → `https://localhost:8080`.
 - `npm run build`: type-check + production build to `dist/`.
 - Docker: multi-stage build (node → `nginx:alpine`). `nginx.conf`:
+  - HTTPS on 443 (TLS 1.2/1.3, HTTP/2); port 80 redirects to HTTPS except
+    `/.well-known/acme-challenge/` (Let's Encrypt). `docker/40-tls-certs.sh` links the
+    Let's Encrypt certificate for `DOMAIN`, or a self-signed fallback, and reloads nginx
+    when it changes.
   - `location /` → `try_files $uri /index.html;`
-  - `location /api/` → `proxy_pass http://api:8080;` (the `Accept-Language` header is
+  - `location /api/` → `proxy_pass https://api:8080;` (the `Accept-Language` header is
     forwarded unchanged).
   - hashed assets under `/assets/` → `Cache-Control: public, max-age=31536000, immutable`;
     `index.html` → `no-cache`.
@@ -305,7 +309,7 @@ copied to `public/`.
 | i18n | The key sets of `en.json` and `ru.json` are identical. |
 | lib  | Date range and duration formatting in EN and RU (incl. plural forms 1/2/5, "Present"). |
 | API client | Every request carries `Accept-Language` equal to the active language; switching the language triggers a refetch; no `lang` in any request URL. |
-| Routing | `/` redirects to `/main`; unknown path → 404. |
+| Routing | `/` shows Main; `/main` redirects to `/`; unknown path → 404. |
 | Components | Header active link and language/theme toggles (persistence, `<html lang>`); ErrorState retry calls refetch. |
 | RemoteImage | Uses `thumbUrl` in grids and `url` in the lightbox; falls back to `url` when `thumbUrl` is null; shows the placeholder on error; `alt` fallback chain. |
 | Main / CV | Render from fixture API responses; section order; `null` optional fields are not rendered. |

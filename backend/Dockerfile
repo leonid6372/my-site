@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Backend image (plan §9.1): static Go binary on distroless, running as nonroot.
-# Content is not baked in: mount it at /app/content (see docker-compose.yml).
+# All data lives in PostgreSQL; the image holds no content.
 
 FROM golang:1.26.2-alpine AS build
 WORKDIR /src
@@ -16,4 +16,4 @@ USER nonroot:nonroot
 EXPOSE 8080
 HEALTHCHECK --interval=15s --timeout=3s --start-period=30s --retries=3 CMD ["/api", "healthcheck"]
 ENTRYPOINT ["/api"]
-CMD ["start"]
+CMD ["serve"]

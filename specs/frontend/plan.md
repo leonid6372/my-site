@@ -43,7 +43,7 @@ src/
 ├── main.tsx                     # mount, import fonts + global CSS
 ├── app/
 │   ├── App.tsx                  # providers + <AppRoutes/>
-│   ├── routes.tsx               # route table (lazy pages, / → /main redirect)
+│   ├── routes.tsx               # route table (lazy pages, /main → / redirect)
 │   ├── Layout.tsx               # Header, <main id="content">, Footer, page transition
 │   └── providers/
 │       ├── QueryProvider.tsx
@@ -89,7 +89,7 @@ export async function apiGet<T>(path: string, lang: Lang, signal?: AbortSignal):
 export const useMain = () => {
   const { lang } = useLanguage();
   return useQuery({ queryKey: ['main', lang], queryFn: ({ signal }) => apiGet<MainInfo>('/main', lang, signal),
-                    staleTime: 5 * 60_000, retry: 1, placeholderData: keepPreviousData });
+                    staleTime: 0, gcTime: 0, retry: 1, placeholderData: keepPreviousData });
 };
 ```
 
@@ -198,7 +198,7 @@ enters the viewport (`IntersectionObserver`); returns the target immediately und
 
 ### 6.1 `vite.config.ts`
 
-- `server.proxy: { '/api': 'http://localhost:8080' }`.
+- `server.proxy: { '/api': { target: 'https://localhost:8080', secure: false } }`.
 - `build.target: 'es2022'`, default hashed assets under `/assets/`.
 - Vitest config in the same file (`environment: 'jsdom'`, `setupFiles: ['src/test/setup.ts']`).
 
@@ -221,15 +221,26 @@ EXPOSE 80
 ### 6.3 `frontend/nginx.conf`
 
 ```nginx
-server {
+server {                       # port 80: ACME challenge + redirect
   listen 80;
+  location /.well-known/acme-challenge/ { root /var/www/certbot; }
+  location / { return 301 https://$host$request_uri; }
+}
+
+server {
+  listen 443 ssl;
+  http2 on;
   root /usr/share/nginx/html;
+  ssl_certificate     /etc/nginx/certs/fullchain.pem;   # Let's Encrypt or self-signed,
+  ssl_certificate_key /etc/nginx/certs/privkey.pem;     # linked by docker/40-tls-certs.sh
+  ssl_protocols TLSv1.2 TLSv1.3;
 
   gzip on;
   gzip_types text/css application/javascript application/json image/svg+xml;
 
   location /api/ {
-    proxy_pass http://api:8080;
+    proxy_pass https://api:8080;
+    proxy_ssl_verify off;
     proxy_set_header Host $host;
     proxy_set_header X-Request-ID $request_id;
   }
@@ -262,7 +273,7 @@ nginx forwards `Accept-Language` by default (all client headers are proxied).
 | i18n parity | A test flattens the keys of `en.json` and `ru.json` and expects equal sets. |
 | `lib/dates` | Table tests: EN/RU periods, "Present"/"н. в.", durations 1/2/5/11/21 months and years (RU plural forms). |
 | API client | MSW handler records `request.headers.get('accept-language')`; asserts `en`/`ru` and that the URL has no `lang`. Error JSON → `ApiError`. |
-| Routing | `/` → `/main`; unknown path → NotFound. |
+| Routing | `/` → Main; `/main` → `/`; unknown path → NotFound. |
 | Providers | Language/theme persistence (mocked `localStorage`), `<html lang>` and `data-theme` updates. |
 | RemoteImage | thumb/full source selection, null fallbacks, error placeholder (fire `error` event), alt chain. |
 | Pages | Main and CV render from MSW fixtures (fixtures = the contract examples); section order; null fields hidden; ErrorState + Retry. |

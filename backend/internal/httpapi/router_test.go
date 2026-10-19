@@ -9,13 +9,13 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/jackc/pgx/v5/pgconn"
 
 	"github.com/leonid6372/my-site/backend/internal/content"
+	"github.com/leonid6372/my-site/backend/internal/content/contenttest"
 	"github.com/leonid6372/my-site/backend/internal/service"
 	"github.com/leonid6372/my-site/backend/internal/store"
 )
@@ -38,20 +38,13 @@ type fakeDB struct{ err error }
 
 func (f fakeDB) Ping(context.Context) error { return f.err }
 
-func loadFixture(t *testing.T) content.All {
-	t.Helper()
-	all, err := content.Load(filepath.Join("..", "content", "testdata", "valid"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	return all
-}
+func loadFixture(t *testing.T) content.All { return contenttest.Fixture(t) }
 
 func newHandler(s service.Store, db Pinger) http.Handler {
 	return New(Options{
-		Cache: service.NewCache(service.New(s)),
-		DB:    db,
-		Log:   slog.New(slog.DiscardHandler),
+		Service: service.New(s),
+		DB:      db,
+		Log:     slog.New(slog.DiscardHandler),
 	})
 }
 
@@ -93,7 +86,6 @@ func TestLocalisedEndpoints(t *testing.T) {
 	}
 
 	for _, ep := range endpoints {
-		etags := map[string]string{}
 		for _, hd := range headers {
 			t.Run(fmt.Sprintf("%s/%q", ep.path, hd.accept), func(t *testing.T) {
 				var rec *httptest.ResponseRecorder
@@ -115,14 +107,9 @@ func TestLocalisedEndpoints(t *testing.T) {
 				if hdr.Get("Content-Type") != contentTypeJSON || hdr.Get("Cache-Control") != cacheControl {
 					t.Errorf("headers = %v", hdr)
 				}
-				etag := hdr.Get("ETag")
-				if !strings.HasPrefix(etag, `W/"`) {
-					t.Errorf("ETag = %q", etag)
+				if hdr.Get("ETag") != "" {
+					t.Errorf("ETag = %q, want none", hdr.Get("ETag"))
 				}
-				if prev, ok := etags[hd.wantLang]; ok && prev != etag {
-					t.Errorf("ETag for %s changed: %s vs %s", hd.wantLang, prev, etag)
-				}
-				etags[hd.wantLang] = etag
 
 				var body map[string]any
 				if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
@@ -136,9 +123,6 @@ func TestLocalisedEndpoints(t *testing.T) {
 					t.Errorf("body value = %v, want %q", got, want)
 				}
 			})
-		}
-		if etags["en"] == etags["ru"] {
-			t.Errorf("%s: EN and RU ETags are equal", ep.path)
 		}
 	}
 }
@@ -155,23 +139,27 @@ func TestLangQueryParamIsIgnored(t *testing.T) {
 	}
 }
 
-func TestConditionalGet(t *testing.T) {
-	h := newHandler(&fakeStore{all: loadFixture(t)}, fakeDB{})
-	etag := do(h, http.MethodGet, "/api/v1/cv", "Accept-Language", "ru").Header().Get("ETag")
-
-	for _, inm := range []string{etag, strings.TrimPrefix(etag, "W/"), `W/"other", ` + etag, "*"} {
-		rec := do(h, http.MethodGet, "/api/v1/cv", "Accept-Language", "ru", "If-None-Match", inm)
-		if rec.Code != http.StatusNotModified || rec.Body.Len() != 0 {
-			t.Errorf("If-None-Match %s: status %d, body %d bytes; want 304 and empty", inm, rec.Code, rec.Body.Len())
-		}
-		if rec.Header().Get("ETag") != etag {
-			t.Errorf("304 must repeat the ETag")
-		}
+// Every request reads the database again: a change in the store shows up on
+// the next request, and If-None-Match never yields 304.
+func TestNoCaching(t *testing.T) {
+	all := loadFixture(t)
+	fs := &fakeStore{all: all}
+	h := newHandler(fs, fakeDB{})
+	if rec := do(h, http.MethodGet, "/api/v1/main"); rec.Code != http.StatusOK {
+		t.Fatalf("status %d", rec.Code)
 	}
 
-	// The RU ETag does not match the EN representation.
-	if rec := do(h, http.MethodGet, "/api/v1/cv", "Accept-Language", "en", "If-None-Match", etag); rec.Code != http.StatusOK {
-		t.Errorf("EN with the RU ETag: status %d, want 200", rec.Code)
+	fs.all.Main.FullName.EN = "Changed Name"
+	rec := do(h, http.MethodGet, "/api/v1/main", "If-None-Match", "*")
+	if rec.Code != http.StatusOK {
+		t.Fatalf("If-None-Match: status %d, want 200", rec.Code)
+	}
+	var body map[string]any
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatal(err)
+	}
+	if body["fullName"] != "Changed Name" {
+		t.Errorf("fullName = %v, want the updated store value", body["fullName"])
 	}
 }
 
@@ -180,7 +168,7 @@ func TestHead(t *testing.T) {
 	// httptest.ResponseRecorder keeps the body; the real server drops it for
 	// HEAD, so check only the status and headers here.
 	rec := do(h, http.MethodHead, "/api/v1/main")
-	if rec.Code != http.StatusOK || rec.Header().Get("ETag") == "" {
+	if rec.Code != http.StatusOK || rec.Header().Get("Cache-Control") != cacheControl {
 		t.Errorf("HEAD: status %d, headers %v", rec.Code, rec.Header())
 	}
 }
@@ -256,15 +244,15 @@ func TestStoreErrorsMapToContractErrors(t *testing.T) {
 		code   string
 	}{
 		{"generic", errors.New("syntax error at or near SELECT"), http.StatusInternalServerError, CodeInternal},
-		{"not seeded", store.ErrNotSeeded, http.StatusServiceUnavailable, CodeUnavailable},
+		{"no content", store.ErrNoContent, http.StatusServiceUnavailable, CodeUnavailable},
 		{"connect", fmt.Errorf("get main: %w", &pgconn.ConnectError{}), http.StatusServiceUnavailable, CodeUnavailable},
 		{"timeout", fmt.Errorf("get main: %w", context.DeadlineExceeded), http.StatusServiceUnavailable, CodeUnavailable},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			rec := do(newHandler(&fakeStore{err: tc.err}, fakeDB{}), http.MethodGet, "/api/v1/main")
 			assertError(t, rec, tc.status, tc.code)
-			if strings.Contains(rec.Body.String(), "SELECT") || rec.Header().Get("ETag") != "" {
-				t.Errorf("error leaked details or an ETag: %s %v", rec.Body, rec.Header())
+			if strings.Contains(rec.Body.String(), "SELECT") || rec.Header().Get("Cache-Control") != "no-store" {
+				t.Errorf("error leaked details or is cacheable: %s %v", rec.Body, rec.Header())
 			}
 		})
 	}
@@ -281,7 +269,7 @@ func TestRealServerHeadAndGzip(t *testing.T) {
 	body, _ := io.ReadAll(resp.Body)
 	_ = resp.Body.Close()
 	// Content-Length announces the GET size; the body itself must be empty.
-	if resp.StatusCode != http.StatusOK || len(body) != 0 || resp.Header.Get("ETag") == "" {
+	if resp.StatusCode != http.StatusOK || len(body) != 0 {
 		t.Errorf("HEAD: status %d, %d body bytes, headers %v", resp.StatusCode, len(body), resp.Header)
 	}
 
