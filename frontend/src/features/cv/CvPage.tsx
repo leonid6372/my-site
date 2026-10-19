@@ -163,14 +163,18 @@ function ExperienceItem({ item, lang }: { item: Experience; lang: Lang }) {
         <span className={styles.muted}> · {item.location}</span>
       </p>
       <Period start={item.startDate} end={item.endDate} lang={lang} />
-      {item.description && <p className={styles.description}>{item.description}</p>}
-      {item.highlights.length > 0 && (
-        <ul className={styles.highlights}>
-          {item.highlights.map((h) => (
-            <li key={h}>{h}</li>
-          ))}
-        </ul>
-      )}
+      {item.projects.map((p, i) => (
+        <div key={i} className={styles.project}>
+          {p.description && <p className={styles.description}>{p.description}</p>}
+          {p.highlights.length > 0 && (
+            <ul className={styles.highlights}>
+              {p.highlights.map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
     </li>
   );
 }

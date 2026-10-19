@@ -35,6 +35,10 @@ export interface Experience {
   location: string;
   startDate: string;
   endDate: string | null;
+  projects: Project[];
+}
+/** One description within a job, with its own highlights. */
+export interface Project {
   description: string | null;
   highlights: string[];
 }

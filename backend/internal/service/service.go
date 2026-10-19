@@ -80,8 +80,7 @@ func (s *Service) CV(ctx context.Context, lang i18n.Lang) (CVDTO, error) {
 			Location:    loc(e.Location, lang),
 			StartDate:   e.StartDate.String(),
 			EndDate:     optDate(e.EndDate),
-			Description: optLoc(e.Description, lang),
-			Highlights:  locAll(e.Highlights, lang),
+			Projects:    projects(e.Projects, lang),
 		})
 	}
 	slices.SortStableFunc(dto.Experience, func(a, b ExperienceDTO) int {
@@ -136,6 +135,17 @@ func locAll(ts []content.LText, lang i18n.Lang) []string {
 	out := make([]string, 0, len(ts))
 	for _, t := range ts {
 		out = append(out, loc(t, lang))
+	}
+	return out
+}
+
+func projects(ps []content.Project, lang i18n.Lang) []ProjectDTO {
+	out := make([]ProjectDTO, 0, len(ps))
+	for _, p := range ps {
+		out = append(out, ProjectDTO{
+			Description: optLoc(p.Description, lang),
+			Highlights:  locAll(p.Highlights, lang),
+		})
 	}
 	return out
 }

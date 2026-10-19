@@ -139,8 +139,7 @@ CREATE TABLE cv_experience (
   location     JSONB NOT NULL,
   start_date   DATE  NOT NULL,
   end_date     DATE,
-  description  JSONB,
-  highlights   JSONB NOT NULL DEFAULT '[]'  -- array of ltext
+  projects     JSONB NOT NULL DEFAULT '[]'  -- array of {description: ltext|null, highlights: [ltext]}
 );
 
 CREATE TABLE cv_education (

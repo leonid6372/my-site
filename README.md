@@ -105,8 +105,8 @@ all content comes from the API in the language of the `Accept-Language` header.
 ## Editing data
 
 All content lives in PostgreSQL. Edit it with SQL or any database client (the database is
-published on port 5432); the schema is in
-[`backend/internal/store/migrations/00001_init.sql`](backend/internal/store/migrations/00001_init.sql).
+published on port 5432); the schema is in the migrations in
+[`backend/internal/store/migrations/`](backend/internal/store/migrations/).
 Changes are visible on the next request: there is no cache and no restart is needed.
 
 ```sh
@@ -122,6 +122,10 @@ docker compose exec db psql -U site -d site
 | `place`, `visit`, `photo` | Travel places (ISO 3166-1 alpha-2 `country_iso2`), their visits and photos |
 
 - Every visible text is JSONB `{"en": "...", "ru": "..."}`; fill both languages.
+- `cv_experience.projects` holds one or more descriptions of a job, each with its own
+  highlights, shown in array order:
+  `[{"description": {"en": "...", "ru": "..."}, "highlights": [{"en": "...", "ru": "..."}]}, ...]`
+  (`description` may be `null`).
 - Photos are `https://` URLs; paragraphs are separated by a blank line.
 - Until `main_info` has its row, `/api/v1/main` and `/api/v1/cv` answer `503`.
 

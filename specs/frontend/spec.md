@@ -196,8 +196,8 @@ Single column, max width 800 px, ordered sections (each with an `h2`):
    (from `/api/v1/main`).
 2. **Professional summary**
 3. **Experience:** timeline-style list. Each item: position (bold), company (linked if
-   `companyUrl`), location, period "May 2021 – Present · 3 yrs 5 mos", description,
-   bullet highlights.
+   `companyUrl`), location, period "May 2021 – Present · 3 yrs 5 mos", then
+   one or more projects, each a description with its own bullet highlights.
 4. **Education:** degree, field, institution, period, optional description.
 5. **Skills:** category label + chips.
 6. **Languages:** name — level.

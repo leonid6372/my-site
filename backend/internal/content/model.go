@@ -84,7 +84,12 @@ type Experience struct {
 	CompanyURL  string  `json:"companyUrl,omitempty"`
 	Location    LText   `json:"location"`
 	StartDate   *Date   `json:"startDate"`
-	EndDate     *Date   `json:"endDate"` // nil = present
+	EndDate     *Date     `json:"endDate"` // nil = present
+	Projects    []Project `json:"projects,omitempty"`
+}
+
+// Project is one description within a job, with its own highlights.
+type Project struct {
 	Description *LText  `json:"description,omitempty"`
 	Highlights  []LText `json:"highlights,omitempty"`
 }

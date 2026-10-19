@@ -9,9 +9,19 @@
       "location": "Амстердам, Нидерланды",
       "startDate": "2021-05-01",
       "endDate": null,
-      "description": "Команда бэкенд-платформы.",
-      "highlights": [
-        "Снизил задержку API на 30%"
+      "projects": [
+        {
+          "description": "Команда бэкенд-платформы.",
+          "highlights": [
+            "Снизил задержку API на 30%"
+          ]
+        },
+        {
+          "description": "Платёжный сервис.",
+          "highlights": [
+            "Перевёл выплаты на PostgreSQL 16"
+          ]
+        }
       ]
     },
     {
@@ -22,8 +32,7 @@
       "location": "Москва, Россия",
       "startDate": "2017-02-01",
       "endDate": "2021-04-30",
-      "description": null,
-      "highlights": []
+      "projects": []
     }
   ],
   "education": [

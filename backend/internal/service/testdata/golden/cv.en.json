@@ -9,9 +9,19 @@
       "location": "Amsterdam, Netherlands",
       "startDate": "2021-05-01",
       "endDate": null,
-      "description": "Backend platform team.",
-      "highlights": [
-        "Cut API latency by 30%"
+      "projects": [
+        {
+          "description": "Backend platform team.",
+          "highlights": [
+            "Cut API latency by 30%"
+          ]
+        },
+        {
+          "description": "Payments service.",
+          "highlights": [
+            "Moved payouts to PostgreSQL 16"
+          ]
+        }
       ]
     },
     {
@@ -22,8 +32,7 @@
       "location": "Moscow, Russia",
       "startDate": "2017-02-01",
       "endDate": "2021-04-30",
-      "description": null,
-      "highlights": []
+      "projects": []
     }
   ],
   "education": [
