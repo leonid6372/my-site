@@ -3,6 +3,11 @@
 Status: **Implemented**  ·  Last updated: 2026-10-17
 Implements: [backend/spec.md](spec.md) · [backend/plan.md](plan.md) · [api/contract.md](../api/contract.md)
 
+> **Superseded in part (2026-10-19):** the YAML content files, the loader/validator and the
+> `seed`, `validate` and `start` commands described below were removed. PostgreSQL is now the
+> only source of data and `api serve` never writes content; see [spec §5–§6](spec.md#5-content-data-source-of-truth-postgresql).
+> The response cache and ETag were removed too (`Cache-Control: no-store`).
+
 ## How to use this file
 
 - Work top to bottom. A task can start when all of its **Depends on** tasks are done.

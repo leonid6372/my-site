@@ -6,6 +6,11 @@ Implements: [backend/spec.md](spec.md) · [api/contract.md](../api/contract.md)
 This document describes **how** the backend is built. Behaviour is defined in the spec;
 if this plan contradicts the spec, the spec wins.
 
+> **Superseded in part (2026-10-19):** the YAML content files, the loader/validator and the
+> `seed`, `validate` and `start` commands described below were removed. PostgreSQL is now the
+> only source of data and `api serve` never writes content; see [spec §5–§6](spec.md#5-content-data-source-of-truth-postgresql).
+> The response cache and ETag were removed too (`Cache-Control: no-store`).
+
 ## 1. Constitution check
 
 | Principle | How the plan complies |

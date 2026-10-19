@@ -1,14 +1,14 @@
 # Backend Specification
 
-Status: **Implemented**  ·  Last updated: 2026-10-17
+Status: **Implemented**  ·  Last updated: 2026-10-19
 Related: [Constitution](../000-constitution.md) · [Requirements](../001-requirements.md) · [API contract](../api/contract.md)
 
 ## 1. Responsibilities
 
 The backend is a single Go service (`api`) that:
 
-1. **Imports content** from YAML files in `content/` into PostgreSQL (the `seed` command),
-   validating it.
+1. **Reads content from PostgreSQL**, the only place data is stored. The API never writes
+   content: it creates the schema (migrations) and reads the tables on every request.
 2. **Serves the read-only JSON API** defined in [api/contract.md](../api/contract.md), in
    the language negotiated from the `Accept-Language` header.
 3. **Computes derived data**: travel statistics, visited countries and continents.
@@ -25,11 +25,11 @@ storing/serving images. Photos are external URLs that are passed through unchang
 | FR-B03 | Expose `GET /api/v1/cv` returning summary, experience, education, skills and spoken languages. | US-30 |
 | FR-B04 | Expose `GET /api/v1/travel` returning stats, visited countries and places with visits and photos. | US-20…US-24 |
 | FR-B05 | Negotiate the language from `Accept-Language` per contract §1.1 (fallback `en`); set `Content-Language` and `Vary: Accept-Language`. No `lang` query parameter. | US-02 |
-| FR-B06 | Return photo objects with external URLs exactly as given in the content (no download, proxying or rewriting). | US-10, US-22 |
-| FR-B07 | Provide a `seed` command that loads all content files into the DB in a single transaction (full replace). | G4 |
-| FR-B08 | The seed command validates content and fails (non-zero exit, no DB changes) on any error. See §6. | NFR-05 |
+| FR-B06 | Return photo objects with external URLs exactly as stored in the DB (no download, proxying or rewriting). | US-10, US-22 |
+| FR-B07 | *(Removed 2026-10-19)* No content import: the database is the only source of data. | G4 |
+| FR-B08 | *(Removed 2026-10-19)* No content validation command; data rules are in §6. | NFR-05 |
 | FR-B09 | Provide country reference data (ISO2, ISO numeric, continent, EN/RU names) embedded in the binary. | US-21, US-23 |
-| FR-B10 | Apply DB migrations automatically on startup (`serve`) and before `seed`. | NFR-06 |
+| FR-B10 | Apply DB migrations automatically on startup (`serve`). Startup never inserts or changes content. | NFR-06 |
 | FR-B11 | Return JSON errors as defined in the contract; never leak internal error details. | NFR-07 |
 | FR-B12 | No caching: every API response is read from the DB and sent with `Cache-Control: no-store`. | NFR-01 |
 | FR-B13 | Log every request as structured JSON (method, path, status, duration, resolved language). | — |
@@ -40,14 +40,11 @@ The binary `api` has subcommands:
 
 | Command        | Behaviour |
 |----------------|-----------|
-| `api serve`    | Run migrations, then start the HTTP server. |
-| `api seed`     | Run migrations, validate `content/`, replace all content in the DB in one transaction. |
-| `api validate` | Validate `content/` only (no DB access). Usable in CI. |
+| `api serve`    | Run migrations, then start the HTTPS server (the container's default command). Never writes content. |
 | `api migrate`  | Run migrations only. |
-| `api start`    | `seed`, then `serve` in the same process (the container's default command). |
 | `api healthcheck` | Calls the local `/api/v1/health`; exit 0 if healthy (used by the Docker `HEALTHCHECK`, since the image has no shell or curl). |
 
-In Docker the container runs `api start`, so every start re-imports the current content.
+In Docker the container runs `api serve`. A fresh database is empty until data is added.
 
 ## 4. Configuration (environment variables)
 
@@ -57,152 +54,55 @@ In Docker the container runs `api start`, so every start re-imports the current 
 | `TLS_CERT_FILE`  | —                  | PEM certificate for HTTPS. Set together with `TLS_KEY_FILE`; if both are empty a self-signed certificate is generated at startup. |
 | `TLS_KEY_FILE`   | —                  | PEM private key for `TLS_CERT_FILE`. |
 | `DATABASE_URL`   | — (required)       | e.g. `postgres://site:secret@db:5432/site?sslmode=disable` |
-| `CONTENT_DIR`    | `/app/content`     | Path to the YAML content files. |
 | `CORS_ORIGINS`   | empty              | Comma-separated allowed origins (dev: `http://localhost:5173`). |
 | `LOG_LEVEL`      | `info`             | `debug`, `info`, `warn`, `error`. |
 
 Startup fails fast with a clear message if a required variable is missing.
 
-## 5. Content files (source of truth)
+## 5. Content data (source of truth: PostgreSQL)
 
-All texts that are shown to visitors are localised objects: `{ en: "...", ru: "..." }`.
-Both keys are **required** and must be non-empty.
+All content lives in the PostgreSQL tables of §7 and is edited there directly (SQL or any
+database client). There are no content files and no import step. Changes are visible on the
+next request.
 
-```
-content/
-├── main.yaml      # main page info (about me) + social links
-├── cv.yaml
-└── travel.yaml
-```
+All texts shown to visitors are `ltext` JSONB objects `{"en": "...", "ru": "..."}`.
 
-Content may also be written as `.json` with the same structure (`main.json`, …). If both a
-`.yaml` and a `.json` file exist for the same name, validation fails (ambiguous source).
+| Table | Holds | Order in the API |
+|-------|-------|------------------|
+| `main_info` | single row (`id = 1`): name, headline, location, currently, bio, CV summary, photo, interests | — |
+| `social_link` | contact links: `kind` (`email`, `github`, `linkedin`, `telegram`), `label`, `url` | `sort_order` |
+| `cv_experience` | jobs; `end_date` `NULL` = present | `start_date` desc |
+| `cv_education` | education entries | `start_date` desc |
+| `cv_skill_group` | skill categories with non-localised `items` | `sort_order` |
+| `cv_language` | spoken languages with level | `sort_order` |
+| `place` | visited places: `country_iso2`, `name`, `lat`, `lng`, `story` | latest visit desc |
+| `visit` | visits of a place (`start_date`, `end_date`) | `start_date` desc |
+| `photo` | photos of a place: `url`, optional `thumb_url`, `alt`, `caption`, `width`, `height` | `sort_order` |
 
-### 5.1 Photo object (used in `main.yaml` and `travel.yaml`)
+If `main_info` has no row, `/api/v1/main` and `/api/v1/cv` answer `503 unavailable`.
 
-```yaml
-url: "https://images.example.com/amsterdam/01.jpg"         # required, absolute https URL
-thumbUrl: "https://images.example.com/amsterdam/01_s.jpg"  # optional, smaller version
-alt: { en: "...", ru: "..." }                              # optional
-caption: { en: "...", ru: "..." }                          # optional
-width: 1600                                                # optional, with height
-height: 1067                                               # optional, with width
-```
+## 6. Data rules (kept by whoever edits the database)
 
-Photos can be hosted anywhere public (e.g. an image hosting service, a cloud bucket, a CDN).
-The backend never fetches them.
-
-### 5.2 `main.yaml`
-
-```yaml
-fullName: { en: "Leonid Solovev", ru: "Леонид Соловьёв" }
-headline: { en: "Software Engineer", ru: "Инженер-программист" }
-location: { en: "Amsterdam, Netherlands", ru: "Амстердам, Нидерланды" }
-currently: { en: "Building my personal site", ru: "Делаю свой личный сайт" }
-bio:
-  en: |
-    First paragraph.
-
-    Second paragraph.
-  ru: |
-    Первый абзац.
-
-    Второй абзац.
-photo:
-  url: "https://images.example.com/me.jpg"
-  alt: { en: "Portrait of Leonid", ru: "Портрет Леонида" }
-  width: 800
-  height: 800
-interests:
-  - { en: "Travel", ru: "Путешествия" }
-  - { en: "Photography", ru: "Фотография" }
-links:
-  - { kind: email,    label: { en: "Email",    ru: "Почта" },    url: "mailto:me@example.com" }
-  - { kind: github,   label: { en: "GitHub",   ru: "GitHub" },   url: "https://github.com/example" }
-  - { kind: linkedin, label: { en: "LinkedIn", ru: "LinkedIn" }, url: "https://www.linkedin.com/in/example" }
-  - { kind: telegram, label: { en: "Telegram", ru: "Telegram" }, url: "https://t.me/example" }
-```
-
-`bio` is split into paragraphs by blank lines when it is served.
-
-### 5.3 `cv.yaml`
-
-```yaml
-summary: { en: "...", ru: "..." }
-experience:
-  - id: acme-2021
-    position: { en: "Senior Software Engineer", ru: "Старший инженер-программист" }
-    company: "Acme Corp"                 # not localised
-    companyUrl: "https://acme.example"   # optional
-    location: { en: "Amsterdam, Netherlands", ru: "Амстердам, Нидерланды" }
-    startDate: 2021-05-01
-    endDate: null                        # null = present
-    description: { en: "...", ru: "..." }   # optional
-    highlights:
-      - { en: "Did X", ru: "Сделал X" }
-education:
-  - id: msu-2015
-    institution: { en: "Lomonosov Moscow State University", ru: "МГУ им. М. В. Ломоносова" }
-    degree: { en: "MSc", ru: "Магистр" }
-    field: { en: "Computer Science", ru: "Информатика" }
-    startDate: 2013-09-01
-    endDate: 2015-06-30
-skills:
-  - category: { en: "Programming languages", ru: "Языки программирования" }
-    items: ["Go", "TypeScript", "SQL"]      # not localised
-languages:
-  - name: { en: "Russian", ru: "Русский" }
-    level: { en: "Native", ru: "Родной" }
-```
-
-### 5.4 `travel.yaml`
-
-```yaml
-places:
-  - id: amsterdam                # unique slug, [a-z0-9-]+
-    country: NL                  # ISO 3166-1 alpha-2
-    name: { en: "Amsterdam", ru: "Амстердам" }
-    lat: 52.3676
-    lng: 4.9041
-    story:
-      en: |
-        Short story.
-      ru: |
-        Короткая история.
-    visits:
-      - { start: 2023-04-10, end: 2023-04-15 }
-    photos:                      # 0..30 photo objects (§5.1)
-      - url: "https://images.example.com/amsterdam/01.jpg"
-        thumbUrl: "https://images.example.com/amsterdam/01_s.jpg"
-        caption: { en: "Canals at sunset", ru: "Каналы на закате" }
-      - url: "https://images.example.com/amsterdam/02.jpg"
-```
-
-## 6. Validation rules (seed / validate)
-
-Validation collects **all** errors and prints them as `file:path: message`
-(e.g. `travel.yaml:places[3].photos[2].url: must be an absolute https URL`) before it exits
-with code 1.
+The API does not validate content. The schema enforces what it can (`NOT NULL`, `CHECK`,
+foreign keys, unique `kind`); the rest must be kept by the editor:
 
 | Rule | Applies to |
 |------|-----------|
-| Required fields are present and non-empty. | all |
-| Every localised object has non-empty `en` **and** `ru`. | all |
-| `id` values are unique within their list and match `^[a-z0-9-]+$`. | experience, education, places |
-| Dates are valid `YYYY-MM-DD`; `end ≥ start`; `end` may be null only for experience/education. | cv, travel |
-| `country` is a known ISO 3166-1 alpha-2 code from the embedded reference data. | travel |
+| Every `ltext` has non-empty `en` **and** `ru`. | all |
+| `id` values match `^[a-z0-9-]+$`. | experience, education, places |
+| `end ≥ start`; `end` may be `NULL` only for experience/education. | cv, travel |
+| `country_iso2` is a known ISO 3166-1 alpha-2 code (an unknown code makes `/api/v1/travel` fail with 500). | travel |
 | `lat ∈ [-90, 90]`, `lng ∈ [-180, 180]`. | travel |
 | Each place has ≥ 1 visit and ≤ 30 photos. | travel |
-| Photo `url` and `thumbUrl` are syntactically valid absolute `https://` URLs (not fetched). | main, travel |
-| Photo `width` and `height` are both given or both omitted; if given, positive integers. | main, travel |
-| `links[].kind` is one of `email`, `github`, `linkedin`, `telegram`; each kind appears at most once. For `email` the `url` is `mailto:<valid address>`; for the others it is an absolute `https://` URL. | main |
-| No unknown keys in YAML/JSON (catches typos). | all |
+| Photo `url` and `thumb_url` are absolute `https://` URLs (not fetched). | main, travel |
+| Photo `width` and `height` are both set or both `NULL`. | main, travel |
+| For `email` links the `url` is `mailto:<address>`; for the others an absolute `https://` URL. | main |
+| Paragraphs in `bio` and `story` are separated by a blank line. | main, travel |
 
 ## 7. Data model (PostgreSQL)
 
 Localised text is stored as `JSONB` objects `{"en": "...", "ru": "..."}` (type alias **ltext**).
-The seed command replaces all rows in one transaction (`TRUNCATE … RESTART IDENTITY CASCADE`,
-then insert).
+The schema is created by the embedded migrations; the application only reads these tables.
 
 ```sql
 -- singleton: main page info
@@ -322,8 +222,7 @@ stored in the DB. It is a JSON file embedded in the binary (`go:embed`) and look
   - `places` = number of places;
   - `worldPercent` = `round(countries / 195 * 100, 1)`.
 - **Sorting:** as defined in the contract (§2.3, §2.4).
-- **ETag:** a weak ETag computed from the SHA-256 of the response body (so it naturally
-  differs per language).
+- **No caching:** every request reads the DB; responses are `Cache-Control: no-store`.
 
 ## 9. HTTP server behaviour
 
@@ -336,10 +235,10 @@ stored in the DB. It is a JSON file embedded in the binary (`go:embed`) and look
 
 ```
 backend/
-├── cmd/api/main.go          # subcommands: serve, seed, validate, migrate, start, healthcheck
+├── cmd/api/main.go          # subcommands: serve, migrate, healthcheck
 ├── internal/
 │   ├── config/              # env parsing
-│   ├── content/             # YAML/JSON structs, loader, validator
+│   ├── content/             # content model structs (contenttest/: JSON fixture for tests)
 │   ├── geo/                 # embedded countries.json + lookup
 │   ├── i18n/                # Accept-Language parsing + negotiation middleware
 │   ├── store/               # PostgreSQL repository (pgx)
@@ -360,7 +259,7 @@ backend/
 | Service | Image / build        | Ports        | Notes |
 |---------|----------------------|--------------|-------|
 | `db`    | `postgres:16-alpine` | internal only| volume `pgdata`; healthcheck `pg_isready`. |
-| `api`   | `./backend`          | internal `8080` | depends on `db` healthy; mounts `./content` read-only at `/app/content`; command `api start`; healthcheck `api healthcheck`. |
+| `api`   | `./backend`          | internal `8080` | depends on `db` healthy; command `api serve`; healthcheck `api healthcheck`. No content is mounted. |
 | `web`   | `./frontend`         | host `80:80`, `443:443` | nginx serves the SPA over HTTPS and proxies `/api` to `https://api:8080`; port 80 redirects to HTTPS (see frontend spec). |
 | `certbot` | `certbot/certbot`  | none         | gets and renews the Let's Encrypt certificate for `DOMAIN` (webroot challenge); idle when `DOMAIN` is empty. |
 
@@ -371,11 +270,10 @@ Visitors get HTTPS: a Let's Encrypt certificate for `DOMAIN` (from `.env`), or a
 
 | Area | Test |
 |------|------|
-| Content validator | Table-driven unit tests: one valid fixture plus one fixture per validation rule (§6), including > 30 photos, a non-https URL, width without height, an unknown link kind, and a duplicate yaml+json source. |
 | Language negotiation | Table tests: no header → `en`; `ru` → `ru`; `ru-RU,ru;q=0.9,en;q=0.8` → `ru`; `en;q=0.5, ru;q=0.8` → `ru`; `de-DE` → `en`; malformed header → `en`. The response has `Content-Language` and `Vary: Accept-Language`. |
 | Service logic | Unit tests for stats, localisation, paragraph splitting, sorting and the photo null fallbacks. |
-| Handlers | `httptest` tests for every endpoint: 200 with the correct shape in EN and RU (compared to golden JSON), `404`, `405`, `304` with ETag, and a different ETag per language. |
-| Store | Integration tests against PostgreSQL in Docker: seed → read back → equality; the seed is idempotent; a failed seed leaves the previous data untouched. |
+| Handlers | `httptest` tests for every endpoint: 200 with the correct shape in EN and RU (compared to golden JSON), `404`, `405`, and `Cache-Control: no-store` with fresh data on every request. |
+| Store | Integration tests against PostgreSQL in Docker: insert the test fixture → read back → equality; an empty DB → `ErrNoContent`; migrating an empty DB adds no data. |
 | Smoke | `docker compose up` → `curl /api/v1/health` returns `ok`; `curl -H 'Accept-Language: ru' /api/v1/main` returns Russian text. |
 
 **Definition of done:** all FR-B items are implemented and tested, `go vet` and
@@ -390,3 +288,4 @@ Visitors get HTTPS: a Let's Encrypt certificate for `DOMAIN` (from `.env`), or a
 | 2026-10-17 | Email link (`kind: email`, `mailto:` URL) added back. |
 | 2026-10-17 | (Plan phase clarification) Added the `api start` and `api healthcheck` commands for the shell-less container image. |
 | 2026-10-17 | Implemented (B01–B21). §10 updated to the actual layout (migrations embedded under `internal/store/`). No behaviour changes. |
+| 2026-10-19 | Removed the YAML content files and the `seed`, `validate` and `start` commands: PostgreSQL is the only source of data and startup never writes content. §5 and §6 now describe the tables and the data rules. Removed the response cache and ETag (`no-store`). |

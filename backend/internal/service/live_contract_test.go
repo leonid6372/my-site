@@ -7,7 +7,7 @@ package service
 //	BASE_URL=https://localhost:8080 go test -tags=live -run TestLive ./internal/service
 //
 // It checks the shape of every response against the contract examples and the
-// ordering rules against the repo's content/ files.
+// ordering rules on the data in the API's database.
 
 import (
 	"cmp"
@@ -16,14 +16,12 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 	"slices"
 	"testing"
 
 	"golang.org/x/text/collate"
 	"golang.org/x/text/language"
 
-	"github.com/leonid6372/my-site/backend/internal/content"
 	"github.com/leonid6372/my-site/backend/internal/i18n"
 )
 
@@ -79,27 +77,10 @@ func TestLiveShapesMatchContract(t *testing.T) {
 	}
 }
 
+// TestLiveOrderingMatchesContract checks the ordering rules of the contract
+// on whatever data the running API's database holds.
 func TestLiveOrderingMatchesContract(t *testing.T) {
-	src, err := content.Load(filepath.Join("..", "..", "..", "content"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	for _, lang := range []string{"en", "ru"} {
-		var m MainDTO
-		liveGet(t, "/api/v1/main", lang, &m)
-		var kinds []string
-		for _, l := range m.Links {
-			kinds = append(kinds, l.Kind)
-		}
-		var wantKinds []string
-		for _, l := range src.Main.Links {
-			wantKinds = append(wantKinds, l.Kind)
-		}
-		if !slices.Equal(kinds, wantKinds) {
-			t.Errorf("[%s] links order %v, want content order %v", lang, kinds, wantKinds)
-		}
-
 		var cv CVDTO
 		liveGet(t, "/api/v1/cv", lang, &cv)
 		if !slices.IsSortedFunc(cv.Experience, func(a, b ExperienceDTO) int { return cmp.Compare(b.StartDate, a.StartDate) }) {
@@ -107,19 +88,6 @@ func TestLiveOrderingMatchesContract(t *testing.T) {
 		}
 		if !slices.IsSortedFunc(cv.Education, func(a, b EducationDTO) int { return cmp.Compare(b.StartDate, a.StartDate) }) {
 			t.Errorf("[%s] education not sorted by startDate desc", lang)
-		}
-		if len(cv.Skills) != len(src.CV.Skills) || len(cv.Languages) != len(src.CV.Languages) {
-			t.Fatalf("[%s] skills/languages count differs from content", lang)
-		}
-		for i, g := range cv.Skills {
-			if g.Category != loc(src.CV.Skills[i].Category, langOf(lang)) || !slices.Equal(g.Items, src.CV.Skills[i].Items) {
-				t.Errorf("[%s] skills[%d] = %+v, not in content order", lang, i, g)
-			}
-		}
-		for i, l := range cv.Languages {
-			if l.Name != loc(src.CV.Languages[i].Name, langOf(lang)) {
-				t.Errorf("[%s] languages[%d] = %q, not in content order", lang, i, l.Name)
-			}
 		}
 
 		var tr TravelDTO
@@ -135,27 +103,13 @@ func TestLiveOrderingMatchesContract(t *testing.T) {
 		if !slices.IsSortedFunc(tr.Places, func(a, b PlaceDTO) int { return cmp.Compare(latestVisit(b), latestVisit(a)) }) {
 			t.Errorf("[%s] places not sorted by latest visit desc", lang)
 		}
-		byID := map[string]content.Place{}
-		for _, p := range src.Travel.Places {
-			byID[p.ID] = p
-		}
 		for _, p := range tr.Places {
 			if !slices.IsSortedFunc(p.Visits, func(a, b VisitDTO) int { return cmp.Compare(b.StartDate, a.StartDate) }) {
 				t.Errorf("[%s] %s visits not sorted desc", lang, p.ID)
 			}
-			want := byID[p.ID].Photos
-			if len(p.Photos) != len(want) {
-				t.Errorf("[%s] %s: %d photos, content has %d", lang, p.ID, len(p.Photos), len(want))
-				continue
-			}
-			for i, ph := range p.Photos {
-				if ph.URL != want[i].URL {
-					t.Errorf("[%s] %s photos[%d] = %s, want %s (content order, unchanged URL)", lang, p.ID, i, ph.URL, want[i].URL)
-				}
-			}
 		}
-		if tr.Stats.Places != len(src.Travel.Places) {
-			t.Errorf("[%s] stats.places = %d, content has %d", lang, tr.Stats.Places, len(src.Travel.Places))
+		if tr.Stats.Places != len(tr.Places) {
+			t.Errorf("[%s] stats.places = %d, response has %d places", lang, tr.Stats.Places, len(tr.Places))
 		}
 	}
 }

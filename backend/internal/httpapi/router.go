@@ -105,7 +105,7 @@ func (a *api) health(w http.ResponseWriter, r *http.Request) {
 }
 
 // fail logs err with the request id and maps it to a contract error:
-// 503 unavailable when the database is unreachable or not seeded, otherwise
+// 503 unavailable when the database is unreachable or has no content, otherwise
 // 500 internal_error. The response never contains err itself.
 func (a *api) fail(w http.ResponseWriter, r *http.Request, err error) {
 	a.log.ErrorContext(r.Context(), "request failed", "id", RequestIDFrom(r.Context()), "err", err)
@@ -121,6 +121,6 @@ func unavailable(err error) bool {
 		connErr *pgconn.ConnectError
 		netErr  net.Error
 	)
-	return errors.Is(err, store.ErrNotSeeded) || errors.As(err, &connErr) || errors.As(err, &netErr) ||
+	return errors.Is(err, store.ErrNoContent) || errors.As(err, &connErr) || errors.As(err, &netErr) ||
 		errors.Is(err, context.DeadlineExceeded)
 }

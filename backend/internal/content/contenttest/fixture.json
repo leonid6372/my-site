@@ -1,0 +1,272 @@
+{
+  "main": {
+    "fullName": {
+      "en": "Leonid Solovev",
+      "ru": "Леонид Соловьёв"
+    },
+    "headline": {
+      "en": "Software Engineer",
+      "ru": "Инженер-программист"
+    },
+    "location": {
+      "en": "Amsterdam, Netherlands",
+      "ru": "Амстердам, Нидерланды"
+    },
+    "currently": {
+      "en": "Building my personal site",
+      "ru": "Делаю свой личный сайт"
+    },
+    "bio": {
+      "en": "First paragraph.\n\nSecond paragraph.\n",
+      "ru": "Первый абзац.\n\nВторой абзац.\n"
+    },
+    "photo": {
+      "url": "https://images.example.com/me.jpg",
+      "alt": {
+        "en": "Portrait of Leonid",
+        "ru": "Портрет Леонида"
+      },
+      "width": 800,
+      "height": 800
+    },
+    "interests": [
+      {
+        "en": "Travel",
+        "ru": "Путешествия"
+      },
+      {
+        "en": "Photography",
+        "ru": "Фотография"
+      }
+    ],
+    "links": [
+      {
+        "kind": "email",
+        "label": {
+          "en": "Email",
+          "ru": "Почта"
+        },
+        "url": "mailto:me@example.com"
+      },
+      {
+        "kind": "github",
+        "label": {
+          "en": "GitHub",
+          "ru": "GitHub"
+        },
+        "url": "https://github.com/example"
+      },
+      {
+        "kind": "linkedin",
+        "label": {
+          "en": "LinkedIn",
+          "ru": "LinkedIn"
+        },
+        "url": "https://www.linkedin.com/in/example"
+      },
+      {
+        "kind": "telegram",
+        "label": {
+          "en": "Telegram",
+          "ru": "Telegram"
+        },
+        "url": "https://t.me/example"
+      }
+    ]
+  },
+  "cv": {
+    "summary": {
+      "en": "Engineer with a focus on reliable backends.",
+      "ru": "Инженер с фокусом на надёжный бэкенд."
+    },
+    "experience": [
+      {
+        "id": "acme-2021",
+        "position": {
+          "en": "Senior Software Engineer",
+          "ru": "Старший инженер-программист"
+        },
+        "company": "Acme Corp",
+        "companyUrl": "https://acme.example",
+        "location": {
+          "en": "Amsterdam, Netherlands",
+          "ru": "Амстердам, Нидерланды"
+        },
+        "startDate": "2021-05-01",
+        "endDate": null,
+        "description": {
+          "en": "Backend platform team.",
+          "ru": "Команда бэкенд-платформы."
+        },
+        "highlights": [
+          {
+            "en": "Cut API latency by 30%",
+            "ru": "Снизил задержку API на 30%"
+          }
+        ]
+      },
+      {
+        "id": "initech-2017",
+        "position": {
+          "en": "Software Engineer",
+          "ru": "Инженер-программист"
+        },
+        "company": "Initech",
+        "location": {
+          "en": "Moscow, Russia",
+          "ru": "Москва, Россия"
+        },
+        "startDate": "2017-02-01",
+        "endDate": "2021-04-30"
+      }
+    ],
+    "education": [
+      {
+        "id": "msu-2015",
+        "institution": {
+          "en": "Lomonosov Moscow State University",
+          "ru": "МГУ им. М. В. Ломоносова"
+        },
+        "degree": {
+          "en": "MSc",
+          "ru": "Магистр"
+        },
+        "field": {
+          "en": "Computer Science",
+          "ru": "Информатика"
+        },
+        "startDate": "2013-09-01",
+        "endDate": "2015-06-30"
+      }
+    ],
+    "skills": [
+      {
+        "category": {
+          "en": "Programming languages",
+          "ru": "Языки программирования"
+        },
+        "items": [
+          "Go",
+          "TypeScript",
+          "SQL"
+        ]
+      },
+      {
+        "category": {
+          "en": "Tools",
+          "ru": "Инструменты"
+        },
+        "items": [
+          "Docker",
+          "PostgreSQL",
+          "Git"
+        ]
+      }
+    ],
+    "languages": [
+      {
+        "name": {
+          "en": "Russian",
+          "ru": "Русский"
+        },
+        "level": {
+          "en": "Native",
+          "ru": "Родной"
+        }
+      },
+      {
+        "name": {
+          "en": "English",
+          "ru": "Английский"
+        },
+        "level": {
+          "en": "C1",
+          "ru": "C1"
+        }
+      }
+    ]
+  },
+  "travel": {
+    "places": [
+      {
+        "id": "amsterdam",
+        "country": "NL",
+        "name": {
+          "en": "Amsterdam",
+          "ru": "Амстердам"
+        },
+        "lat": 52.3676,
+        "lng": 4.9041,
+        "story": {
+          "en": "Canals and bikes.\n\nSecond paragraph.\n",
+          "ru": "Каналы и велосипеды.\n\nВторой абзац.\n"
+        },
+        "visits": [
+          {
+            "start": "2023-04-10",
+            "end": "2023-04-15"
+          },
+          {
+            "start": "2024-08-01",
+            "end": "2024-08-03"
+          }
+        ],
+        "photos": [
+          {
+            "url": "https://images.example.com/amsterdam/01.jpg",
+            "thumbUrl": "https://images.example.com/amsterdam/01_s.jpg",
+            "caption": {
+              "en": "Canals at sunset",
+              "ru": "Каналы на закате"
+            },
+            "width": 1600,
+            "height": 1067
+          },
+          {
+            "url": "https://images.example.com/amsterdam/02.jpg"
+          }
+        ]
+      },
+      {
+        "id": "rotterdam",
+        "country": "NL",
+        "name": {
+          "en": "Rotterdam",
+          "ru": "Роттердам"
+        },
+        "lat": 51.9244,
+        "lng": 4.4777,
+        "story": {
+          "en": "Modern architecture.",
+          "ru": "Современная архитектура."
+        },
+        "visits": [
+          {
+            "start": "2022-06-01",
+            "end": "2022-06-02"
+          }
+        ]
+      },
+      {
+        "id": "quito",
+        "country": "EC",
+        "name": {
+          "en": "Quito",
+          "ru": "Кито"
+        },
+        "lat": -0.1807,
+        "lng": -78.4678,
+        "story": {
+          "en": "On the equator.",
+          "ru": "На экваторе."
+        },
+        "visits": [
+          {
+            "start": "2019-11-20",
+            "end": "2019-11-27"
+          }
+        ]
+      }
+    ]
+  }
+}

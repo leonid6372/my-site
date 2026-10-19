@@ -5,16 +5,16 @@ and **CV**, in English and Russian. Built with spec-driven development: the spec
 [`specs/`](specs/README.md) are the source of truth for everything in this repo.
 
 ```
-content/    YAML content: the only place you edit texts, places and photo URLs
-backend/    Go API: seeds content/ into PostgreSQL, serves read-only JSON (/api/v1/*)
+backend/    Go API: serves read-only JSON (/api/v1/*) from PostgreSQL
 frontend/   React + Vite SPA, served by nginx (which also proxies /api)
 specs/      constitution, requirements, API contract, specs, plans, tasks
 scripts/    smoke.sh: end-to-end check of a running stack
 ```
 
-How it fits together: on every start the API validates `content/`, replaces the database
-content in one transaction and then serves it. Photos are external `https://` URLs; the
-server never stores image files.
+How it fits together: **PostgreSQL is the only place data is stored.** The API never
+writes content: it only creates the schema (migrations) and reads the tables on every
+request. A fresh database is empty until you add data (see [Editing data](#editing-data)).
+Photos are external `https://` URLs; the server never stores image files.
 
 ## Prerequisites
 
@@ -49,8 +49,8 @@ Start only the database in Docker and run the API with Go:
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db
 cd backend
 export DATABASE_URL="postgres://site:<password>@localhost:5432/site?sslmode=disable"
-export CONTENT_DIR=../content CORS_ORIGINS=http://localhost:5173
-go run ./cmd/api start        # seed + serve HTTPS on :8080
+export CORS_ORIGINS=http://localhost:5173
+go run ./cmd/api serve        # migrate + serve HTTPS on :8080
 ```
 
 (PowerShell: `$env:DATABASE_URL = "..."` etc.) If the `api` container is running, stop it
@@ -58,16 +58,12 @@ first (`docker compose stop api`): both use port 8080.
 
 | Command | What it does |
 |---------|--------------|
-| `api start` | migrate → validate → seed → serve (the container default) |
-| `api serve` | migrate → serve, without re-seeding |
-| `api seed` | migrate → validate → replace all content |
-| `api validate` | check `content/` only, no database needed |
+| `api serve` | migrate → serve (the container default); never writes content |
 | `api migrate` | apply database migrations |
 | `api healthcheck` | exit 0 if the local `/api/v1/health` returns 200 |
 
 Configuration (environment variables, [spec §4](specs/backend/spec.md#4-configuration-environment-variables)):
-`DATABASE_URL` (required), `HTTP_ADDR` (`:8080`), `CONTENT_DIR` (`/app/content`),
-`CORS_ORIGINS` (empty), `LOG_LEVEL` (`info`), `TLS_CERT_FILE` / `TLS_KEY_FILE` (empty).
+`DATABASE_URL` (required), `HTTP_ADDR` (`:8080`), `CORS_ORIGINS` (empty), `LOG_LEVEL` (`info`), `TLS_CERT_FILE` / `TLS_KEY_FILE` (empty).
 
 The API serves **HTTPS only**. Set `TLS_CERT_FILE` and `TLS_KEY_FILE` (PEM) to use your own
 certificate; without them it generates a self-signed one at startup (valid for `localhost`,
@@ -106,26 +102,30 @@ npm run dev        # http://localhost:5173
 UI strings live in `src/i18n/en.json` and `ru.json` (a test keeps their keys identical);
 all content comes from the API in the language of the `Accept-Language` header.
 
-## Editing content
+## Editing data
 
-All content lives in three files in [`content/`](content/): `main.yaml`, `cv.yaml` and
-`travel.yaml` (`.json` with the same structure also works, but not both for one file).
-The field reference is in [backend spec §5](specs/backend/spec.md#5-content-files-source-of-truth)
-and the rules in [§6](specs/backend/spec.md#6-validation-rules-seed--validate). The essentials:
-
-- Every visible text is `{ en: "...", ru: "..." }`; both languages are required.
-- Dates are `YYYY-MM-DD`. A CV entry with `endDate: null` means "present".
-- Photos are `https://` URLs (`thumbUrl`, `alt`, `caption`, `width`+`height` optional),
-  up to 30 per place.
-- Places use ISO 3166-1 alpha-2 country codes (`NL`, `JP`, …) and need `lat`/`lng`.
-- Paragraphs are separated by a blank line.
-
-Check your edits before deploying; errors show the exact location:
+All content lives in PostgreSQL. Edit it with SQL or any database client (the database is
+published on port 5432); the schema is in
+[`backend/internal/store/migrations/00001_init.sql`](backend/internal/store/migrations/00001_init.sql).
+Changes are visible on the next request: there is no cache and no restart is needed.
 
 ```sh
-docker compose run --rm api validate
-# travel.yaml:places[3].country: unknown ISO 3166-1 alpha-2 code "ZZ"
+docker compose exec db psql -U site -d site
 ```
+
+| Table | Holds |
+|-------|-------|
+| `main_info` | the single row (`id = 1`) for the Main page and the CV header and summary |
+| `social_link` | contact links (`kind`: `email`, `github`, `linkedin`, `telegram`), ordered by `sort_order` |
+| `cv_experience`, `cv_education` | CV entries; `end_date` `NULL` means "present" |
+| `cv_skill_group`, `cv_language` | CV skills and languages, ordered by `sort_order` |
+| `place`, `visit`, `photo` | Travel places (ISO 3166-1 alpha-2 `country_iso2`), their visits and photos |
+
+- Every visible text is JSONB `{"en": "...", "ru": "..."}`; fill both languages.
+- Photos are `https://` URLs; paragraphs are separated by a blank line.
+- Until `main_info` has its row, `/api/v1/main` and `/api/v1/cv` answer `503`.
+
+Back up with `docker compose exec db pg_dump -U site site > backup.sql`.
 
 ## Deploying to a VPS
 
@@ -152,21 +152,6 @@ HTTPS certificate:
 - Until the certificate is issued, or with `DOMAIN` empty, nginx uses a self-signed
   certificate (browsers warn). `docker compose logs certbot` shows why issuing failed.
 
-### Updating content
-
-Content is bind-mounted into the container, so content changes need no image rebuild
-([plan §9.3](specs/backend/plan.md#93-content-update-workflow-on-the-vps)):
-
-```sh
-git pull                                  # new YAML
-docker compose run --rm api validate      # fix any errors before restarting
-docker compose restart api                # start re-seeds the database
-```
-
-If a bad edit slips through, `api start` refuses to serve and the container restarts in a
-loop. The database keeps the previous content (the seed is transactional): revert the YAML
-and restart again. `docker compose logs api` shows the reason.
-
 ### Updating code
 
 ```sh
@@ -178,7 +163,8 @@ git pull && docker compose up -d --build
 | Symptom | Fix |
 |---------|-----|
 | `required variable POSTGRES_DB is missing a value` | Create `.env` from `.env.example` (in the repo root). |
-| `api` keeps restarting | `docker compose logs api`: usually a content validation error. |
+| `api` keeps restarting | `docker compose logs api`: usually the database is unreachable or a TLS file is missing. |
+| `/api/v1/main` returns 503 with the database up | The database has no content yet: insert the `main_info` row (see [Editing data](#editing-data)). |
 | `bind: address already in use` on 8080 | Stop the other API (`docker compose stop api` or the `go run`). |
 | `bind: address already in use` on 80 or 443 | Another web server uses the port: stop it, or change `ports` of `web` (e.g. `"8081:80", "8443:443"`). |
 | Browser warns about the certificate | Self-signed fallback: set `DOMAIN`/`ACME_EMAIL` in `.env` and check `docker compose logs certbot`. |

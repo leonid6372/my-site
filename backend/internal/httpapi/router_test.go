@@ -9,13 +9,13 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/jackc/pgx/v5/pgconn"
 
 	"github.com/leonid6372/my-site/backend/internal/content"
+	"github.com/leonid6372/my-site/backend/internal/content/contenttest"
 	"github.com/leonid6372/my-site/backend/internal/service"
 	"github.com/leonid6372/my-site/backend/internal/store"
 )
@@ -38,14 +38,7 @@ type fakeDB struct{ err error }
 
 func (f fakeDB) Ping(context.Context) error { return f.err }
 
-func loadFixture(t *testing.T) content.All {
-	t.Helper()
-	all, err := content.Load(filepath.Join("..", "content", "testdata", "valid"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	return all
-}
+func loadFixture(t *testing.T) content.All { return contenttest.Fixture(t) }
 
 func newHandler(s service.Store, db Pinger) http.Handler {
 	return New(Options{
@@ -251,7 +244,7 @@ func TestStoreErrorsMapToContractErrors(t *testing.T) {
 		code   string
 	}{
 		{"generic", errors.New("syntax error at or near SELECT"), http.StatusInternalServerError, CodeInternal},
-		{"not seeded", store.ErrNotSeeded, http.StatusServiceUnavailable, CodeUnavailable},
+		{"no content", store.ErrNoContent, http.StatusServiceUnavailable, CodeUnavailable},
 		{"connect", fmt.Errorf("get main: %w", &pgconn.ConnectError{}), http.StatusServiceUnavailable, CodeUnavailable},
 		{"timeout", fmt.Errorf("get main: %w", context.DeadlineExceeded), http.StatusServiceUnavailable, CodeUnavailable},
 	} {

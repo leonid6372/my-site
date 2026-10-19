@@ -19,14 +19,11 @@ services:
     build: ./backend
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
-      CONTENT_DIR: /app/content
       LOG_LEVEL: info
       # The API serves HTTPS only. Without these it uses a self-signed certificate.
       # To use your own, mount it and set e.g.:
       #   TLS_CERT_FILE: /certs/cert.pem
       #   TLS_KEY_FILE: /certs/key.pem
-    # Content is bind-mounted: edit content/, then `docker compose restart api` (no rebuild).
-    volumes: ["./content:/app/content:ro"]
     depends_on: { db: { condition: service_healthy } }
     restart: unless-stopped
     # Health comes from the image's HEALTHCHECK (/api healthcheck).

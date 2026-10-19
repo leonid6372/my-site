@@ -11,9 +11,9 @@ import (
 	"github.com/leonid6372/my-site/backend/internal/content"
 )
 
-// ErrNotSeeded is returned by GetMain and GetCV when the database holds no
-// content yet (api seed has not run).
-var ErrNotSeeded = errors.New("database has no content: run api seed")
+// ErrNoContent is returned by GetMain and GetCV when the database holds no
+// content yet. Data is added to the database directly; the API never writes it.
+var ErrNoContent = errors.New("database has no content")
 
 // GetMain returns the main page info. Links are read separately (ListLinks).
 func (s *Store) GetMain(ctx context.Context) (content.MainFile, error) {
@@ -27,7 +27,7 @@ func (s *Store) GetMain(ctx context.Context) (content.MainFile, error) {
 		&m.FullName, &m.Headline, &m.Location, &m.Currently, &m.Bio,
 		&m.Photo.URL, &thumbURL, &m.Photo.Alt, &m.Photo.Width, &m.Photo.Height, &m.Interests)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return content.MainFile{}, ErrNotSeeded
+		return content.MainFile{}, ErrNoContent
 	}
 	if err != nil {
 		return content.MainFile{}, fmt.Errorf("get main: %w", err)
@@ -57,7 +57,7 @@ func (s *Store) GetCV(ctx context.Context) (content.CVFile, error) {
 	var cv content.CVFile
 	err := s.pool.QueryRow(ctx, `SELECT summary FROM main_info WHERE id = 1`).Scan(&cv.Summary)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return content.CVFile{}, ErrNotSeeded
+		return content.CVFile{}, ErrNoContent
 	}
 	if err != nil {
 		return content.CVFile{}, fmt.Errorf("get cv summary: %w", err)
