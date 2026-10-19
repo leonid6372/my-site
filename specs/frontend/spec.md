@@ -212,8 +212,8 @@ plain email address (without `mailto:`) for Email.
 - The API client adds the header `Accept-Language: <lang>` (exactly `en` or `ru`) to every
   request. No language query parameter is ever sent.
 - Server state via a query library (e.g. TanStack Query): query keys still include `lang`
-  (`['main', lang]`, `['cv', lang]`, `['travel', lang]`) so each language is cached
-  separately, even though `lang` travels in a header. `staleTime` 5 min, 1 retry.
+  (`['main', lang]`, `['cv', lang]`, `['travel', lang]`) because `lang` travels
+  in a header. No client cache (`staleTime` 0, `gcTime` 0): every page view refetches. 1 retry.
 - Changing the language keeps previous data on screen until the new data arrives (no flicker).
 - UI state (language, theme) lives in a small React context; selected place/country lives
   in Travel page state, synced with the `?place=` query parameter.

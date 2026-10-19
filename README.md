@@ -145,7 +145,7 @@ Content is bind-mounted into the container, so content changes need no image reb
 ```sh
 git pull                                  # new YAML
 docker compose run --rm api validate      # fix any errors before restarting
-docker compose restart api                # start re-seeds and clears the response cache
+docker compose restart api                # start re-seeds the database
 ```
 
 If a bad edit slips through, `api start` refuses to serve and the container restarts in a

@@ -89,7 +89,7 @@ export async function apiGet<T>(path: string, lang: Lang, signal?: AbortSignal):
 export const useMain = () => {
   const { lang } = useLanguage();
   return useQuery({ queryKey: ['main', lang], queryFn: ({ signal }) => apiGet<MainInfo>('/main', lang, signal),
-                    staleTime: 5 * 60_000, retry: 1, placeholderData: keepPreviousData });
+                    staleTime: 0, gcTime: 0, retry: 1, placeholderData: keepPreviousData });
 };
 ```
 

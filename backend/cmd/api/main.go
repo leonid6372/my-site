@@ -187,7 +187,7 @@ func serveCommand(withSeed bool) error {
 	}
 
 	handler := httpapi.New(httpapi.Options{
-		Cache:       service.NewCache(service.New(s)),
+		Service:     service.New(s),
 		DB:          s,
 		Log:         log,
 		CORSOrigins: cfg.CORSOrigins,

@@ -66,11 +66,9 @@ else
   fail "main: Vary lacks Accept-Language"
 fi
 
-# 3. Conditional request with the ETag (header passed from a file to keep the quotes).
-etag="$(header main_ru ETag)"
-printf 'If-None-Match: %s\nAccept-Language: ru\n' "$etag" > "$tmp/inm"
-status="$(get main_304 /main -H "@$tmp/inm")"
-if [ -n "$etag" ] && [ "$status" = 304 ]; then pass "main: If-None-Match -> 304"; else fail "main: ETag '$etag' gave $status, want 304"; fi
+# 3. Responses are never cached: data comes fresh from the DB on every request.
+cc="$(header main_ru Cache-Control)"
+if [ "$cc" = no-store ]; then pass "main: Cache-Control no-store"; else fail "main: Cache-Control '$cc', want no-store"; fi
 
 # 4. /cv and /travel.
 status="$(get cv /cv)"

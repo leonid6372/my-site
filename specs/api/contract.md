@@ -13,8 +13,8 @@ Both the backend and frontend specs refer to this file. Change it here first.
 - **Dates:** `YYYY-MM-DD` strings. `endDate: null` means "present".
 - **Images:** all image fields are **absolute external `https://` URLs** taken as-is from the
   content files. The backend never stores, proxies or serves image files.
-- **Caching:** responses include `Cache-Control: public, max-age=300` and an `ETag`;
-  `If-None-Match` → `304 Not Modified`.
+- **Caching:** none. Every response is built from the database on each request and sent
+  with `Cache-Control: no-store` (no `ETag`, no `304`).
 - **CORS:** not required in production (same origin). In development the backend allows
   the origin `http://localhost:5173` and the request header `Accept-Language`.
 
@@ -32,7 +32,7 @@ of the URL.
 - Missing header, or no supported language in it → **`en`** (fallback, no error).
 - Every localised response includes:
   - `Content-Language: en` or `Content-Language: ru` (the language actually used);
-  - `Vary: Accept-Language` (so caches and ETags are kept per language).
+  - `Vary: Accept-Language` (the response depends on the language).
 - The response contains strings for **one** language only (already resolved).
 
 ### 1.2 Error format

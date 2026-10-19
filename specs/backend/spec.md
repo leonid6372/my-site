@@ -31,7 +31,7 @@ storing/serving images. Photos are external URLs that are passed through unchang
 | FR-B09 | Provide country reference data (ISO2, ISO numeric, continent, EN/RU names) embedded in the binary. | US-21, US-23 |
 | FR-B10 | Apply DB migrations automatically on startup (`serve`) and before `seed`. | NFR-06 |
 | FR-B11 | Return JSON errors as defined in the contract; never leak internal error details. | NFR-07 |
-| FR-B12 | Set `ETag` + `Cache-Control` on API responses and support `If-None-Match` (ETag differs per language). | NFR-01 |
+| FR-B12 | No caching: every API response is read from the DB and sent with `Cache-Control: no-store`. | NFR-01 |
 | FR-B13 | Log every request as structured JSON (method, path, status, duration, resolved language). | — |
 
 ## 3. Commands
@@ -342,7 +342,7 @@ backend/
 │   ├── i18n/                # Accept-Language parsing + negotiation middleware
 │   ├── store/               # PostgreSQL repository (pgx)
 │   │   └── migrations/      # SQL migrations (goose), embedded in the binary
-│   ├── service/             # localisation, stats, sorting, response cache
+│   ├── service/             # localisation, stats, sorting, JSON rendering
 │   └── httpapi/             # router, handlers, middleware, error helpers
 ├── tools/gencountries/      # one-off generator for internal/geo/countries.json
 ├── Dockerfile               # multi-stage, distroless final image

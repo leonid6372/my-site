@@ -47,7 +47,6 @@ func writeError(w http.ResponseWriter, status int, code, msg string) {
 	h := w.Header()
 	h.Set("Content-Type", contentTypeJSON)
 	h.Set("Cache-Control", "no-store")
-	h.Del("ETag")
 	w.WriteHeader(status)
 	_, _ = w.Write(body)
 }

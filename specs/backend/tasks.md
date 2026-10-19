@@ -126,11 +126,11 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Depends on: B11
   - Done when: golden `travel.{en,ru}.json` match; unit tests for stats (0 places → all zeros, `worldPercent` 12/195 → 6.2) and the RU sort order (Cyrillic collation via `x/text/collate`).
 
-- [x] **B14 · Response cache + ETag**
-  - Per-(endpoint, lang) lazy cache: `body`, weak ETag `W/"<16 hex of sha256>"` (plan §4.3).
+- [x] **B14 · Response rendering (no cache)**
+  - Every request reads the DB and serialises a fresh response; no cache, no ETag (plan §4.3).
   - Refs: FR-B12
   - Depends on: B12, B13
-  - Done when: a test with a counting fake store shows 1 store call for 100 requests per key; EN and RU ETags differ.
+  - Done when: a test with a counting fake store shows one store call per request.
 
 - [x] **B15 · HTTP helpers and middleware** `[P]`
   - `writeJSON`, `writeError` (contract §1.2 codes), request ID, recover, slog logging (incl. `lang`),
@@ -140,7 +140,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - Done when: tests show a panic → 500 JSON without details; the log line contains all the fields; preflight from `http://localhost:5173` → 204 with the right headers; another origin gets no CORS headers.
 
 - [x] **B16 · Router and handlers**
-  - Routes `GET /api/v1/{health,main,cv,travel}`; `If-None-Match` → 304; `Cache-Control`;
+  - Routes `GET /api/v1/{health,main,cv,travel}`; `Cache-Control: no-store`;
     unknown → 404 JSON; non-GET/HEAD → 405 JSON; middleware order per plan §4.1.
   - Refs: FR-B01…FR-B05, FR-B11, FR-B12
   - Depends on: B14, B15
@@ -211,7 +211,7 @@ B01 → B02 ─┬─ B03 ──────────────── B09 �
 | FR-B09 country data | B04 | geo `TestLookup`, `TestLookupUnknown`, `TestAllComplete` |
 | FR-B10 migrations | B09, B17 | store `TestMigrateCreatesTablesAndIsIdempotent`; cmd/api `TestSeedCommandPath` |
 | FR-B11 errors | B15, B16 | httpapi `TestRecoverReturns500WithoutDetails`, `TestWriteErrorShape`, `TestNotFound`, `TestMethodNotAllowed`, `TestStoreErrorsMapToContractErrors` |
-| FR-B12 ETag / cache | B14, B16 | service `TestCacheBuildsOncePerKey`, `TestCacheDoesNotKeepErrors`; httpapi `TestConditionalGet`, `TestLocalisedEndpoints` |
+| FR-B12 no cache | B14, B16 | service `TestRenderQueriesStoreEveryTime`, `TestRenderRecoversAfterError`; httpapi `TestNoCaching`, `TestLocalisedEndpoints` |
 | FR-B13 logging | B15 | httpapi `TestLoggingLineHasAllFields`, `TestLoggingRecordsErrorStatus` |
 | NFR-05 | B07 | content `TestValidateRules` |
 | NFR-06 | B18, B19, B20 | `scripts/smoke.sh`; cmd/api `TestServeHTTPShutsDownGracefully` |
