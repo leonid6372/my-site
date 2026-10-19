@@ -95,7 +95,6 @@ Detailed library choices go into the `plan.md` files, not here.
 ## 7. Out of scope (project-wide)
 
 - Authentication, admin panel, user accounts.
-- HTTPS / TLS and a domain name (for now the site is served over plain HTTP on the VPS IP).
 - Analytics, SEO optimisation, comments, a contact form, a CV PDF download.
 
 ## Changelog

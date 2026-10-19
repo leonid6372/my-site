@@ -53,7 +53,9 @@ In Docker the container runs `api start`, so every start re-imports the current 
 
 | Variable         | Default            | Description |
 |------------------|--------------------|-------------|
-| `HTTP_ADDR`      | `:8080`            | Listen address. |
+| `HTTP_ADDR`      | `:8080`            | Listen address (HTTPS). |
+| `TLS_CERT_FILE`  | —                  | PEM certificate for HTTPS. Set together with `TLS_KEY_FILE`; if both are empty a self-signed certificate is generated at startup. |
+| `TLS_KEY_FILE`   | —                  | PEM private key for `TLS_CERT_FILE`. |
 | `DATABASE_URL`   | — (required)       | e.g. `postgres://site:secret@db:5432/site?sslmode=disable` |
 | `CONTENT_DIR`    | `/app/content`     | Path to the YAML content files. |
 | `CORS_ORIGINS`   | empty              | Comma-separated allowed origins (dev: `http://localhost:5173`). |
@@ -359,10 +361,11 @@ backend/
 |---------|----------------------|--------------|-------|
 | `db`    | `postgres:16-alpine` | internal only| volume `pgdata`; healthcheck `pg_isready`. |
 | `api`   | `./backend`          | internal `8080` | depends on `db` healthy; mounts `./content` read-only at `/app/content`; command `api start`; healthcheck `api healthcheck`. |
-| `web`   | `./frontend`         | host `80:80` | nginx serves the SPA and proxies `/api` to `api:8080` (see frontend spec). |
+| `web`   | `./frontend`         | host `80:80`, `443:443` | nginx serves the SPA over HTTPS and proxies `/api` to `https://api:8080`; port 80 redirects to HTTPS (see frontend spec). |
+| `certbot` | `certbot/certbot`  | none         | gets and renews the Let's Encrypt certificate for `DOMAIN` (webroot challenge); idle when `DOMAIN` is empty. |
 
 Secrets (`POSTGRES_PASSWORD`, etc.) come from `.env` (not committed); `.env.example` is committed.
-The site is served over plain HTTP on the VPS IP (no TLS, by decision).
+Visitors get HTTPS: a Let's Encrypt certificate for `DOMAIN` (from `.env`), or a self-signed fallback until it is issued.
 
 ## 12. Testing and acceptance
 

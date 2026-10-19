@@ -217,7 +217,7 @@ plain email address (without `mailto:`) for Email.
 - Changing the language keeps previous data on screen until the new data arrives (no flicker).
 - UI state (language, theme) lives in a small React context; selected place/country lives
   in Travel page state, synced with the `?place=` query parameter.
-- API base URL: relative `/api/v1` (Vite dev server proxies to `http://localhost:8080`).
+- API base URL: relative `/api/v1` (Vite dev server proxies to `https://localhost:8080`).
 
 ### Loading / error / empty states
 
@@ -287,11 +287,15 @@ copied to `public/`.
 
 ## 10. Build and serving
 
-- `npm run dev`: Vite on `:5173` with a proxy `/api` → `http://localhost:8080`.
+- `npm run dev`: Vite on `:5173` with a proxy `/api` → `https://localhost:8080`.
 - `npm run build`: type-check + production build to `dist/`.
 - Docker: multi-stage build (node → `nginx:alpine`). `nginx.conf`:
+  - HTTPS on 443 (TLS 1.2/1.3, HTTP/2); port 80 redirects to HTTPS except
+    `/.well-known/acme-challenge/` (Let's Encrypt). `docker/40-tls-certs.sh` links the
+    Let's Encrypt certificate for `DOMAIN`, or a self-signed fallback, and reloads nginx
+    when it changes.
   - `location /` → `try_files $uri /index.html;`
-  - `location /api/` → `proxy_pass http://api:8080;` (the `Accept-Language` header is
+  - `location /api/` → `proxy_pass https://api:8080;` (the `Accept-Language` header is
     forwarded unchanged).
   - hashed assets under `/assets/` → `Cache-Control: public, max-age=31536000, immutable`;
     `index.html` → `no-cache`.

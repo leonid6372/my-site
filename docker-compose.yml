@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
     ports: ["5432:5432"]
-    volumes: [pgdata:/var/lib/postgresql/data]
+    volumes: [./.pgdata:/var/lib/postgresql/data]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
@@ -21,18 +21,62 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
       CONTENT_DIR: /app/content
       LOG_LEVEL: info
+      # The API serves HTTPS only. Without these it uses a self-signed certificate.
+      # To use your own, mount it and set e.g.:
+      #   TLS_CERT_FILE: /certs/cert.pem
+      #   TLS_KEY_FILE: /certs/key.pem
     # Content is bind-mounted: edit content/, then `docker compose restart api` (no rebuild).
     volumes: ["./content:/app/content:ro"]
     depends_on: { db: { condition: service_healthy } }
     restart: unless-stopped
     # Health comes from the image's HEALTHCHECK (/api healthcheck).
 
-  # nginx: serves the SPA and proxies /api to api:8080. The only published port.
+  # nginx: serves the SPA over HTTPS (443) and proxies /api to https://api:8080.
+  # Port 80 only answers Let's Encrypt challenges and redirects to HTTPS.
   web:
     build: ./frontend
-    ports: ["80:80"]
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN:-}
+    volumes:
+      - letsencrypt:/etc/letsencrypt:ro
+      - certbot-www:/var/www/certbot:ro
     depends_on: { api: { condition: service_healthy } }
+    restart: unless-stopped
+
+  # Gets and renews the Let's Encrypt certificate for DOMAIN (set DOMAIN and
+  # ACME_EMAIL in .env; the domain's DNS must point at this server). Idle when
+  # DOMAIN is empty, and nginx then keeps its self-signed certificate.
+  certbot:
+    image: certbot/certbot:v4.1.1
+    environment:
+      DOMAIN: ${DOMAIN:-}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        if [ -z "$$DOMAIN" ]; then
+          echo "certbot: DOMAIN is not set, nothing to do"; exec sleep infinity
+        fi
+        if [ -z "$$ACME_EMAIL" ]; then
+          echo "certbot: set ACME_EMAIL in .env"; exec sleep infinity
+        fi
+        sleep 10 # let nginx start serving the challenge directory
+        while :; do
+          if [ -s "/etc/letsencrypt/live/$$DOMAIN/fullchain.pem" ]; then
+            certbot renew --webroot -w /var/www/certbot --quiet
+          else
+            certbot certonly --webroot -w /var/www/certbot -d "$$DOMAIN"               --email "$$ACME_EMAIL" --agree-tos --non-interactive --no-eff-email
+          fi
+          sleep 12h
+        done
+    depends_on: [web]
     restart: unless-stopped
 
 volumes:
   pgdata:
+  letsencrypt:
+  certbot-www:

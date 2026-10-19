@@ -172,7 +172,7 @@ needs two helpers, which were added to the spec during this phase:
 | Command | Purpose |
 |---------|---------|
 | `api start` | `seed` then `serve` in one process: the container entrypoint (replaces `api seed && api serve`). |
-| `api healthcheck` | `GET http://127.0.0.1:8080/api/v1/health`; exit 0 on 200, else 1. Used by the Docker `HEALTHCHECK`. |
+| `api healthcheck` | `GET https://127.0.0.1:8080/api/v1/health` (certificate not verified); exit 0 on 200, else 1. Used by the Docker `HEALTHCHECK`. |
 
 They are recorded in the spec changelog (a clarification, with no change to the API behaviour).
 
@@ -229,12 +229,20 @@ services:
 
   web:
     build: ./frontend
-    ports: ["80:80"]
+    ports: ["80:80", "443:443"]
+    environment: { DOMAIN: "${DOMAIN:-}" }
+    volumes: [letsencrypt:/etc/letsencrypt:ro, certbot-www:/var/www/certbot:ro]
     depends_on: { api: { condition: service_healthy } }
     restart: unless-stopped
 
+  certbot:   # issues/renews the Let's Encrypt certificate for DOMAIN (webroot challenge)
+    image: certbot/certbot:v4.1.1
+    volumes: [letsencrypt:/etc/letsencrypt, certbot-www:/var/www/certbot]
+
 volumes:
   pgdata:
+  letsencrypt:
+  certbot-www:
 ```
 
 `docker-compose.dev.yml` (used only locally) publishes `db` on `localhost:5432`.

@@ -4,13 +4,14 @@ package service
 
 // Compares a running API with specs/api/contract.md (task B21):
 //
-//	BASE_URL=http://localhost:8080 go test -tags=live -run TestLive ./internal/service
+//	BASE_URL=https://localhost:8080 go test -tags=live -run TestLive ./internal/service
 //
 // It checks the shape of every response against the contract examples and the
 // ordering rules against the repo's content/ files.
 
 import (
 	"cmp"
+	"crypto/tls"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -28,15 +29,20 @@ import (
 
 func langOf(s string) i18n.Lang { return i18n.Lang(s) }
 
+// liveClient accepts the API's self-signed development certificate.
+var liveClient = &http.Client{Transport: &http.Transport{
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //nolint:gosec // test against a local API
+}}
+
 func liveGet(t *testing.T, path, lang string, v any) http.Header {
 	t.Helper()
-	base := cmp.Or(os.Getenv("BASE_URL"), "http://localhost:8080")
+	base := cmp.Or(os.Getenv("BASE_URL"), "https://localhost:8080")
 	req, err := http.NewRequest(http.MethodGet, base+path, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	req.Header.Set("Accept-Language", lang)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := liveClient.Do(req)
 	if err != nil {
 		t.Fatalf("%s: %v (is the stack running? set BASE_URL)", path, err)
 	}

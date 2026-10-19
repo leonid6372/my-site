@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"io"
@@ -192,12 +193,16 @@ func serveCommand(withSeed bool) error {
 		Log:         log,
 		CORSOrigins: cfg.CORSOrigins,
 	})
+	tlsCfg, err := tlsConfig(cfg, log)
+	if err != nil {
+		return err
+	}
 	ln, err := net.Listen("tcp", cfg.HTTPAddr)
 	if err != nil {
 		return err
 	}
-	log.Info("listening", "addr", ln.Addr().String(), "cors_origins", cfg.CORSOrigins)
-	return serveHTTP(ctx, ln, handler, log)
+	log.Info("listening (https)", "addr", ln.Addr().String(), "cors_origins", cfg.CORSOrigins)
+	return serveHTTP(ctx, ln, handler, tlsCfg, log)
 }
 
 // setupLogger installs a JSON slog logger on stdout as the default.
@@ -215,11 +220,12 @@ const (
 	shutdownTimeout = 10 * time.Second
 )
 
-// serveHTTP serves on ln until ctx is cancelled, then shuts down gracefully,
-// waiting up to 10 s for in-flight requests.
-func serveHTTP(ctx context.Context, ln net.Listener, h http.Handler, log *slog.Logger) error {
+// serveHTTP serves HTTPS on ln until ctx is cancelled, then shuts down
+// gracefully, waiting up to 10 s for in-flight requests.
+func serveHTTP(ctx context.Context, ln net.Listener, h http.Handler, tlsCfg *tls.Config, log *slog.Logger) error {
 	srv := &http.Server{
 		Handler:           h,
+		TLSConfig:         tlsCfg,
 		ReadTimeout:       readTimeout,
 		ReadHeaderTimeout: readTimeout,
 		WriteTimeout:      writeTimeout,
@@ -227,7 +233,7 @@ func serveHTTP(ctx context.Context, ln net.Listener, h http.Handler, log *slog.L
 		ErrorLog:          slog.NewLogLogger(log.Handler(), slog.LevelWarn),
 	}
 	errc := make(chan error, 1)
-	go func() { errc <- srv.Serve(ln) }()
+	go func() { errc <- srv.ServeTLS(ln, "", "") }() // certificates come from TLSConfig
 
 	select {
 	case err := <-errc:
@@ -256,7 +262,7 @@ func runHealthcheck(_ []string) error {
 }
 
 // healthURL turns a listen address into the local health URL, e.g.
-// ":8080" or "0.0.0.0:8080" → "http://127.0.0.1:8080/api/v1/health".
+// ":8080" or "0.0.0.0:8080" → "https://127.0.0.1:8080/api/v1/health".
 func healthURL(addr string) string {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
@@ -265,12 +271,19 @@ func healthURL(addr string) string {
 	if host == "" || host == "0.0.0.0" || host == "::" {
 		host = "127.0.0.1"
 	}
-	return "http://" + net.JoinHostPort(host, port) + "/api/v1/health"
+	return "https://" + net.JoinHostPort(host, port) + "/api/v1/health"
 }
 
-// healthcheck returns nil if url answers 200 within 2 s.
+// healthcheck returns nil if url answers 200 within 2 s. It only calls the
+// local server, whose certificate may be self-signed or issued for a public
+// name, so the certificate is not verified.
 func healthcheck(url string) error {
-	client := &http.Client{Timeout: 2 * time.Second}
+	client := &http.Client{
+		Timeout: 2 * time.Second,
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //nolint:gosec // loopback health probe
+		},
+	}
 	resp, err := client.Get(url) //nolint:gosec // local URL built from our own config
 	if err != nil {
 		return err

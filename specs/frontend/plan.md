@@ -198,7 +198,7 @@ enters the viewport (`IntersectionObserver`); returns the target immediately und
 
 ### 6.1 `vite.config.ts`
 
-- `server.proxy: { '/api': 'http://localhost:8080' }`.
+- `server.proxy: { '/api': { target: 'https://localhost:8080', secure: false } }`.
 - `build.target: 'es2022'`, default hashed assets under `/assets/`.
 - Vitest config in the same file (`environment: 'jsdom'`, `setupFiles: ['src/test/setup.ts']`).
 
@@ -221,15 +221,26 @@ EXPOSE 80
 ### 6.3 `frontend/nginx.conf`
 
 ```nginx
-server {
+server {                       # port 80: ACME challenge + redirect
   listen 80;
+  location /.well-known/acme-challenge/ { root /var/www/certbot; }
+  location / { return 301 https://$host$request_uri; }
+}
+
+server {
+  listen 443 ssl;
+  http2 on;
   root /usr/share/nginx/html;
+  ssl_certificate     /etc/nginx/certs/fullchain.pem;   # Let's Encrypt or self-signed,
+  ssl_certificate_key /etc/nginx/certs/privkey.pem;     # linked by docker/40-tls-certs.sh
+  ssl_protocols TLSv1.2 TLSv1.3;
 
   gzip on;
   gzip_types text/css application/javascript application/json image/svg+xml;
 
   location /api/ {
-    proxy_pass http://api:8080;
+    proxy_pass https://api:8080;
+    proxy_ssl_verify off;
     proxy_set_header Host $host;
     proxy_set_header X-Request-ID $request_id;
   }

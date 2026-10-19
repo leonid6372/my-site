@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Smoke test for a running stack (plan §11). Needs only bash, curl, grep and sed.
 #
-#   scripts/smoke.sh                          # through nginx: http://localhost
-#   BASE_URL=http://localhost:8080 scripts/smoke.sh   # API directly (docker-compose.dev.yml)
+#   scripts/smoke.sh                          # through nginx: https://localhost
+#   BASE_URL=https://localhost:8080 scripts/smoke.sh  # API directly (docker-compose.dev.yml)
 #
 # Exits 0 when every check passes, 1 otherwise.
 set -uo pipefail
 
-BASE_URL="${BASE_URL:-http://localhost}"
+BASE_URL="${BASE_URL:-https://localhost}"
 API="${BASE_URL%/}/api/v1"
 WAIT_SECONDS="${WAIT_SECONDS:-60}"
 
@@ -19,11 +19,11 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
 # get NAME PATH [curl args...]: saves headers to $tmp/NAME.h, body to $tmp/NAME.b
-# and prints the HTTP status.
+# and prints the HTTP status. -k accepts self-signed certificates (nginx fallback, API).
 get() {
   local name="$1" path="$2"
   shift 2
-  curl -sS -o "$tmp/$name.b" -D "$tmp/$name.h" -w '%{http_code}' "$@" "$API$path" 2>/dev/null || echo 000
+  curl -sSk -o "$tmp/$name.b" -D "$tmp/$name.h" -w '%{http_code}' "$@" "$API$path" 2>/dev/null || echo 000
 }
 
 header() { grep -i "^$2:" "$tmp/$1.h" | head -n1 | sed 's/^[^:]*: *//; s/\r$//'; }

@@ -2,11 +2,12 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-// Plan §6.1. In development the API runs on :8080 (go run or the dev compose stack).
+// Plan §6.1. In development the API runs on https://localhost:8080 (go run or the dev
+// compose stack) with a self-signed certificate, so the proxy does not verify it.
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: { '/api': 'http://localhost:8080' },
+    proxy: { '/api': { target: 'https://localhost:8080', secure: false } },
   },
   build: {
     target: 'es2022',

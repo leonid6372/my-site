@@ -136,7 +136,7 @@ As a recruiter, I want a clear résumé.
 | NFR-03  | **Browsers:** last 2 versions of Chrome, Firefox, Safari and Edge. |
 | NFR-04  | **Accessibility:** semantic landmarks, keyboard operable, visible focus, alt text, WCAG AA contrast. |
 | NFR-05  | **Content validation:** the seed process fails with a clear message if any required field or translation is missing, a country code is unknown, or a photo URL is not a valid `https://` URL. (Photo URLs are not fetched; their availability is not checked.) |
-| NFR-06  | **Deployability:** `docker compose up -d --build` on a clean VPS starts the whole site, served over HTTP on port 80. |
+| NFR-06  | **Deployability:** `docker compose up -d --build` on a clean VPS starts the whole site, served over HTTPS on port 443 (port 80 redirects; Let's Encrypt certificate when `DOMAIN` is set). |
 | NFR-07  | **Reliability:** the API returns well-formed JSON errors; the frontend shows a friendly error state with a retry button instead of a blank page. |
 | NFR-08  | **Data volume:** designed for ~15 places with **up to 30 photos each**, but must work without changes up to ~200 places. |
 

@@ -2,6 +2,9 @@
 .env
 *.local
 
+# db
+.pgdata
+
 # frontend
 node_modules/
 dist/

@@ -152,7 +152,7 @@ Repo-wide setup (compose, `.env`, content) lives here because the backend owns t
   - `start`: seed → serve (the server doesn't start if the seed fails). `healthcheck`: GET local health, exit 0/1.
   - Refs: FR-B01, spec §3, §9
   - Depends on: B10, B16
-  - Done when: `go run ./cmd/api start` serves the placeholder content; `curl -H "Accept-Language: ru" localhost:8080/api/v1/main` returns Russian; stopping the DB → health 503 and `api healthcheck` exits 1; Ctrl+C shuts down cleanly.
+  - Done when: `go run ./cmd/api start` serves the placeholder content; `curl -k -H "Accept-Language: ru" https://localhost:8080/api/v1/main` returns Russian; stopping the DB → health 503 and `api healthcheck` exits 1; Ctrl+C shuts down cleanly.
 
 ## Phase 4 — Containers and deployment
 

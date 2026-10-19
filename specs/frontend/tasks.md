@@ -21,7 +21,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 - [x] **F01 · Scaffold**
   - `npm create vite@latest frontend -- --template react-ts`; TS `strict`; ESLint flat config
     (typescript-eslint, react-hooks, jsx-a11y) + Prettier; npm scripts from plan §6.4;
-    Vite proxy `/api → http://localhost:8080`.
+    Vite proxy `/api → https://localhost:8080`.
   - Vitest (`jsdom`) + Testing Library + `src/test/setup.ts`; MSW v2 server with handlers
     returning `src/test/fixtures/{main,cv,travel}.{en,ru}.json` (based on the contract
     examples; travel fixture includes a 30-photo place and a 0-photo place).
@@ -163,7 +163,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
     `docker-compose.yml`.
   - Refs: NFR-06
   - Depends on: F17, B19
-  - Done when: `docker compose up -d --build` on a clean machine → `http://localhost/` shows the Main page; a deep reload of `/travel?place=…` works; `/assets/*` has the immutable cache header; `index.html` has `no-cache`.
+  - Done when: `docker compose up -d --build` on a clean machine → `https://localhost/` shows the Main page (`http://` redirects); a deep reload of `/travel?place=…` works; `/assets/*` has the immutable cache header; `index.html` has `no-cache`.
 
 ## Phase 6 — Verification
 
@@ -202,7 +202,7 @@ Implements: [frontend/spec.md](spec.md) · [frontend/plan.md](plan.md) · [api/c
 
 ## Verification results (F19, 2026-10-17)
 
-Run against the production stack (`docker compose up`, nginx on port 80) with scripted
+Run against the production stack (`docker compose up`, nginx on ports 80/443) with scripted
 browser checks (Playwright driving Edge and Firefox), axe-core and Lighthouse.
 
 | ID | Result | How it was checked |

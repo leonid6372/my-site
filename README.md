@@ -30,13 +30,14 @@ server never stores image files.
 ```sh
 git clone https://github.com/leonid6372/my-site.git && cd my-site
 cp .env.example .env          # then set POSTGRES_PASSWORD
-docker compose up -d --build  # db, api and web; the site is on http://localhost
+docker compose up -d --build  # db, api and web; the site is on https://localhost
 scripts/smoke.sh              # end-to-end check through nginx
 ```
 
-Open <http://localhost>. Only nginx (port 80) is published. For development, add
+Open <https://localhost> (locally the certificate is self-signed, so the browser warns once;
+<http://localhost> redirects there). Only nginx (ports 80 and 443) is published. For development, add
 `-f docker-compose.yml -f docker-compose.dev.yml` to also publish the database on
-`127.0.0.1:5432` and the API on `127.0.0.1:8080` (with CORS for the Vite dev server).
+`127.0.0.1:5432` and the API on `https://127.0.0.1:8080` (with CORS for the Vite dev server).
 
 ## Local development
 
@@ -49,7 +50,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db
 cd backend
 export DATABASE_URL="postgres://site:<password>@localhost:5432/site?sslmode=disable"
 export CONTENT_DIR=../content CORS_ORIGINS=http://localhost:5173
-go run ./cmd/api start        # seed + serve on :8080
+go run ./cmd/api start        # seed + serve HTTPS on :8080
 ```
 
 (PowerShell: `$env:DATABASE_URL = "..."` etc.) If the `api` container is running, stop it
@@ -66,21 +67,25 @@ first (`docker compose stop api`): both use port 8080.
 
 Configuration (environment variables, [spec §4](specs/backend/spec.md#4-configuration-environment-variables)):
 `DATABASE_URL` (required), `HTTP_ADDR` (`:8080`), `CONTENT_DIR` (`/app/content`),
-`CORS_ORIGINS` (empty), `LOG_LEVEL` (`info`).
+`CORS_ORIGINS` (empty), `LOG_LEVEL` (`info`), `TLS_CERT_FILE` / `TLS_KEY_FILE` (empty).
+
+The API serves **HTTPS only**. Set `TLS_CERT_FILE` and `TLS_KEY_FILE` (PEM) to use your own
+certificate; without them it generates a self-signed one at startup (valid for `localhost`,
+`127.0.0.1` and `api`), so use `curl -k` against it locally.
 
 Tests and lint, from `backend/`:
 
 ```sh
 go test ./...                              # unit tests
 go test -tags=integration ./...            # + PostgreSQL tests (needs Docker, uses testcontainers)
-BASE_URL=http://localhost:8080 go test -tags=live -run TestLive ./internal/service   # running API vs contract
+BASE_URL=https://localhost:8080 go test -tags=live -run TestLive ./internal/service   # running API vs contract
 go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run --build-tags=integration ./...
 go test ./internal/service -update         # regenerate the golden JSON after an intended change
 ```
 
 ### Frontend
 
-Vite on <http://localhost:5173> proxies `/api` to `http://localhost:8080`, so start the API
+Vite on <http://localhost:5173> proxies `/api` to `https://localhost:8080`, so start the API
 first: `go run` as above, or the dev `api` container
 (`docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db api`).
 
@@ -128,14 +133,24 @@ One-time setup on the server (any Linux with Docker and the Compose plugin):
 
 ```sh
 git clone https://github.com/leonid6372/my-site.git && cd my-site
-cp .env.example .env          # set a strong POSTGRES_PASSWORD
+cp .env.example .env          # set a strong POSTGRES_PASSWORD, DOMAIN and ACME_EMAIL
 docker compose up -d --build
 docker compose ps             # db, api and web should be "healthy"
 scripts/smoke.sh              # optional end-to-end check
 ```
 
-The site is served on port 80 over plain HTTP for now (no domain or TLS yet). Only nginx
-is published; the API and the database are reachable inside the compose network only.
+The site is served over **HTTPS** on port 443; port 80 only redirects to HTTPS (and answers
+Let's Encrypt checks). Only nginx is published; the API and the database are reachable
+inside the compose network only.
+
+HTTPS certificate:
+
+- Point your domain's DNS (`A`/`AAAA` record) at the server and open ports 80 and 443.
+- Set `DOMAIN` and `ACME_EMAIL` in `.env`. The `certbot` service gets a free Let's Encrypt
+  certificate on first start and checks for renewal every 12 h; nginx picks up a new
+  certificate within 5 minutes, no restart needed.
+- Until the certificate is issued, or with `DOMAIN` empty, nginx uses a self-signed
+  certificate (browsers warn). `docker compose logs certbot` shows why issuing failed.
 
 ### Updating content
 
@@ -165,5 +180,6 @@ git pull && docker compose up -d --build
 | `required variable POSTGRES_DB is missing a value` | Create `.env` from `.env.example` (in the repo root). |
 | `api` keeps restarting | `docker compose logs api`: usually a content validation error. |
 | `bind: address already in use` on 8080 | Stop the other API (`docker compose stop api` or the `go run`). |
-| `bind: address already in use` on 80 | Another web server uses port 80: stop it, or change `ports` of `web` (e.g. `"8081:80"`). |
+| `bind: address already in use` on 80 or 443 | Another web server uses the port: stop it, or change `ports` of `web` (e.g. `"8081:80", "8443:443"`). |
+| Browser warns about the certificate | Self-signed fallback: set `DOMAIN`/`ACME_EMAIL` in `.env` and check `docker compose logs certbot`. |
 | `/api/v1/health` returns 503 | The API is up but cannot reach PostgreSQL: check `docker compose ps db`. |

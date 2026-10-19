@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"io"
 	"log/slog"
 	"net"
@@ -49,7 +50,17 @@ func TestLoadContentPrintsErrors(t *testing.T) {
 	}
 }
 
+// insecureClient trusts any certificate (the test servers are self-signed).
+var insecureClient = &http.Client{Transport: &http.Transport{
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //nolint:gosec // test only
+}}
+
 func TestServeHTTPShutsDownGracefully(t *testing.T) {
+	cert, err := selfSignedCert()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tlsCfg := &tls.Config{Certificates: []tls.Certificate{cert}, MinVersion: tls.VersionTLS12}
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		t.Fatal(err)
@@ -64,7 +75,7 @@ func TestServeHTTPShutsDownGracefully(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan error, 1)
-	go func() { done <- serveHTTP(ctx, ln, h, slog.New(slog.DiscardHandler)) }()
+	go func() { done <- serveHTTP(ctx, ln, h, tlsCfg, slog.New(slog.DiscardHandler)) }()
 
 	type result struct {
 		body string
@@ -72,7 +83,7 @@ func TestServeHTTPShutsDownGracefully(t *testing.T) {
 	}
 	got := make(chan result, 1)
 	go func() {
-		resp, err := http.Get("http://" + ln.Addr().String() + "/")
+		resp, err := insecureClient.Get("https://" + ln.Addr().String() + "/")
 		if err != nil {
 			got <- result{err: err}
 			return
@@ -98,18 +109,18 @@ func TestServeHTTPShutsDownGracefully(t *testing.T) {
 	case <-time.After(5 * time.Second):
 		t.Fatal("serveHTTP did not return after shutdown")
 	}
-	if _, err := http.Get("http://" + ln.Addr().String() + "/"); err == nil {
+	if _, err := insecureClient.Get("https://" + ln.Addr().String() + "/"); err == nil {
 		t.Error("server still accepts connections after shutdown")
 	}
 }
 
 func TestHealthURL(t *testing.T) {
 	for in, want := range map[string]string{
-		":8080":          "http://127.0.0.1:8080/api/v1/health",
-		"0.0.0.0:9000":   "http://127.0.0.1:9000/api/v1/health",
-		"[::]:8080":      "http://127.0.0.1:8080/api/v1/health",
-		"localhost:8081": "http://localhost:8081/api/v1/health",
-		"bad":            "http://127.0.0.1:8080/api/v1/health",
+		":8080":          "https://127.0.0.1:8080/api/v1/health",
+		"0.0.0.0:9000":   "https://127.0.0.1:9000/api/v1/health",
+		"[::]:8080":      "https://127.0.0.1:8080/api/v1/health",
+		"localhost:8081": "https://localhost:8081/api/v1/health",
+		"bad":            "https://127.0.0.1:8080/api/v1/health",
 	} {
 		if got := healthURL(in); got != want {
 			t.Errorf("healthURL(%q) = %q, want %q", in, got, want)
@@ -119,7 +130,7 @@ func TestHealthURL(t *testing.T) {
 
 func TestHealthcheck(t *testing.T) {
 	status := http.StatusOK
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+	srv := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(status)
 	}))
 	defer srv.Close()

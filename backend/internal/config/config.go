@@ -17,6 +17,10 @@ type Config struct {
 	ContentDir  string
 	CORSOrigins []string
 	LogLevel    slog.Level
+	// TLSCertFile and TLSKeyFile are PEM files for HTTPS. Both empty means
+	// the server uses a self-signed certificate generated at startup.
+	TLSCertFile string
+	TLSKeyFile  string
 }
 
 // ErrMissingDatabaseURL is returned by RequireDatabase when DATABASE_URL is empty.
@@ -36,6 +40,11 @@ func LoadFrom(getenv func(string) string) (Config, error) {
 		DatabaseURL: strings.TrimSpace(getenv("DATABASE_URL")),
 		ContentDir:  valueOr(getenv("CONTENT_DIR"), "/app/content"),
 		CORSOrigins: splitList(getenv("CORS_ORIGINS")),
+		TLSCertFile: strings.TrimSpace(getenv("TLS_CERT_FILE")),
+		TLSKeyFile:  strings.TrimSpace(getenv("TLS_KEY_FILE")),
+	}
+	if (cfg.TLSCertFile == "") != (cfg.TLSKeyFile == "") {
+		return Config{}, errors.New("TLS_CERT_FILE and TLS_KEY_FILE must be set together")
 	}
 
 	level := strings.ToLower(valueOr(getenv("LOG_LEVEL"), "info"))
