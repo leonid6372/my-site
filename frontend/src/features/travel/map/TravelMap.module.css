@@ -24,6 +24,11 @@
   max-height: none !important;
 }
 
+/* Underlay that hides a parent country's fill (useWorldGeo): never takes the mouse. */
+.mask {
+  pointer-events: none;
+}
+
 /* Only visited countries and pins are clickable (M-04). */
 .land {
   cursor: grab;
