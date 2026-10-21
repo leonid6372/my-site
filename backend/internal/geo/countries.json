@@ -1,5 +1,14 @@
 [
   {
+    "iso2": "AB",
+    "isoNumeric": "",
+    "continent": "asia",
+    "name": {
+      "en": "Abkhazia",
+      "ru": "Абхазия"
+    }
+  },
+  {
     "iso2": "AD",
     "isoNumeric": "020",
     "continent": "europe",

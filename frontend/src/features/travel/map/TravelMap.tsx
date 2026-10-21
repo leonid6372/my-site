@@ -7,15 +7,24 @@ import L, {
 } from 'leaflet';
 import { useReducedMotion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CircleMarker, GeoJSON, MapContainer, Pane, Tooltip, useMap } from 'react-leaflet';
+import {
+  CircleMarker,
+  GeoJSON,
+  MapContainer,
+  Pane,
+  Polyline,
+  Tooltip,
+  useMap,
+} from 'react-leaflet';
 import { useTranslation } from 'react-i18next';
 import type { Country, Place } from '../../../api/types';
 import { useLanguage } from '../../../app/providers/language-context';
 import { useTheme } from '../../../app/providers/theme-context';
 import type { Selection } from '../useSelection';
+import { ABKHAZIA_INNER_BORDER, ABKHAZIA_OUTER_BORDER } from './abkhazia';
 import { readMapColors, type MapColors } from './colors';
 import styles from './TravelMap.module.css';
-import { useWorldGeo, type WorldGeo } from './useWorldGeo';
+import { featureKey, useWorldGeo, type WorldGeo } from './useWorldGeo';
 
 const FLY_DURATION = 0.8; // seconds (spec §7)
 const WORLD_CENTER: L.LatLngExpression = [25, 10];
@@ -29,7 +38,13 @@ interface Props {
   onSelect: (s: Selection) => void;
 }
 
-type CountryFeature = Feature<Geometry, { name?: string }>;
+type CountryFeature = Feature<Geometry, { name?: string; mask?: boolean }>;
+
+// [lat, lng] for Leaflet.
+const toLatLngs = (line: typeof ABKHAZIA_INNER_BORDER): L.LatLngTuple[] =>
+  line.map(([lng = 0, lat = 0]) => [lat, lng]);
+const ABKHAZIA_INNER = toLatLngs(ABKHAZIA_INNER_BORDER);
+const ABKHAZIA_OUTER = toLatLngs(ABKHAZIA_OUTER_BORDER);
 
 /**
  * Vector world map without tiles (spec §5.2, plan §5.2): visited countries filled,
@@ -61,6 +76,7 @@ export default function TravelMap({ countries, places, selection, onSelect }: Pr
         attributionControl={false}
       >
         {world && <Countries world={world} countries={countries} onSelect={onSelect} />}
+        {world && <ExtraBorders />}
         {/* Own pane above the overlay pane: the countries load asynchronously and would
             otherwise be drawn on top of the pins and swallow their clicks. */}
         <Pane name="pins" style={{ zIndex: 450 }}>
@@ -98,25 +114,28 @@ function Countries({
   const { lang } = useLanguage();
   const colors = useMapColors();
   const layerRef = useRef<GeoJSONLayer>(null);
-  const byNumeric = useMemo(
-    () => new Map(countries.filter((c) => c.isoNumeric).map((c) => [c.isoNumeric, c])),
-    [countries],
-  );
+  const byKey = useMemo(() => new Map(countries.map((c) => [featureKey(c), c])), [countries]);
 
   const styleFor = useMemo(
     () =>
       (feature?: CountryFeature): L.PathOptions => {
-        const visited = feature?.id !== undefined && byNumeric.has(String(feature.id));
+        if (feature?.properties.mask) {
+          return { fillColor: colors.land, fillOpacity: 1, weight: 0, className: styles.mask };
+        }
+        const visited = feature?.id !== undefined && byKey.has(String(feature.id));
+        // Places drawn on top of a country (Abkhazia): their borders come from
+        // ExtraBorders, so the inner one can be dashed.
+        const extra = typeof feature?.id === 'string' && !/^\d+$/.test(feature.id);
         return {
           fillColor: visited ? colors.accent : colors.land,
           fillOpacity: visited ? 0.55 : 1,
           color: colors.border,
-          weight: 0.6,
+          weight: extra ? 0 : 0.6,
           // Applied when the SVG path is created (pointer cursor on visited countries only).
           className: visited ? styles.visited : styles.land,
         };
       },
-    [byNumeric, colors],
+    [byKey, colors],
   );
 
   // Theme change: restyle in place instead of rebuilding the layer.
@@ -125,7 +144,7 @@ function Countries({
   }, [styleFor]);
 
   const onEachFeature = (feature: CountryFeature, layer: L.Layer) => {
-    const country = feature.id !== undefined ? byNumeric.get(String(feature.id)) : undefined;
+    const country = feature.id !== undefined ? byKey.get(String(feature.id)) : undefined;
     if (!country || !(layer instanceof L.Path)) return; // non-visited: no tooltip, no action (M-04)
     layer.bindTooltip(country.name, { sticky: true, direction: 'top', className: styles.tooltip });
     layer.on({
@@ -150,12 +169,31 @@ function Countries({
   return (
     <GeoJSON
       // Tooltips and handlers are bound once per layer: rebuild on language or data change.
-      key={`${lang}:${[...byNumeric.keys()].join(',')}`}
+      key={`${lang}:${[...byKey.keys()].join(',')}`}
       ref={layerRef}
       data={world}
       style={styleFor as L.StyleFunction}
       onEachFeature={onEachFeature}
     />
+  );
+}
+
+/**
+ * Borders of places drawn on top of a country (Abkhazia), as Google Maps shows them:
+ * the disputed inner boundary dashed, the coast and international border solid.
+ */
+function ExtraBorders() {
+  const colors = useMapColors();
+  const solid = { color: colors.border, weight: 0.6, interactive: false };
+  return (
+    // Above the countries, below the pins.
+    <Pane name="extra-borders" style={{ zIndex: 420 }}>
+      <Polyline positions={ABKHAZIA_OUTER} pathOptions={solid} />
+      <Polyline
+        positions={ABKHAZIA_INNER}
+        pathOptions={{ ...solid, weight: 1, dashArray: '4 3' }}
+      />
+    </Pane>
   );
 }
 
@@ -268,8 +306,9 @@ function Controller({
 
   useEffect(() => {
     if (!iso2 || !world) return;
-    const numeric = countries.find((c) => c.iso2 === iso2)?.isoNumeric;
-    const f = numeric ? world.features.find((x) => String(x.id) === numeric) : undefined;
+    const country = countries.find((c) => c.iso2 === iso2);
+    const key = country && featureKey(country);
+    const f = key ? world.features.find((x) => String(x.id) === key) : undefined;
     let bounds: LatLngBoundsExpression | null = f ? mainlandBounds(f) : null;
     if (!bounds) {
       // No polygon (e.g. Kosovo): fit the country's places instead.
