@@ -40,6 +40,12 @@ type country struct {
 	Name       map[string]string `json:"name"`
 }
 
+// extras are places the source dataset doesn't list. Their codes are not
+// official ISO codes, so they must not clash with one.
+var extras = []country{
+	{ISO2: "AB", Continent: "asia", Name: map[string]string{"en": "Abkhazia", "ru": "Абхазия"}},
+}
+
 func main() {
 	src := flag.String("src", defaultSource, "source URL or local file path")
 	out := flag.String("out", "internal/geo/countries.json", "output file")
@@ -78,6 +84,7 @@ func run(src, out string) error {
 			Name:       map[string]string{"en": c.Name.Common, "ru": ru},
 		})
 	}
+	result = append(result, extras...)
 	slices.SortFunc(result, func(a, b country) int { return cmp.Compare(a.ISO2, b.ISO2) })
 
 	data, err := json.MarshalIndent(result, "", "  ")
